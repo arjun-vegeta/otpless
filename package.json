@@ -1,0 +1,41 @@
+{
+  "name": "otpless-cli",
+  "version": "1.0.0",
+  "description": "OTPless Integration Tool - CLI and MCP Server",
+  "files": [
+    "dist",
+    "docs"
+  ],
+  "main": "dist/packages/cli/src/index.js",
+  "bin": {
+    "otpless-cli": "dist/packages/cli/src/index.js",
+    "otpless-cli-mcp": "dist/mcp-server/src/server.js"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "commander": "^12.0.0",
+    "yaml": "^2.9.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/yaml": "^1.9.6",
+    "@typescript-eslint/eslint-plugin": "^8.63.0",
+    "@typescript-eslint/parser": "^8.63.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  },
+  "license": "ISC"
+}
