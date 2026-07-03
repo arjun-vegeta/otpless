@@ -1,0 +1,42 @@
+{
+  "web-react": {
+    "otpless-react": {
+      "current_version": "2.4.0",
+      "supported_frameworks": ["react", "nextjs"]
+    },
+    "otpless-headless-js": {
+      "current_version": "1.2.0",
+      "supported_frameworks": ["react", "nextjs", "javascript"]
+    }
+  },
+  "react-native": {
+    "otpless-rn": {
+      "current_version": "2.3.0",
+      "supported_frameworks": ["react-native"]
+    },
+    "otpless-headless-rn": {
+      "current_version": "2.3.0",
+      "supported_frameworks": ["react-native"]
+    },
+    "otpless-react-native": {
+      "current_version": "1.5.0",
+      "supported_frameworks": ["react-native"]
+    },
+    "otpless-react-native-lp": {
+      "current_version": "2.3.0",
+      "supported_frameworks": ["react-native"]
+    }
+  },
+  "node-backend": {
+    "node-sdk": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["express", "node", "nextjs"]
+    }
+  },
+  "fastapi": {
+    "otpless-python": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["fastapi"]
+    }
+  }
+}
