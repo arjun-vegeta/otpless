@@ -1,0 +1,292 @@
+{
+  "api": {
+    "1001": {
+      "likely_causes": ["Missing app ID in headers or parameters"],
+      "docs": ["https://otpless.com/docs/api-reference/error-codes"],
+      "next_checks": ["Check network inspector for headers"],
+      "suggested_fix": "Ensure `appId` is sent in request headers for all API calls."
+    },
+    "7301": {
+      "likely_causes": [
+        "Token expired",
+        "Invalid token format",
+        "Re-using magic link"
+      ],
+      "docs": [
+        "https://otpless.com/docs/api-reference/endpoint/verifytoken/verify-token-with-secure-data.md"
+      ],
+      "next_checks": ["Check network inspector payload for token value"],
+      "suggested_fix": "Prompt the user to login again. Opaque tokens expire after 5 minutes."
+    },
+    "7303": {
+      "likely_causes": [
+        "Invalid client ID or secret",
+        "IP address not whitelisted"
+      ],
+      "docs": ["https://otpless.com/docs/api-reference/error-codes"],
+      "next_checks": ["Verify credentials in dashboard"],
+      "suggested_fix": "Double-check your `clientId` and `clientSecret` against the OTPless dashboard."
+    },
+    "7305": {
+      "likely_causes": [
+        "Invalid signature on webhook payload",
+        "Incorrect webhook secret used"
+      ],
+      "docs": ["https://otpless.com/docs/knowledge-base/webhook.md"],
+      "next_checks": [
+        "Print raw body before parsing to verify no whitespace is lost"
+      ],
+      "suggested_fix": "Compute HMAC-SHA256 of the exact raw body. Frameworks like Express or FastAPI might modify the body during parsing."
+    },
+    "7020": {
+      "likely_causes": [
+        "Too many OTP requests for this phone number / IP address",
+        "Rate limit configuration hit on dashboard"
+      ],
+      "docs": ["https://otpless.com/docs/api-reference/error-codes"],
+      "next_checks": ["Check rate limit configurations in customer dashboard"],
+      "suggested_fix": "Wait for the timeout period (usually 1-5 minutes) or contact support to request limit adjustments."
+    },
+    "7021": {
+      "likely_causes": [
+        "User entered incorrect OTP multiple times in a row",
+        "Verification attempts rate limit hit"
+      ],
+      "docs": ["https://otpless.com/docs/api-reference/error-codes"],
+      "next_checks": ["Confirm verify attempts on server side"],
+      "suggested_fix": "Initiate a new OTP flow. The current transaction is locked."
+    },
+    "7414": {
+      "likely_causes": [
+        "Session token has expired",
+        "Access token TTL reached"
+      ],
+      "docs": [
+        "https://otpless.com/docs/knowledge-base/session-management/using-sessions.md"
+      ],
+      "next_checks": [
+        "Check exp claim in decrypted JWT or verify response details"
+      ],
+      "suggested_fix": "Use the refresh token to request a new session token, or redirect user to login."
+    },
+    "7415": {
+      "likely_causes": [
+        "Session token was revoked manually",
+        "Session token signature validation failed"
+      ],
+      "docs": [
+        "https://otpless.com/docs/knowledge-base/session-management/using-sessions.md"
+      ],
+      "next_checks": [
+        "Verify whether the session has been invalidated or if key rotation occurred"
+      ],
+      "suggested_fix": "Clear client side storage (cookies/storage) and prompt the user to re-authenticate."
+    }
+  },
+  "android": {
+    "101": {
+      "likely_causes": ["Missing internet permission", "Network unstable"],
+      "docs": ["https://otpless.com/docs/sna/android-sdk.md"],
+      "next_checks": ["Check AndroidManifest.xml for INTERNET permission"],
+      "suggested_fix": "Add `<uses-permission android:name=\"android.permission.INTERNET\" />` to AndroidManifest.xml"
+    },
+    "SNA_WIFI_DETECTED": {
+      "likely_causes": [
+        "Device is connected to WiFi",
+        "SNA requires cellular data"
+      ],
+      "docs": ["https://otpless.com/docs/knowledge-base/sna/sna-101.md"],
+      "next_checks": ["Check connection manager state"],
+      "suggested_fix": "Silent Network Authentication strictly requires a cellular connection. Fallback to WhatsApp or OTP if WiFi is active."
+    }
+  },
+  "sdk": {
+    "7001": {
+      "likely_causes": [
+        "SDK initialization triggered before DOM is ready or component mounted",
+        "App ID is undefined at time of call"
+      ],
+      "docs": [
+        "https://otpless.com/docs/frontend-sdks/web-sdks/react/headless.md"
+      ],
+      "next_checks": [
+        "Ensure your initialization logic runs inside useEffect or window.onload"
+      ],
+      "suggested_fix": "Verify that your App ID is passed correctly and environment variables are loaded."
+    },
+    "7002": {
+      "likely_causes": [
+        "Bundle ID or Package Name mismatch with dashboard credentials configuration"
+      ],
+      "docs": [
+        "https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/headless/headless.md"
+      ],
+      "next_checks": [
+        "Check bundle identifier in Xcode or build.gradle against OTPless Developer Settings"
+      ],
+      "suggested_fix": "Add your debug and production SHA-256 fingerprints/Bundle IDs to the Dev Settings page in your OTPless Dashboard."
+    },
+    "7003": {
+      "likely_causes": [
+        "Network connection offline on device",
+        "Firewall blocking carrier handshake endpoints"
+      ],
+      "docs": [
+        "https://otpless.com/docs/frontend-sdks/references/error-codes.md"
+      ],
+      "next_checks": [
+        "Verify the device is connected to a cellular/WiFi network"
+      ],
+      "suggested_fix": "Gracefully handle network error status by showing offline/retry UI indicator."
+    },
+    "7004": {
+      "likely_causes": [
+        "User cancelled the Google Credential Manager or Google Sign-In prompt"
+      ],
+      "docs": ["https://otpless.com/docs/knowledge-base/connectors/google.md"],
+      "next_checks": ["Check SDK responseType and cancel flag"],
+      "suggested_fix": "No action required, but you can restore the sign-in button state so the user can try again."
+    },
+    "7005": {
+      "likely_causes": [
+        "Google Play Services is outdated or missing on Android device"
+      ],
+      "docs": [
+        "https://otpless.com/docs/frontend-sdks/references/error-codes.md"
+      ],
+      "next_checks": [
+        "Verify target device/emulator has Google Play Services installed"
+      ],
+      "suggested_fix": "Advise the user to update Google Play Services, or hide Google Auth buttons if unavailable."
+    },
+    "9106": {
+      "likely_causes": [
+        "SNA failed and all smart auth fallback channels (WhatsApp/SMS) have failed or exhausted"
+      ],
+      "docs": ["https://otpless.com/docs/knowledge-base/smart-auth.md"],
+      "next_checks": ["Check fallback delivery status on dashboard"],
+      "suggested_fix": "SNA-only or Smart Auth flow has failed completely. Force manual phone/OTP verification fallback."
+    },
+    "9107": {
+      "likely_causes": [
+        "User backed out or clicked cancel on the WhatsApp redirect login interface"
+      ],
+      "docs": [
+        "https://otpless.com/docs/knowledge-base/whatsapp-authentication.md"
+      ],
+      "next_checks": [
+        "Monitor callback trigger behavior in setResponseCallback"
+      ],
+      "suggested_fix": "Let the user trigger WhatsApp login again, or offer alternative social sign-in methods."
+    },
+    "9108": {
+      "likely_causes": [
+        "SMS carrier gateway failure",
+        "Invalid phone number or regional block"
+      ],
+      "docs": ["https://otpless.com/docs/knowledge-base/bulk-sms.md"],
+      "next_checks": ["Verify regional configurations on OTPless SMS panel"],
+      "suggested_fix": "Ensure the country code is prefixed correctly. If transient, ask the user to request a new code."
+    },
+    "9109": {
+      "likely_causes": ["WhatsApp app is not installed on the user device"],
+      "docs": [
+        "https://otpless.com/docs/knowledge-base/whatsapp-authentication.md"
+      ],
+      "next_checks": ["Verify presence of WhatsApp package on device"],
+      "suggested_fix": "Fallback to SMS OTP automatically by starting the phone verification flow."
+    },
+    "9110": {
+      "likely_causes": [
+        "Social OAuth provider login cancelled or connection reset"
+      ],
+      "docs": ["https://otpless.com/docs/knowledge-base/knowledge-stack.md"],
+      "next_checks": ["Check social developer dashboard credentials"],
+      "suggested_fix": "Restart OAuth flow or handle cancellations without crashing."
+    }
+  },
+  "sna": {
+    "SP40003": {
+      "likely_causes": [
+        "Unsupported carrier detected",
+        "SNA not enabled for this carrier on OTPless dashboard"
+      ],
+      "docs": ["https://otpless.com/docs/sna/overview.md"],
+      "next_checks": ["Check operator name or MNC/MCC parameters"],
+      "suggested_fix": "Trigger fallback authentication channel like WhatsApp/SMS since cellular network is unsupported."
+    },
+    "SP40004": {
+      "likely_causes": [
+        "Could not bind connection to cellular interface",
+        "Dual SIM card mismatch"
+      ],
+      "docs": ["https://otpless.com/docs/sna/react-native-sdk.md"],
+      "next_checks": ["Verify connection manager cellular status"],
+      "suggested_fix": "Ensure mobile data connectivity is active and preferred. Fall back to OTP/Social."
+    },
+    "SP40011": {
+      "likely_causes": [
+        "SIM card is not present or has been ejected during handshake"
+      ],
+      "docs": [
+        "https://otpless.com/docs/frontend-sdks/app-sdks/react-native/legacy/references/sim-ejection-analysis-react-native.md"
+      ],
+      "next_checks": ["Check SIM state manager API"],
+      "suggested_fix": "SIM card unavailable. Prompt the user to insert SIM or verify via alternative flow."
+    },
+    "SP40021": {
+      "likely_causes": [
+        "Handshake gateway timed out",
+        "Slow cellular network connection"
+      ],
+      "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
+      "next_checks": [
+        "Measure cellular latency / round-trip-time to telecom endpoint"
+      ],
+      "suggested_fix": "Increase SNA timeout limits, or fallback to OTP authentication."
+    },
+    "SP40023": {
+      "likely_causes": [
+        "VPN is active, routing carrier data away",
+        "IP address mismatch with carrier registration"
+      ],
+      "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
+      "next_checks": ["Check active network proxies / VPN interfaces"],
+      "suggested_fix": "Ask the user to disable VPN interfaces or fallback to WhatsApp channel."
+    },
+    "SP40025": {
+      "likely_causes": ["Telecom operator API transient failure"],
+      "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
+      "next_checks": ["Check carrier platform outages"],
+      "suggested_fix": "Fallback to WhatsApp or SMS OTP verification immediately."
+    },
+    "SP50001": {
+      "likely_causes": [
+        "OTPless routing node or telecom gateway service is completely offline"
+      ],
+      "docs": ["https://otpless.com/docs/sna/overview.md"],
+      "next_checks": ["Monitor OTPless platform status page"],
+      "suggested_fix": "Use local fallback options or check system health indicators."
+    }
+  },
+  "telecom": {
+    "70001": {
+      "likely_causes": [
+        "SIM swap check failed",
+        "Recent IMSI modification detected for user number"
+      ],
+      "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
+      "next_checks": ["Check sim swap logs on telecom side"],
+      "suggested_fix": "Recent SIM swap detected. Block high-value transactions or enforce email MFA validation."
+    },
+    "P7334": {
+      "likely_causes": [
+        "Call forwarding check error",
+        "Operator did not return call status details"
+      ],
+      "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
+      "next_checks": ["Check active carrier call forwarding flags"],
+      "suggested_fix": "Verify that call forwarding is disabled on user SIM card before proceeding."
+    }
+  }
+}
