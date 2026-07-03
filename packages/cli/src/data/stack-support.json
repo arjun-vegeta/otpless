@@ -1,0 +1,4 @@
+{
+  "supported": ["web-react", "react-native", "node-backend", "fastapi"],
+  "unsupported_message": "This stack is unsupported in V1. Please check official OTPless documentation or wait for V2."
+}
