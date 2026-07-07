@@ -1,0 +1,275 @@
+openapi: 3.0.3
+info:
+  title: Get User Session Details
+  version: 1.0.0
+servers:
+  - url: https://user-auth.otpless.app
+    description: Passwordless Authentication Service
+paths:
+  /v1/sessions/get-session-details:
+    post:
+      summary: Get User Session Details
+      operationId: getUserSessionDetailsUsingsessionToken
+      description: >-
+        Fetches the current user session by exchanging the `sessionToken`
+        obtained from the otpless after successful authentication. This
+        server-to-server call requires the `clientId` and `clientSecret`.
+      x-codeSamples:
+        - lang: shell
+          label: cURL
+          source: >
+            curl --location
+            'https://user-auth.otpless.app/v1/sessions/get-session-details' \
+              --header 'Content-Type: application/json' \
+              --header 'clientId: YOUR_CLIENT_ID' \
+              --header 'clientSecret: YOUR_CLIENT_SECRET' \
+              --data '{
+                  "sessionToken": "RECEIVED_SESSION_TOKEN_FROM_OTPLESS"
+              }'
+
+      requestBody:
+        description: >-
+          Payload containing the sessionToken received from otpless
+          authentication and client credentials for verification.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sessionToken:
+                  type: string
+                  description: The unique identifier of the session.
+              required:
+                - sessionToken
+      responses:
+        '200':
+          description: The user's information was successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSessionDetailsResponse'
+        '400':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+        '401':
+          description: Unexpected Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Something went wrong. Please try again!
+components:
+  securitySchemes:
+    clientIdHeader:
+      type: apiKey
+      in: header
+      name: clientId
+      description: The `clientId` used for API authentication.
+    clientSecretHeader:
+      type: apiKey
+      in: header
+      name: clientSecret
+      description: The `clientSecret` used for API authentication.
+  schemas:
+    GetSessionDetailsResponse:
+      type: object
+      properties:
+        sessionToken:
+          type: string
+          example: SESSION_ID
+          description: The unique identifier of the session.
+        userId:
+          type: string
+          example: USER_ID
+          description: The unique identifier of the user associated with the session.
+        startedAt:
+          type: integer
+          format: int64
+          example: 1725879411000
+          description: The timestamp when the session started.
+        lastActiveAt:
+          type: integer
+          format: int64
+          example: 1725879411000
+          description: The timestamp when the session was last active.
+        identities:
+          type: array
+          description: >-
+            An array containing details about the user's identities (email,
+            mobile, etc.).
+          items:
+            type: object
+            properties:
+              identityType:
+                type: string
+                example: EMAIL
+              identityValue:
+                type: string
+                example: user@example.com
+              channel:
+                type: string
+                example: EMAIL_LOGIN
+              methods:
+                type: array
+                items:
+                  type: string
+                example:
+                  - EMAIL
+              name:
+                type: string
+                nullable: true
+                example: Lorem Ipsum
+              verifiedAt:
+                type: integer
+                format: int64
+                example: 1725879354000
+        deviceInfo:
+          type: object
+          description: >-
+            Information about the user's device, such as user agent, platform,
+            browser, etc.
+          properties:
+            userAgent:
+              type: string
+              example: >-
+                Mozilla/5.0 (Linux; Android 11; SM-M022G Build/RP1A.200720.012;
+                wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0
+                Chrome/127.0.6533.103 Mobile Safari/537.36
+            platform:
+              type: string
+              example: Linux armv7l
+            vendor:
+              type: string
+              example: Google Inc.
+            browser:
+              type: string
+              example: Chrome
+            connection:
+              type: string
+              example: 4g
+            language:
+              type: string
+              example: en
+            cookieEnabled:
+              type: boolean
+              example: true
+            screenWidth:
+              type: integer
+              example: 385
+            screenHeight:
+              type: integer
+              example: 854
+            screenColorDepth:
+              type: integer
+              example: 24
+            devicePixelRatio:
+              type: number
+              format: float
+              example: 1.875
+            timezoneOffset:
+              type: integer
+              example: -330
+            cpuArchitecture:
+              type: string
+              example: 4-core
+            fontFamily:
+              type: string
+              example: sans-serif
+        network:
+          type: object
+          description: >-
+            Information about the network, such as IP address, timezone,
+            location, etc.
+          properties:
+            ip:
+              type: string
+              format: ipv4
+              example: 157.35.40.203
+            timezone:
+              type: string
+              example: Asia/Kolkata
+            ipLocation:
+              type: object
+              properties:
+                city:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      example: Patna
+                subdivisions:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                      example: BR
+                    name:
+                      type: string
+                      example: Bihar
+                country:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                      example: IN
+                    name:
+                      type: string
+                      example: India
+                continent:
+                  type: object
+                  properties:
+                    code:
+                      type: string
+                      example: AS
+                latitude:
+                  type: number
+                  format: float
+                  example: 25.5908
+                longitude:
+                  type: number
+                  format: float
+                  example: 85.1348
+                postalCode:
+                  type: string
+                  example: '800001'
+    BadRequestResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Unexpected Error
+          description: A brief description of the error.
+        errorCode:
+          type: string
+          example: '7414'
+        description:
+          type: string
+          example: session not present
+    UnauthorizedResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Unexpected Error
+        errorCode:
+          type: string
+          example: '7415'
+        description:
+          type: string
+          example: session is not in active state
+security:
+  - clientIdHeader: []
+    clientSecretHeader: []

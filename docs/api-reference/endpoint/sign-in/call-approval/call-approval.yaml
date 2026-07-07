@@ -1,0 +1,100 @@
+openapi: 3.0.3
+info:
+  title: OTPless Voice Approval API
+  description: API for initiating a voice approval process using OTPless.
+  version: 1.0.0
+servers:
+  - url: https://auth.otpless.app
+    description: Production server
+paths:
+  /auth/v1/initiate/voice_approval:
+    post:
+      summary: Initiate Voice Approval
+      description: >
+        This endpoint initiates a Phone Call Approval request to the specified
+        phone number.
+      operationId: initiateVoiceApproval
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - phoneNumber
+              type: object
+              properties:
+                phoneNumber:
+                  type: string
+                  example: '917406859499'
+                  description: >-
+                    The phone number to which the voice approval request will be
+                    sent.
+      responses:
+        '200':
+          description: Voice approval request initiated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requestId:
+                    type: string
+                    example: unique_request_id
+                    description: The unique identifier for the voice approval request.
+        '400':
+          description: Bad request. Invalid input.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid Request
+                    description: A brief description of the error.
+                  errorCode:
+                    type: string
+                    example: Error Code
+                    description: A specific code representing the error type.
+                  description:
+                    type: string
+                    example: Error Code description
+                    description: Detailed description of the error.
+        '401':
+          description: Unauthorized. Access blocked.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Access blocked
+                    description: A brief description of the error.
+                  description:
+                    type: string
+                    example: Error Description
+                    description: Detailed description of the error.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Something went wrong. Please try again!
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: clientId
+    ApiSecretAuth:
+      type: apiKey
+      in: header
+      name: clientSecret
+security:
+  - ApiKeyAuth: []
+    ApiSecretAuth: []

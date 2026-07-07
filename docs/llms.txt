@@ -1,0 +1,258 @@
+# OTPLESS
+
+## Docs
+
+- [Send Message](https://otpless.com/docs/api-reference/endpoint/messaging/whatsapp/send.md): Sends messages across different channels like WhatsApp, SMS, or Email based on the provided parameters.
+- [Get New Session Token](https://otpless.com/docs/api-reference/endpoint/session-management/get-new-session-token.md): Fetches a new `sessionToken` using the `refreshToken` provided by OTPLESS. The `sessionToken` is a short lived token that must be replaced by a new token when the current token expires. `refreshToken` has a longer expiry and is used to create a new `sessionToken` till the `refreshToken` is valid. Th…
+- [Get Session Details](https://otpless.com/docs/api-reference/endpoint/session-management/get-session-details.md): Fetches the current user session by exchanging the `sessionToken` obtained from the otpless after successful authentication. This server-to-server call requires the `clientId` and `clientSecret`.
+- [Revoke User Session](https://otpless.com/docs/api-reference/endpoint/session-management/revoke-session.md): Revokes user session by exchanging the `sessionToken` obtained from the otpless after successful authentication. This server-to-server call requires the `clientId` and `clientSecret`.
+- [Validate User Session](https://otpless.com/docs/api-reference/endpoint/session-management/validate-session.md): This API is used to validate a user session by exchanging the `sessionToken` obtained from the otpless after successful authentication. This server-to-server call requires the `clientId` and `clientSecret`.
+- [Phone Call Approval](https://otpless.com/docs/api-reference/endpoint/sign-in/call-approval/call-approval.md): This endpoint initiates a Phone Call Approval request to the specified phone number.
+- [Request Status](https://otpless.com/docs/api-reference/endpoint/sign-in/call-approval/request-status.md)
+- [Send Magic link (Email)](https://otpless.com/docs/api-reference/endpoint/sign-in/magiclink/send-magiclink-email.md): This endpoint initiates a Magic Link to be sent to the specified email address using the provided channels. It enables a smart authentication flow if multiple channels are specified in the request.
+- [Send Magic link (Phone)](https://otpless.com/docs/api-reference/endpoint/sign-in/magiclink/send-magiclink-phone.md): This endpoint initiates a Magic Link to be sent to the specified phone number using the provided channels.
+- [User Information](https://otpless.com/docs/api-reference/endpoint/sign-in/magiclink/userinfo.md)
+- [Verify Code](https://otpless.com/docs/api-reference/endpoint/sign-in/magiclink/verify-code.md): This endpoint validates the code received via a Magic link / OAuth request to complete user authentication.
+- [OAuth Authentication](https://otpless.com/docs/api-reference/endpoint/sign-in/oauth/oauth.md): This endpoint initiates an WhatsApp OAuth authentication flow using the specified channel.
+- [Send OTP (Email)](https://otpless.com/docs/api-reference/endpoint/sign-in/otp/send-otp-email.md): This endpoint initiates an OTP to be sent to the specified email.
+- [Send OTP (Phone)](https://otpless.com/docs/api-reference/endpoint/sign-in/otp/send-otp-phone.md): This endpoint initiates an OTP to be sent to the specified phone number using the provided channels.
+- [Verify OTP](https://otpless.com/docs/api-reference/endpoint/sign-in/otp/verify.md): This endpoint verifies the OTP sent to the user for authentication.
+- [Send OTP Link (Email)](https://otpless.com/docs/api-reference/endpoint/sign-in/otplink/send-otplink-email.md): This endpoint initiates an OTP link to be sent to the specified email or phone number using the provided channels.
+- [Send OTP Link (Phone)](https://otpless.com/docs/api-reference/endpoint/sign-in/otplink/send-otplink-phone.md): This endpoint initiates an OTP link to be sent to the specified phone number using the provided channels.
+- [SNA errors](https://otpless.com/docs/api-reference/endpoint/sign-in/sna/errors.md): How errors are returned for Silent Network Authentication (Initiate and Status APIs), response formats, and error code reference.
+- [Initiate SNA](https://otpless.com/docs/api-reference/endpoint/sign-in/sna/initiate-sna.md): Generate the link to perform Silent Network Authentication (SNA) transaction.
+- [Overview](https://otpless.com/docs/api-reference/endpoint/sign-in/sna/overview.md): Authenticate a user's mobile number through the telecom network without OTP. Integration guide for the hybrid client + backend SNA flow.
+- [Check SNA status](https://otpless.com/docs/api-reference/endpoint/sign-in/sna/status.md): Check the status of a Silent Network Authentication (SNA) transaction. Use only with requestId from Initiate SNA.
+- [SNA Webhook — Event Reference](https://otpless.com/docs/api-reference/endpoint/sign-in/sna/webhook.md): Event reference for the SNA (Silent Network Authentication) webhook. Covers the API flow integration, sample payloads, payload structure, and error codes.
+- [Truecaller Authentication](https://otpless.com/docs/api-reference/endpoint/sign-in/truecaller/abcdefgh.md): This endpoint initiates an Truecaller authentication flow.
+- [WhatsApp OAuth](https://otpless.com/docs/api-reference/endpoint/sign-in/whatsapp/whatsapp-oauth.md): This endpoint initiates an WhatsApp OAuth authentication flow using the specified channel.
+- [Call Forwarding Check](https://otpless.com/docs/api-reference/endpoint/telecom/call-forwarding-check.md): Check whether call forwarding is active on a phone number. Use as a pre-authentication risk signal for fraud prevention.
+- [Telecom API errors](https://otpless.com/docs/api-reference/endpoint/telecom/errors.md): How errors are returned for OTPless Telecom Intelligence APIs, response formats, and error code reference.
+- [Overview](https://otpless.com/docs/api-reference/endpoint/telecom/overview.md): Query telecom-level signals for a phone number — SIM swap history, call forwarding status, and enriched phone metadata.
+- [Number Portability Check](https://otpless.com/docs/api-reference/endpoint/telecom/portability.md): Check whether a phone number has been ported (MNP). Use as a pre-authentication risk signal for fraud prevention.
+- [SIM Swap Check](https://otpless.com/docs/api-reference/endpoint/telecom/sim-swap-check.md): Check whether a phone number's SIM has been recently swapped. Use as a pre-authentication risk signal for fraud prevention.
+- [Get SecureInfo Of User](https://otpless.com/docs/api-reference/endpoint/verifytoken/get-secure-info.md): Fetches the SecureInfo of the user by exchanging the token received from OTPLESS after user successfully authenticates.
+- [Verify ID Token](https://otpless.com/docs/api-reference/endpoint/verifytoken/id-token-validate.md)
+- [Verify token](https://otpless.com/docs/api-reference/endpoint/verifytoken/verify-token-with-secure-data.md): Validates user details by exchanging the token obtained from the otplessUser object for the user's information. This server-to-server call requires authentication using the client ID and secret. Also the secureInfo details will only be included when the Secure SDK is integrated as part of the authen…
+- [Verify token (Legacy)](https://otpless.com/docs/api-reference/endpoint/verifytoken/verifytoken.md): Validates user details by exchanging the token obtained from the otplessUser object for the user's information. This server-to-server call requires authentication using the client ID and secret.
+- [Error Codes](https://otpless.com/docs/api-reference/error_codes.md): This section provides a comprehensive overview of potential error codes returned by the OTPLESS API, their meanings, possible causes, and suggested corrective actions.
+- [Introduction](https://otpless.com/docs/api-reference/introduction.md): The OTPLESS API provides a secure, efficient, and seamless way to authenticate users without the need for traditional passwords and OTPs.
+- [Custom mode test](https://otpless.com/docs/custom-mode-test.md)
+- [Overview](https://otpless.com/docs/device-fingerprint/overview.md): Persistent device identification and real-time risk profiling.
+- [Android](https://otpless.com/docs/device-fingerprint/sdk/android.md): Integrate Device Fingerprint SDK in your Android app.
+- [Introduction](https://otpless.com/docs/frontend-sdks/app-sdks/android/intro.md): Explore the OTPLESS Android SDK to seamlessly integrate various authentication methods into your applications. This SDK allows you to leverage pre-built UI components or create your own custom interfaces.
+- [Introduction](https://otpless.com/docs/frontend-sdks/app-sdks/android/legacy/headless/intro.md): Welcome to the OTPLESS Headless SDK documentation! This guide will walk you through the steps to integrate our SDK into your Android project, providing you with the flexibility to create custom UI elements for your authentication flows.
+- [Headless - MAGIC LINK](https://otpless.com/docs/frontend-sdks/app-sdks/android/legacy/headless/magiclink.md): Welcome to the Magic Link integration guide! Follow these steps to send and verify phone and email using the OTPLESS Headless SDK.
+- [Headless - Social Auth](https://otpless.com/docs/frontend-sdks/app-sdks/android/legacy/headless/oauth.md): Welcome to the Social Auth integration guide! Follow these steps to send and verify phone and email using the OTPLESS Headless SDK.
+- [Headless - OTP](https://otpless.com/docs/frontend-sdks/app-sdks/android/legacy/headless/otp.md): Welcome to the OTP integration guide! Follow these steps to send and verify OTP using the OTPLESS Headless SDK.
+- [Custom Headless Request](https://otpless.com/docs/frontend-sdks/app-sdks/android/legacy/references/custom-headless.md)
+- [Error Codes](https://otpless.com/docs/frontend-sdks/app-sdks/android/legacy/references/error-codes.md)
+- [Google Phone Hint](https://otpless.com/docs/frontend-sdks/app-sdks/android/legacy/references/google-phone-hint.md)
+- [OTP Auto Read](https://otpless.com/docs/frontend-sdks/app-sdks/android/legacy/references/otp-autoread.md)
+- [Integrate Facebook & Google SDKs](https://otpless.com/docs/frontend-sdks/app-sdks/android/legacy/references/sdklogin.md)
+- [Secure SDK integration](https://otpless.com/docs/frontend-sdks/app-sdks/android/legacy/references/secure-sdk-android.md)
+- [Integrating Silent Network Authentication (SNA) in Android](https://otpless.com/docs/frontend-sdks/app-sdks/android/legacy/references/silent-network-authentication.md)
+- [Sim Ejection Analysis](https://otpless.com/docs/frontend-sdks/app-sdks/android/legacy/references/sim-ejection-analysis.md): After successfully integrating OTPless, you can leverage our SDK to monitor and retrieve SIM ejection events from users' devices. This feature allows you to gather data on SIM ejection events for security and analysis purposes. The SDK provides two approaches for accessing SIM ejection data.
+- [Smart Auth Fallback](https://otpless.com/docs/frontend-sdks/app-sdks/android/legacy/references/smart-auth-fallback.md)
+- [Introduction](https://otpless.com/docs/frontend-sdks/app-sdks/android/loginpage/intro.md): Welcome to the OTPLESS LoginPage SDK documentation. This sdk enables native and chrome custom tab connectivity for your application.
+- [Introduction](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/connect/connect-android-js.md): Welcome to the OTPLESS Connect SDK documentation. This sdk enables native and chrome custom tab connectivity for your application.
+- [Headless](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md): Welcome to the OTPLESS Headless SDK documentation! This guide will walk you through the steps to integrate our SDK into your Android project, providing you with the flexibility to create custom UI elements for your authentication flows.
+- [Changelog of Full Android Headless SDK](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/changelog.md)
+- [Android Headless Lite SDK — Changelog](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/changelog-lite.md): Changes in Android Headless Lite SDK releases.
+- [Custom Headless Request](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/custom-headless.md)
+- [Error Codes](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/error-codes.md)
+- [Google Phone Hint](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/google-phone-hint.md)
+- [Migration Guide](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/migration.md): Guide to migrate from Legacy Headless SDK to New Headless SDK
+- [SDK Callback Flow](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/sdk-callback-flow.md): Guide to understand the response flow of the SDK
+- [OTPless Android Headless SDK Variants](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/sdk-variants.md): Compare OTPless Android headless SDK options: WebView-backed (deprecated), fully native, and lite (phone auth only).
+- [Integrate Facebook & Google SDKs](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/sdklogin.md)
+- [Integrate Native Truecaller SDK](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/truecaller-sdk.md): Step-by-step guide to enable Truecaller SSO with Otpless Headless SDK.
+- [Prerequisites](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/snippets/prerequisites.md)
+- [Generate RequestId](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/snippets/request-id-generation.md): Revokes user session by exchanging the `sessionToken` obtained from the otpless after successful authentication. This server-to-server call requires the `clientId` and `clientSecret`.
+- [Pre-Built UI](https://otpless.com/docs/frontend-sdks/app-sdks/android/pre-built-ui.md): Leverage our Pre-Built UI for rapid integration and customization of authentication flows in your application. This setup allows you to adjust appearance and functionality through the OTPLESS dashboard with minimal coding.
+- [Headless SDK](https://otpless.com/docs/frontend-sdks/app-sdks/cmp/headless/intro.md): Welcome to the OTPLESS Headless SDK documentation for CMP integration. This guide will help you set up the SDK in your CMP application.
+- [Custom Headless Request](https://otpless.com/docs/frontend-sdks/app-sdks/cmp/headless/references/custom-headless.md)
+- [Error Codes](https://otpless.com/docs/frontend-sdks/app-sdks/cmp/headless/references/error-codes.md)
+- [SDK Callback Flow](https://otpless.com/docs/frontend-sdks/app-sdks/cmp/headless/references/sdk-callback-flow.md): Guide to understand the response flow of the SDK
+- [Integrating Silent Network Authentication (SNA) in React Native](https://otpless.com/docs/frontend-sdks/app-sdks/cmp/headless/references/silent-network-authentication.md)
+- [Introduction](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/intro.md): Explore the OTPLESS Flutter SDK to seamlessly integrate various authentication methods into your applications. This SDK allows you to leverage pre-built UI components or create your own custom interfaces.
+- [Headless](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/legacy/headless.md): Utilize our Headless SDK for ultimate flexibility. This guide provides detailed instructions on integrating custom UI elements with OTPLESS's backend authentication functions.
+- [Custom Headless Request](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/legacy/references/custom-headless.md)
+- [Error Codes](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/legacy/references/error-codes.md)
+- [Google Phone Hint API](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/legacy/references/google-phone-hint.md)
+- [Secure SDK integration](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/legacy/references/secure-sdk-flutter.md)
+- [Integrating Silent Network Authentication (SNA) in Flutter](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/legacy/references/silent-network-authentication.md)
+- [Sim Ejection Analysis](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/legacy/references/sim-ejection-analysis-flutter.md): After successfully integrating OTPless, you can leverage our SDK to monitor and retrieve SIM ejection events from users' devices. This feature allows you to gather data on SIM ejection events for security and analysis purposes. The SDK provides two approaches for accessing SIM ejection data.
+- [Headless](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/new/headless.md): Utilize our Headless SDK for ultimate flexibility. This guide provides detailed instructions on integrating custom UI elements with OTPLESS's backend authentication functions.
+- [Changelog of New Flutter Headless SDK](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/new/references/changelog.md)
+- [Custom Headless Request](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/new/references/custom-headless.md)
+- [Error Codes](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/new/references/error-codes.md)
+- [SDK Callback Flow](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/new/references/sdk-callback-flow.md): Guide to understand the response flow of the SDK
+- [Integrating Silent Network Authentication (SNA) in Flutter](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/new/references/silent-network-authentication.md)
+- [Pre-Built UI](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/pre-built-ui.md): Leverage our Pre-Built UI for rapid integration and customization of authentication flows in your application. This setup allows you to adjust appearance and functionality through the OTPLESS dashboard with minimal coding.
+- [Pre-Built UI](https://otpless.com/docs/frontend-sdks/app-sdks/flutter/pre-built-ui-legacy.md): Leverage our Pre-Built UI for rapid integration and customization of authentication flows in your application. This setup allows you to adjust appearance and functionality through the OTPLESS dashboard with minimal coding.
+- [Introduction](https://otpless.com/docs/frontend-sdks/app-sdks/ionic/headless/intro.md): Welcome to the OTPLESS Headless SDK documentation! This guide will walk you through the steps to integrate our SDK into your Android project, providing you with the flexibility to create custom UI elements for your authentication flows.
+- [Headless - MAGIC LINK](https://otpless.com/docs/frontend-sdks/app-sdks/ionic/headless/magiclink.md): Welcome to the Magic Link integration guide! Follow these steps to send and verify phone and email using the OTPLESS Headless SDK.
+- [Headless - Social Auth](https://otpless.com/docs/frontend-sdks/app-sdks/ionic/headless/oauth.md): Welcome to the Social Auth integration guide! Follow these steps to send and verify phone and email using the OTPLESS Headless SDK.
+- [Headless - OTP](https://otpless.com/docs/frontend-sdks/app-sdks/ionic/headless/otp.md): Welcome to the OTP integration guide! Follow these steps to send and verify phone and email using the OTPLESS Headless SDK.
+- [Introduction](https://otpless.com/docs/frontend-sdks/app-sdks/ionic/intro.md): Explore the OTPLESS Ionic SDK to seamlessly integrate various authentication methods into your applications. This SDK allows you to leverage pre-built UI components or create your own custom interfaces.
+- [Pre-Built UI](https://otpless.com/docs/frontend-sdks/app-sdks/ionic/pre-built-ui.md): Leverage our Pre-Built UI for rapid integration and customization of authentication flows in your application. This setup allows you to adjust appearance and functionality through the OTPLESS dashboard with minimal coding.
+- [Custom Headless Request](https://otpless.com/docs/frontend-sdks/app-sdks/ionic/references/custom-headless.md)
+- [Error Codes](https://otpless.com/docs/frontend-sdks/app-sdks/ionic/references/error-codes.md)
+- [Google Phone Hint API](https://otpless.com/docs/frontend-sdks/app-sdks/ionic/references/google-phone-hint.md)
+- [Secure SDK integration](https://otpless.com/docs/frontend-sdks/app-sdks/ionic/references/secure-sdk-ionic.md)
+- [Integrating Silent Network Authentication (SNA) in Ionic](https://otpless.com/docs/frontend-sdks/app-sdks/ionic/references/silent-network-authentication.md)
+- [Sim Ejection Analysis](https://otpless.com/docs/frontend-sdks/app-sdks/ionic/references/sim-ejection-analysis-ionic.md): After successfully integrating OTPless, you can leverage our SDK to monitor and retrieve SIM ejection events from users' devices. This feature allows you to gather data on SIM ejection events for security and analysis purposes. The SDK provides two approaches for accessing SIM ejection data.
+- [OtplessSwiftConnect SDK Integration](https://otpless.com/docs/frontend-sdks/app-sdks/ios/connect.md): Welcome to the OTPLESS Connect SDK documentation. This sdk enables native and SFSafariViewController connectivity for your application.
+- [Introduction](https://otpless.com/docs/frontend-sdks/app-sdks/ios/intro.md): Explore the OTPLESS iOS SDK to seamlessly integrate various authentication methods into your applications. This SDK allows you to leverage pre-built UI components or create your own custom interfaces.
+- [Headless](https://otpless.com/docs/frontend-sdks/app-sdks/ios/legacy/headless/headless.md): Utilize our Headless SDK for ultimate flexibility. This guide provides detailed instructions on integrating custom UI elements with OTPLESS's backend authentication functions.
+- [Pre-Built UI Legacy](https://otpless.com/docs/frontend-sdks/app-sdks/ios/legacy/pre-built-ui-legacy.md): Leverage our Pre-Built UI for rapid integration and customization of authentication flows in your application. This setup allows you to adjust appearance and functionality through the OTPLESS dashboard with minimal coding.
+- [Custom Headless Request](https://otpless.com/docs/frontend-sdks/app-sdks/ios/legacy/references/custom-headless.md)
+- [Error Codes](https://otpless.com/docs/frontend-sdks/app-sdks/ios/legacy/references/error-codes.md)
+- [Integrate Facebook & Google SDKs](https://otpless.com/docs/frontend-sdks/app-sdks/ios/legacy/references/sdklogin.md)
+- [Integrating Silent Network Authentication (SNA) in iOS](https://otpless.com/docs/frontend-sdks/app-sdks/ios/legacy/references/silent-network-authentication.md)
+- [Headless](https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/headless/headless.md): Utilize our Headless SDK for ultimate flexibility. This guide provides detailed instructions on integrating custom UI elements with OTPLESS's backend authentication functions.
+- [Changelog of New iOS Headless SDK](https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/references/changelog.md)
+- [Custom Headless Request](https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/references/custom-headless.md)
+- [Error Codes](https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/references/error-codes.md)
+- [Migration Guide](https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/references/migration.md): Guide to migrate from Legacy Headless SDK to New Headless SDK
+- [SDK Callback Flow](https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/references/sdk-callback-flow.md): Guide to understand the callback flow of the SDK
+- [Integrate Facebook, Apple & Google SDKs](https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/references/sdklogin.md)
+- [Pre-Built UI](https://otpless.com/docs/frontend-sdks/app-sdks/ios/pre-built-ui.md): Leverage our Pre-Built UI for rapid integration and customization of authentication flows in your application. This setup allows you to adjust appearance and functionality through the OTPLESS dashboard with minimal coding.
+- [Introduction](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/intro.md): Explore the OTPLESS React Native SDK to seamlessly integrate various authentication methods into your applications. This SDK allows you to leverage pre-built UI components or create your own custom interfaces.
+- [Headless](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/legacy/headless.md): Utilize our Headless SDK for ultimate flexibility. This guide provides detailed instructions on integrating custom UI elements with OTPLESS's backend authentication functions.
+- [Custom Headless Request](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/legacy/references/custom-headless.md)
+- [Error Codes](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/legacy/references/error-codes.md)
+- [Google Phone Hint API](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/legacy/references/google-phone-hint.md)
+- [Secure SDK integration](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/legacy/references/secure-sdk-react-native.md)
+- [Integrating Silent Network Authentication (SNA) in React Native](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/legacy/references/silent-network-authentication.md)
+- [Sim Ejection Analysis](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/legacy/references/sim-ejection-analysis-react-native.md): After successfully integrating OTPless, you can leverage our SDK to monitor and retrieve SIM ejection events from users' devices. This feature allows you to gather data on SIM ejection events for security and analysis purposes. The SDK provides two approaches for accessing SIM ejection data.
+- [Headless](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/headless/headless.md): Utilize our Headless SDK for ultimate flexibility. This guide provides detailed instructions on integrating custom UI elements with OTPLESS's backend authentication functions.
+- [Changelog of New React Native Headless SDK](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/references/changelog.md)
+- [Custom Headless Request](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/references/custom-headless.md)
+- [Error Codes](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/references/error-codes.md)
+- [SDK Callback Flow](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/references/sdk-callback-flow.md): Guide to understand the response flow of the SDK
+- [Integrating Silent Network Authentication (SNA) in React Native](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/references/silent-network-authentication.md)
+- [Pre-Built UI](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/pre-built-ui.md): Leverage our Pre-Built UI for rapid integration and customization of authentication flows in your application. This setup allows you to adjust appearance and functionality through the OTPLESS dashboard with minimal coding.
+- [Pre-Built UI](https://otpless.com/docs/frontend-sdks/app-sdks/react-native/pre-built-ui-legacy.md): Leverage our Pre-Built UI for rapid integration and customization of authentication flows in your application. This setup allows you to adjust appearance and functionality through the OTPLESS dashboard with minimal coding.
+- [Error Codes](https://otpless.com/docs/frontend-sdks/references/error-codes.md): Complete reference for all error codes returned by OTPless Web and Native/Mobile SDKs.
+- [SDK Sample Response](https://otpless.com/docs/frontend-sdks/references/sample-response.md)
+- [MAGIC LINK Sample Response](https://otpless.com/docs/frontend-sdks/references/sample-response-ML.md)
+- [OAUTH Sample Response](https://otpless.com/docs/frontend-sdks/references/sample-response-OAUTH.md)
+- [OTP Sample Response](https://otpless.com/docs/frontend-sdks/references/sample-response-OTP.md)
+- [Headless](https://otpless.com/docs/frontend-sdks/web-sdks/angular/headless.md): Utilize our Headless SDK for ultimate flexibility. Craft your own tailored UI and seamlessly integrate OTPLESS authentication capabilities using our SDK.
+- [Introduction](https://otpless.com/docs/frontend-sdks/web-sdks/angular/intro.md): Harness the power of OTPLESS with your Angular applications to streamline user authentication. This SDK is designed to integrate seamlessly with Angular, offering both pre-built components and headless functionality for custom UI implementations.
+- [Pre-Built UI](https://otpless.com/docs/frontend-sdks/web-sdks/angular/pre-built-ui.md): Leverage our Pre-Built UI for rapid integration and customization of authentication flows in your application. This setup allows you to adjust appearance and functionality through the OTPLESS dashboard with minimal coding.
+- [Custom Headless Request](https://otpless.com/docs/frontend-sdks/web-sdks/angular/references/custom-headless.md)
+- [Error Codes](https://otpless.com/docs/frontend-sdks/web-sdks/angular/references/error-codes.md)
+- [OTP Auto Read](https://otpless.com/docs/frontend-sdks/web-sdks/angular/references/otp-autoread.md)
+- [Headless](https://otpless.com/docs/frontend-sdks/web-sdks/flutter-web/headless.md): Utilize our Headless SDK for ultimate flexibility. Craft your own tailored UI and seamlessly integrate OTPLESS authentication capabilities using our SDK.
+- [Introduction](https://otpless.com/docs/frontend-sdks/web-sdks/flutter-web/intro.md): Explore the OTPLESS Flutter Web SDK to seamlessly integrate various authentication methods into your applications. This SDK allows you to leverage pre-built UI components or create your own custom interfaces.
+- [Pre-Built UI](https://otpless.com/docs/frontend-sdks/web-sdks/flutter-web/pre-built-ui.md): Leverage our Pre-Built UI for rapid integration and customization of authentication flows in your application. This setup allows you to adjust appearance and functionality through the OTPLESS dashboard with minimal coding.
+- [Error Codes](https://otpless.com/docs/frontend-sdks/web-sdks/flutter-web/references/error-codes.md)
+- [Headless](https://otpless.com/docs/frontend-sdks/web-sdks/headless-v5.md): Utilize our Headless SDK for ultimate flexibility. Craft your own tailored UI and seamlessly integrate OTPLESS authentication capabilities using our SDK.
+- [Headless](https://otpless.com/docs/frontend-sdks/web-sdks/javascript/headless.md): Utilize our Headless SDK for ultimate flexibility. Craft your own tailored UI and seamlessly integrate OTPLESS authentication capabilities using our SDK.
+- [Introduction](https://otpless.com/docs/frontend-sdks/web-sdks/javascript/intro.md): Explore the OTPLESS JavaScript SDK to seamlessly integrate various authentication methods into your applications. This SDK allows you to leverage pre-built UI components or create your own custom interfaces.
+- [Pre-Built UI](https://otpless.com/docs/frontend-sdks/web-sdks/javascript/pre-built-ui.md): Leverage our Pre-Built UI for rapid integration and customization of authentication flows in your application. This setup allows you to adjust appearance and functionality through the OTPLESS dashboard with minimal coding.
+- [Custom Headless Request](https://otpless.com/docs/frontend-sdks/web-sdks/javascript/references/custom-headless.md)
+- [Error Codes](https://otpless.com/docs/frontend-sdks/web-sdks/javascript/references/error-codes.md)
+- [OTP Auto Read](https://otpless.com/docs/frontend-sdks/web-sdks/javascript/references/otp-autoread.md)
+- [Session Management](https://otpless.com/docs/frontend-sdks/web-sdks/javascript/references/sessions.md): Learn how to use OTPless JavaScript SDK functions for session management, including verifying and revoking sessions.
+- [Secure](https://otpless.com/docs/frontend-sdks/web-sdks/javascript/secure.md): Prevent fraud, detect bots, and deliver seamless experiences with reliable browser fingerprinting.
+- [Headless](https://otpless.com/docs/frontend-sdks/web-sdks/react/headless.md): Utilize our Headless SDK for ultimate flexibility. Craft your own tailored UI and seamlessly integrate OTPLESS authentication capabilities using our SDK.
+- [Introduction](https://otpless.com/docs/frontend-sdks/web-sdks/react/intro.md): Harness the power of OTPLESS with your React applications to streamline user authentication. This SDK is designed to integrate seamlessly with React, offering both pre-built components and headless functionality for custom UI implementations.
+- [Pre-Built UI](https://otpless.com/docs/frontend-sdks/web-sdks/react/pre-built-ui.md): Leverage our Pre-Built UI for rapid integration and customization of authentication flows in your application. This setup allows you to adjust appearance and functionality through the OTPLESS dashboard with minimal coding.
+- [Custom Headless Request](https://otpless.com/docs/frontend-sdks/web-sdks/react/references/custom-headless.md)
+- [Error Codes](https://otpless.com/docs/frontend-sdks/web-sdks/react/references/error-codes.md)
+- [OTP Auto Read](https://otpless.com/docs/frontend-sdks/web-sdks/react/references/otp-autoread.md)
+- [Headless](https://otpless.com/docs/frontend-sdks/web-sdks/vue/headless.md): Utilize our Headless SDK for ultimate flexibility. Craft your own tailored UI and seamlessly integrate OTPLESS authentication capabilities using our SDK.
+- [Introduction](https://otpless.com/docs/frontend-sdks/web-sdks/vue/intro.md): Explore the OTPLESS VU SDK to seamlessly integrate various authentication methods into your applications. This SDK allows you to leverage pre-built UI components or create your own custom interfaces.
+- [Pre-Built UI](https://otpless.com/docs/frontend-sdks/web-sdks/vue/pre-built-ui.md): Leverage our Pre-Built UI for rapid integration and customization of authentication flows in your application. This setup allows you to adjust appearance and functionality through the OTPLESS dashboard with minimal coding.
+- [Custom Headless Request](https://otpless.com/docs/frontend-sdks/web-sdks/vue/references/custom-headless.md)
+- [Error Codes](https://otpless.com/docs/frontend-sdks/web-sdks/vue/references/error-codes.md)
+- [OTP Auto Read](https://otpless.com/docs/frontend-sdks/web-sdks/vue/references/otp-autoread.md)
+- [Welcome to OTPLESS](https://otpless.com/docs/introduction.md): OTPLESS provides a modern approach to authentication and access management, designed for developers who prioritize both security and user experience. Our platform simplifies integration and enhances user interaction, allowing you to transcend traditional authentication with ease.
+- [Auto Read OTP in OTPless Auth SDK](https://otpless.com/docs/knowledge-base/auto-read-otp.md): Enhance user experience with Auto Read functionality for WhatsApp and SMS on Android Apps, providing a seamless and zero-tap OTP auth.
+- [Auto Read SDK](https://otpless.com/docs/knowledge-base/autoread-sdk.md): The **OTPLESS AutoRead SDK** simplifies the process of automatically reading OTPs from **SMS, WhatsApp ZeroTap or WhatsApp OneTap**, enhancing the user experience in your Android applications.
+- [Biometric Authentication](https://otpless.com/docs/knowledge-base/biometric-auth.md): Biometric Authentication uses fingerprints or facial recognition for secure, passwordless logins. This enhances security by storing biometric data locally and employing cryptography, while simplifying the login process for users.
+- [Send Batch Notifications via SMS](https://otpless.com/docs/knowledge-base/bulk-sms.md): Learn how to leverage the OTPless Messaging API to send batch notifications via SMS. This guide will walk you through the process, covering both marketing and transactional use cases.
+- [Firebase](https://otpless.com/docs/knowledge-base/connectors/firebase.md)
+- [Google](https://otpless.com/docs/knowledge-base/connectors/google.md)
+- [Hubspot](https://otpless.com/docs/knowledge-base/connectors/hubspot.md)
+- [Send grid](https://otpless.com/docs/knowledge-base/connectors/send-grid.md)
+- [Sendgrid](https://otpless.com/docs/knowledge-base/connectors/sendgrid.md)
+- [Sheets](https://otpless.com/docs/knowledge-base/connectors/sheets.md)
+- [Webhook](https://otpless.com/docs/knowledge-base/connectors/webhook.md)
+- [Whatsapp](https://otpless.com/docs/knowledge-base/connectors/whatsapp.md)
+- [Zapier](https://otpless.com/docs/knowledge-base/connectors/zapier.md)
+- [Zoho](https://otpless.com/docs/knowledge-base/connectors/zoho.md)
+- [Cost Optimization for Relogins](https://otpless.com/docs/knowledge-base/cost-optimization/relogin-cost-optimization.md): Learn how to optimize authentication costs for returning users by leveraging OTPless SmartAuth combined with biometric authentication. This approach provides a seamless user experience while significantly reducing authentication costs for merchants.
+- [id_token (JWT)](https://otpless.com/docs/knowledge-base/id_token.md): Learn how the id_token can simplify and secure user authentication in your applications.
+- [Knowledge Stack](https://otpless.com/docs/knowledge-base/knowledge-stack.md): Learn about OTPLESS's technical infrastructure, security measures, and performance capabilities
+- [OTPless Integration in Android App with CCT Login – Developer Guide](https://otpless.com/docs/knowledge-base/otpless-cct-dev-guide.md): This guide explains how to integrate OTPless into an Android App where the login occurs on a Chrome Custom Tab (CCT). It provides detailed instructions and flow diagrams to help you understand the roles of the Android SDK, Web SDK, and OTPless API during the authentication process.
+- [Integration Overview](https://otpless.com/docs/knowledge-base/passkey/integration-overview.md): This document provides a comprehensive overview of how **OTPless Passkey** integrates with your app/website to offer secure, passwordless biometric authentication for end users. The integration is based on the **FIDO 2.0** framework, leveraging the security and convenience of **passkeys**. The focus…
+- [Understanding Passkeys and How They Work](https://otpless.com/docs/knowledge-base/passkey/passkey-101.md): An in-depth look at passkeys, their operation, benefits, and implementation with OTPless.
+- [OTPless Passkey API Integration Guide](https://otpless.com/docs/knowledge-base/passkey/passkey-integration.md): This document is designed to assist merchants in integrating the OTPless Passkey API to create user identities and initiate Passkey-based login through the OTPless SDK. Passkey provides secure, device-based authentication for end users, enhancing both security and user experience.
+- [Allow Passkey Reuse Across Your Sites with Related Origin and Subdomain Requests](https://otpless.com/docs/knowledge-base/passkey/relateddomain.md): Learn how to enable passkey reuse across multiple domains, subdomains, and applications with Related Origin and Subdomain Requests.
+- [How to Activate Pro Plan](https://otpless.com/docs/knowledge-base/pro-plan-activation.md): Activating the Pro Plan on OTPless is a straightforward process. Follow these steps to get started:
+- [What's Redirect URI?](https://otpless.com/docs/knowledge-base/redirect-uri.md): A Redirect URI is a critical component in the authentication process, acting as the endpoint to which users are directed after authentication. In mobile apps, these often take the form of deep links, which bring users back to the app from a web-based authentication flow.
+- [Secure SDK](https://otpless.com/docs/knowledge-base/secure-sdk/otpless-secure.md): OTPless Secure SDK offers enhanced protection by providing detailed device information, security and trust signals, activity behavior analysis, and fraud detection. This comprehensive approach ensures robust user authentication and security.
+- [Secure SDK Signals](https://otpless.com/docs/knowledge-base/secure-sdk/secure-sdk-signal.md): OTPLESS Smart Signals provide actionable device intelligence to help fight fraud. This documentation covers the overview, setup, and individual Smart Signal components for both web and mobile platforms.
+- [Session Management Examples](https://otpless.com/docs/knowledge-base/session-management/examples.md): Below are examples of ways to use session management.
+- [Integrating Session Management in your application](https://otpless.com/docs/knowledge-base/session-management/integrating-session-management.md): Session Management in OTPLESS allows developers to control user session durations, manage inactivity timeouts, validate session tokens, and revoke sessions in real-time for enhanced security and user experience.
+- [Understanding Claims in Session JWT Token](https://otpless.com/docs/knowledge-base/session-management/jwt-claims.md): Learn how to decode and understand the claims in a session JWT token generated by OTPless.
+- [Session tokens vs JWTs](https://otpless.com/docs/knowledge-base/session-management/jwt-vs-token.md): In a stateless HTTP world, maintaining authentication state between requests is crucial to providing a seamless user experience. While asking users to re-authenticate on every request is not practical, developers have two popular options to maintain authentication state: **Session Cookies** and **JS…
+- [Session Management](https://otpless.com/docs/knowledge-base/session-management/session-management.md): Session Management in OTPLESS allows developers to control user session durations, manage inactivity timeouts, validate session tokens, and revoke sessions in real-time for enhanced security and user experience.
+- [How to use OTPless Session Management](https://otpless.com/docs/knowledge-base/session-management/using-sessions.md): Learn how to manage OTPless user sessions effectively using session tokens for secure and seamless authentication.
+- [Signup and Signin configuration](https://otpless.com/docs/knowledge-base/signup-signin-configuration.md): This documentation outlines the flexible and customizable sign-up and sign-in configurations available in OTPLESS, including passwordless authentication methods, social logins, and multi-factor authentication (MFA) options, designed to enhance security and user experience. It provides detailed guida…
+- [SmartAuth: Revolutionizing Phone Number Verification](https://otpless.com/docs/knowledge-base/smart-auth.md): SmartAuth is an advanced authentication orchestration tool for phone number verification, designed to maximize conversion rates and minimize delivery times. By leveraging multiple channels and adaptive mechanisms, SmartAuth ensures fast, secure, and seamless user verification globally.
+- [Smart Auth](https://otpless.com/docs/knowledge-base/smart-authentication.md): Smart Auth is a multi-layered solution that maximizes user conversion rates and ensures robust security using a waterfall model. It transitions seamlessly through various methods to provide a smooth, secure user experience.
+- [Silent Network Authentication API](https://otpless.com/docs/knowledge-base/sna-api.md): This documentation serves as a comprehensive guide to integrating and utilizing the SNA API in your web and mobile applications.
+- [Integrating Silent Network Authentication (SNA) in Web Applications](https://otpless.com/docs/knowledge-base/sna-web.md): Silent Network Authentication (SNA) is a cutting-edge technology designed to authenticate users silently without requiring active input like traditional OTPs. This blog explores what SNA is, why it's beneficial, and how you can integrate it into your web applications.
+- [Auth Terminated CallBack](https://otpless.com/docs/knowledge-base/sna/auth-terminated-callback.md)
+- [Silent Network Authentication (SNA)](https://otpless.com/docs/knowledge-base/sna/sna-101.md): Silent Network Authentication (SNA) leverages the built-in cryptographic capabilities of a user’s SIM card to verify their identity without any manual input beyond initiating the flow. By directly integrating with mobile network operators, SNA provides an authentication experience that’s both secure…
+- [Webhook Guide (Legacy)](https://otpless.com/docs/knowledge-base/webhook.md): Webhooks are a powerful mechanism for receiving real-time notifications about events occurring within the OTPLESS system. By integrating webhooks into your application, you can gain valuable insights into user authentication activities and system health, enabling efficient tracking and reporting.
+- [Webhook Guide](https://otpless.com/docs/knowledge-base/webhook-v2.md): Webhooks are a powerful mechanism for receiving real-time notifications about events occurring within the OTPLESS system. By integrating webhooks into your application, you can gain valuable insights into user authentication activities and delivery reports, enabling efficient tracking and reporting.
+- [Authentication via Whatsapp](https://otpless.com/docs/knowledge-base/whatsapp-authentication.md): Authentication via Whatsapp utilizes the WhatsApp platform to verify and identify user identity, leveraging it as a means of verification.
+- [Prerequisites](https://otpless.com/docs/prerequisites.md): Before you begin integrating OTPLESS into your application, complete the following initial steps to set up your environment.
+- [Quick Start](https://otpless.com/docs/quick-start.md): Get started with integrating OTPLESS by choosing the right tools for your project. Select from our range of Plugins, SDKs, and APIs to match your development needs.
+- [Android SDK](https://otpless.com/docs/sna/android-sdk.md): Integrate the OTPless Headless SDK on Android for the SNA-only flow — add the dependency, configure SNA, initialize, start with a requestId, and handle callbacks.
+- [API Error Codes](https://otpless.com/docs/sna/api-error-codes.md): Reference for all SNA verification error codes returned in auths[].error.errorCode by the Status Check API.
+- [Create API](https://otpless.com/docs/sna/create-api.md): Create an auth request and obtain a requestId that links a user's identity to a future SNA flow. Called server-to-server.
+- [Flutter SDK](https://otpless.com/docs/sna/flutter-sdk.md): Integrate the OTPless Headless SDK in Flutter for the SNA-only flow — add the dependency, configure SNA, initialize, start with a requestId, and handle callbacks.
+- [iOS SDK](https://otpless.com/docs/sna/ios-sdk.md): Integrate the OTPless Headless SDK on iOS for the SNA-only flow — add the dependency, configure SNA in Info.plist, start with a requestId, and handle callbacks.
+- [Overview](https://otpless.com/docs/sna/overview.md): End-to-end overview of the SNA-only authentication flow — how the OTPless Create API, SDK, and Status Check API stitch together across platforms.
+- [React Native SDK](https://otpless.com/docs/sna/react-native-sdk.md): Integrate the OTPless Headless SDK in React Native for the SNA-only flow — add the dependency, configure SNA, initialize, start with a requestId, and handle callbacks.
+- [SDK Error Codes](https://otpless.com/docs/sna/sdk-error-codes.md): Error codes reported by the OTPless Headless SDK on the client (Android & iOS) during the SNA-only flow. Most codes are common to both platforms; some are platform-specific.
+- [Status Check API](https://otpless.com/docs/sna/status-check-api.md): Poll the current auth status for a requestId. Returns the SNA auth factor plus phone, SIM, network, and device-fingerprinting detail when available.
+
+## OpenAPI Specs
+
+- [sna-api](https://otpless.com/docs/api-reference/endpoint/sign-in/sna/sna-api.yaml)
+- [telecom-api](https://otpless.com/docs/api-reference/endpoint/telecom/telecom-api.yaml)
+- [sna-sdk-api](https://otpless.com/docs/sna/sna-sdk-api.yaml)
+- [request-id-generation](https://otpless.com/docs/frontend-sdks/app-sdks/android/new/snippets/request-id-generation.yaml)
+- [get-new-session-token](https://otpless.com/docs/api-reference/endpoint/session-management/get-new-session-token.yaml)
+- [get-secure-info](https://otpless.com/docs/api-reference/endpoint/verifytoken/get-secure-info.yaml)
+- [abcdefgh](https://otpless.com/docs/api-reference/endpoint/sign-in/truecaller/abcdefgh.yaml)
+- [send-magiclink-email](https://otpless.com/docs/api-reference/endpoint/sign-in/magiclink/send-magiclink-email.yaml)
+- [send-otplink-email](https://otpless.com/docs/api-reference/endpoint/sign-in/otplink/send-otplink-email.yaml)
+- [verify-token-with-secure-data](https://otpless.com/docs/api-reference/endpoint/verifytoken/verify-token-with-secure-data.yaml)
+- [revoke-session](https://otpless.com/docs/api-reference/endpoint/session-management/revoke-session.yaml)
+- [validate-session](https://otpless.com/docs/api-reference/endpoint/session-management/validate-session.yaml)
+- [get-session-details](https://otpless.com/docs/api-reference/endpoint/session-management/get-session-details.yaml)
+- [request-status](https://otpless.com/docs/api-reference/endpoint/sign-in/call-approval/request-status.yaml)
+- [oauth](https://otpless.com/docs/api-reference/endpoint/sign-in/oauth/oauth.yaml)
+- [whatsapp-oauth](https://otpless.com/docs/api-reference/endpoint/sign-in/whatsapp/whatsapp-oauth.yaml)
+- [call-approval](https://otpless.com/docs/api-reference/endpoint/sign-in/call-approval/call-approval.yaml)
+- [send-otplink-phone](https://otpless.com/docs/api-reference/endpoint/sign-in/otplink/send-otplink-phone.yaml)
+- [send-magiclink-phone](https://otpless.com/docs/api-reference/endpoint/sign-in/magiclink/send-magiclink-phone.yaml)
+- [send-otp-phone](https://otpless.com/docs/api-reference/endpoint/sign-in/otp/send-otp-phone.yaml)
+- [send-otp-email](https://otpless.com/docs/api-reference/endpoint/sign-in/otp/send-otp-email.yaml)
+- [verify-code](https://otpless.com/docs/api-reference/endpoint/sign-in/magiclink/verify-code.yaml)
+- [verify](https://otpless.com/docs/api-reference/endpoint/sign-in/otp/verify.yaml)
+- [verifytoken](https://otpless.com/docs/api-reference/endpoint/verifytoken/verifytoken.yaml)
+- [openapi-resend](https://otpless.com/docs/api-reference/endpoint/otp/openapi-resend.json)
+- [userinfo](https://otpless.com/docs/api-reference/endpoint/sign-in/magiclink/userinfo.yaml)
+- [send-message](https://otpless.com/docs/api-reference/endpoint/messaging/whatsapp/send-message.yaml)
+- [openapi](https://otpless.com/docs/api-reference/openapi.json)

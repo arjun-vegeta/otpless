@@ -1,0 +1,149 @@
+openapi: 3.0.3
+info:
+  title: Passwordless Authentication API
+  description: >-
+    Use this API to authenticate user's mobile number and email using various
+    channels such as WhatsApp, SMS, or Email.
+  version: 1.0.0
+servers:
+  - url: https://auth.otpless.app/auth
+    description: Passwordless Authentication Server
+paths:
+  /v1/userinfo:
+    post:
+      summary: Retrieve User Information
+      operationId: getUserInfo
+      security:
+        - bearerAuth: []
+      x-codeSamples:
+        - lang: shell
+          label: cURL
+          source: "curl --location --request POST 'https://auth.otpless.app/auth/v1/userinfo' \t\n--header 'Authorization: Bearer YOUR_ACCESS_TOKEN'\n"
+      responses:
+        '200':
+          description: Successful retrieval of user information.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/UserInfoPhone'
+                  - $ref: '#/components/schemas/UserInfoEmail'
+              examples:
+                phoneInfo:
+                  summary: User Info by Phone
+                  value:
+                    name: Ashwin
+                    phone_number: '+917042507646'
+                    phone_number_without_code: '7042507646'
+                    country_code: '+91'
+                    auth_time: '1697202873'
+                emailInfo:
+                  summary: User Info by Email
+                  value:
+                    name: Ashwin
+                    email: vixx.xx@gmail.com
+                    auth_time: '1697202873'
+        '400':
+          description: Bad Request - The request is invalid and cannot be processed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Descriptive message of the error.
+              example:
+                message: 400 token is expired
+        '401':
+          description: >-
+            Unauthorized - Authentication credentials are required and have
+            either not been provided or are invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: >-
+                      Error message indicating the reason for the unauthorized
+                      status.
+        '429':
+          description: >-
+            Rate Limit Exceeded - Too many requests have been made in a short
+            amount of time.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message indicating the rate limit has been exceeded.
+              example:
+                message: Rate Limit Exceeded
+        '500':
+          description: >-
+            Internal Server Error - An unexpected error has occurred while
+            processing the request.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message indicating an internal server error.
+              example:
+                message: Internal Server Error
+components:
+  schemas:
+    UserInfoPhone:
+      type: object
+      required:
+        - name
+        - phone_number
+        - phone_number_without_code
+        - country_code
+        - auth_time
+      properties:
+        name:
+          type: string
+          description: The full name of the user.
+        phone_number:
+          type: string
+          description: The complete phone number including the country code.
+        phone_number_without_code:
+          type: string
+          description: The phone number excluding the country code.
+        country_code:
+          type: string
+          description: The country code of the user's phone number.
+        auth_time:
+          type: string
+          description: The authentication timestamp.
+    UserInfoEmail:
+      type: object
+      required:
+        - name
+        - email
+        - auth_time
+      properties:
+        name:
+          type: string
+          description: The full name of the user.
+        email:
+          type: string
+          description: The user's email address.
+        auth_time:
+          type: string
+          description: The authentication timestamp.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        For accessing the secured endpoints a valid JWT token must be passed in
+        all the requests.

@@ -1,0 +1,124 @@
+> ## Documentation Index
+>
+> Fetch the complete documentation index at: https://otpless.com/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Verify OTP
+
+> This endpoint verifies the OTP sent to the user for authentication.
+
+## OpenAPI
+
+```yaml POST /auth/v1/verify/otp
+openapi: 3.0.3
+info:
+  title: OTPless Authentication API
+  description: API for verifying OTP using OTPless.
+  version: 1.0.0
+servers:
+  - url: https://auth.otpless.app
+    description: Production server
+security:
+  - ApiKeyAuth: []
+    ApiSecretAuth: []
+paths:
+  /auth/v1/verify/otp:
+    post:
+      summary: Verify OTP
+      description: This endpoint verifies the OTP sent to the user for authentication.
+      operationId: verifyOtp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - requestId
+                - otp
+              properties:
+                requestId:
+                  type: string
+                  example: unique_request_id
+                  description: The unique identifier of the OTP request to be verified.
+                otp:
+                  type: string
+                  example: OTP
+                  description: The OTP provided by the user for verification.
+      responses:
+        '200':
+          description: OTP verified successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requestId:
+                    type: string
+                    example: unique_request_id
+                    description: The unique identifier of the OTP request.
+                  isOTPVerified:
+                    type: boolean
+                    example: true
+                    description: Indicates whether the OTP was successfully verified.
+                  message:
+                    type: string
+                    example: OTP verified successfully
+                    description: >-
+                      A message indicating the successful verification of the
+                      OTP.
+        '400':
+          description: Bad request. Invalid input.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid Request
+                    description: A brief description of the error.
+                  errorCode:
+                    type: string
+                    example: Error Code
+                    description: A specific code representing the error type.
+                  description:
+                    type: string
+                    example: Error Code description
+                    description: Detailed description of the error.
+        '401':
+          description: Unauthorized. Access blocked.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Access blocked
+                    description: A brief description of the error.
+                  description:
+                    type: string
+                    example: Error Description
+                    description: Detailed description of the error.
+        '500':
+          description: Unauthorized. Access blocked.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Something went wrong. Please try again!
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: clientId
+    ApiSecretAuth:
+      type: apiKey
+      in: header
+      name: clientSecret
+```

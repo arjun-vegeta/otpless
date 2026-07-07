@@ -1,0 +1,145 @@
+openapi: 3.0.3
+info:
+  title: OTPless Authentication API
+  description: API for initiating OTP links using OTPless.
+  version: 1.0.0
+servers:
+  - url: https://auth.otpless.app/auth
+    description: Production server
+paths:
+  /v1/initiate/otplink:
+    post:
+      summary: Initiate OTP Link
+      description: >
+        This endpoint initiates an OTP link to be sent to the specified phone
+        number using the provided channels.
+      operationId: initiateOtpLink
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - phoneNumber
+                - channels
+                - redirectURI
+              type: object
+              properties:
+                redirectURI:
+                  type: string
+                  example: your_redirect_uri_link
+                  description: The URI to redirect the user after verification.
+                expiry:
+                  type: integer
+                  example: 120
+                  description: The expiration time for the OTP in seconds.
+                otpLength:
+                  type: integer
+                  example: 4
+                  enum:
+                    - 4
+                    - 6
+                  description: The length of the OTP, either 4 or 6.
+                phoneNumber:
+                  type: string
+                  example: '+15551234567'
+                  description: >-
+                    The phone number to which the OTP will be sent, including
+                    the country code.
+                channels:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                      - WHATSAPP
+                      - SMS
+                      - VIBER
+                  example:
+                    - WHATSAPP
+                    - SMS
+                    - VIBER
+                  description: >
+                    An array specifying the channels through which the OTP link
+                    will be sent. 
+
+                    Supported channels include `WHATSAPP`, `SMS`, and `VIBER`. 
+
+                    The smart authentication flow will be enabled if multiple
+                    channels are provided.
+                metadata:
+                  type: object
+                  additionalProperties:
+                    type: string
+                  example:
+                    key1: Data1
+                    key2: Data2
+                  description: Additional metadata for the request.
+      responses:
+        '200':
+          description: OTP link initiated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requestId:
+                    type: string
+                    example: unique_request_id
+                    description: The unique identifier for the OTP link request.
+        '400':
+          description: Bad request. Invalid input.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid Request
+                    description: A brief description of the error.
+                  errorCode:
+                    type: string
+                    example: Error Code
+                    description: A specific code representing the error type.
+                  description:
+                    type: string
+                    example: Error Code description
+                    description: Detailed description of the error.
+        '401':
+          description: Unauthorized. Access blocked.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Access blocked
+                    description: A brief description of the error.
+                  description:
+                    type: string
+                    example: Error Description
+                    description: Detailed description of the error.
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Something went wrong. Please try again!
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: clientId
+    ApiSecretAuth:
+      type: apiKey
+      in: header
+      name: clientSecret
+security:
+  - ApiKeyAuth: []
+    ApiSecretAuth: []
