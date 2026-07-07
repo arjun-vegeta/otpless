@@ -5,234 +5,84 @@
 > - [Official Documentation](https://otpless.com/docs)
 > - [OTPless Dashboard](https://otpless.com/dashboard)
 
-The ultimate CLI tool and MCP (Model Context Protocol) Server for integrating OTPless authentication natively — covering WhatsApp login, Silent Network Authentication (SNA), Phone OTP, Social OAuth, Magic Links, and more.
+A CLI and MCP tool that lets AI agents (Claude Code, Codex, Cursor, Kiro) integrate OTPless authentication into your project — WhatsApp login, SNA, Phone OTP, Social OAuth, Magic Links, webhooks, and more.
 
-## Installation
+## How It Works
 
-You can run the CLI immediately using `npx`:
+Install it, connect it to your AI agent, and tell the agent to integrate OTPless. The tool gives your agent access to bundled official docs, step-by-step scaffold instructions, verification playbooks, error lookups, and live testing — all without web search.
+
+## Quick Setup
+
+### 1. Install the CLI
+
+```bash
+npm install -g otpless-cli
+```
+
+Or use it directly without installing:
 
 ```bash
 npx otpless-cli detect
 ```
 
-Or install it globally:
+### 2. Add the MCP server to your AI tool
 
-```bash
-npm install -g otpless-cli
-otpless-cli detect
+**Claude Code** — add to `.mcp.json`:
+```json
+{
+  "mcpServers": {
+    "otpless": {
+      "command": "npx",
+      "args": ["-y", "-p", "otpless-cli", "otpless-cli-mcp"]
+    }
+  }
+}
 ```
 
-## Supported Stacks & Flows
+**Cursor** — add to `.cursor/mcp.json`  
+**Kiro** — add to `.kiro/settings/mcp.json`  
+(Same JSON as above)
+
+**Codex** — uses the CLI directly, no MCP config needed.
+
+### 3. (Optional) Add the agent skill
+
+```bash
+# Claude Code
+mkdir -p .claude && cp node_modules/otpless-cli/skills/claude/SKILL.md .claude/SKILL.md
+
+# Codex
+mkdir -p .codex && cp node_modules/otpless-cli/skills/codex/SKILL.md .codex/SKILL.md
+```
+
+### 4. Tell your agent what you need
+
+Just prompt it. Examples:
+
+> "Integrate OTPless SNA authentication into my React Native app. Use the otpless-cli to detect my stack, scaffold the integration, and verify it."
+
+> "Add WhatsApp login to my React app using OTPless headless SDK."
+
+> "Set up OTPless webhook verification in my FastAPI backend."
+
+> "I'm getting error SP40003 from SNA. Look it up with otpless-cli."
+
+The agent will use the CLI/MCP tools to detect your stack, pull the right docs, scaffold the code, and verify the integration — all automatically.
+
+## What It Supports
 
 | Stack | Flows |
 |-------|-------|
-| `web-react` | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only |
-| `react-native` | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only |
-| `node-backend` | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna-only |
-| `fastapi` | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna-only |
+| React / Next.js | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna |
+| React Native | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna |
+| Node.js / Express | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna |
+| FastAPI | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna |
 
-## Features
+## Detailed Docs
 
-- **Detect:** Automatically scans your codebase (`package.json`, `requirements.txt`, etc.) and determines if you are using React, React Native, Node, Next.js, or FastAPI. Also detects existing OTPless SDK packages and their versions.
-- **Docs:** Retrieve precise markdown and OpenAPI citations directly from the local `docs/` index (No web search required for AI agents!).
-- **Scaffold:** Generates step-by-step target files, required env vars, and expected logic to build an integration for 9 supported V1 flows — including SNA (Create API → SDK → Status Check), WhatsApp OAuth, Smart Auth with fallback, and webhook HMAC verification.
-- **Verify:** Produces an evidence playbook for your agent to execute against your codebase to verify there are no exposed secrets, proper callback states (`commitResponse`), valid HMAC webhooks, and correct Android/iOS native configs. Also runs optional machine checks (`--run-checks`).
-- **Errors:** Enter an endpoint, surface, and error code to instantly resolve what went wrong. Covers 5 surfaces: `api`, `sdk`, `sna`, `android`, `telecom` with ~30 error codes.
-- **Live Testing**: Sends actual network requests to `https://user-auth.otpless.app` and validates ID Tokens locally via official JWKS. Supports token validation, ID token signature verification, and webhook signature generation.
+For full setup instructions, CLI reference, and more:
 
-## Usage Examples
-
-### 1. Detect your current stack
-
-```bash
-otpless-cli detect
-```
-
-### 2. Scaffold a React Native SNA integration
-
-```bash
-otpless-cli scaffold --stack react-native --flow sna-only
-```
-
-### 3. Scaffold a FastAPI webhook handler
-
-```bash
-otpless-cli scaffold --stack fastapi --flow webhook
-```
-
-### 4. Get docs for WhatsApp/OAuth integration
-
-```bash
-otpless-cli docs --stack web-react --flow oauth --topic whatsapp
-```
-
-### 5. Verify your React Native integration
-
-```bash
-otpless-cli verify --stack react-native --flow headless
-```
-
-Run machine checks against your codebase:
-
-```bash
-otpless-cli verify --stack react-native --flow headless --run-checks
-```
-
-### 6. Troubleshoot an API error
-
-```bash
-otpless-cli errors --surface api --endpoint /token --http-status 400 --error-code 7301
-```
-
-Troubleshoot SNA carrier errors:
-
-```bash
-otpless-cli errors --surface sna --endpoint /auth --http-status 400 --error-code SP40003
-```
-
-### 7. Validate a generated opaque token
-
-```bash
-otpless-cli live-test token --token "YOUR_TOKEN" --client-id "YOUR_ID" --client-secret "YOUR_SECRET"
-```
-
-Verify an ID token via JWKS:
-
-```bash
-otpless-cli live-test id-token --id-token "YOUR_JWT" --app-id "YOUR_APP_ID"
-```
-
-Generate a webhook signature for testing:
-
-```bash
-otpless-cli live-test webhook-signature --secret "YOUR_SECRET" --fixture ./payload.json
-```
-
-## MCP Server
-
-AI tools like Claude Code, Codex, Cursor, and Kiro can natively invoke the CLI capabilities by connecting to the MCP Server over `stdio`.
-
-### Setup by Tool
-
-<details>
-<summary><strong>Claude Code</strong></summary>
-
-Add to your project's `.mcp.json` (or `~/.claude/mcp.json` for global):
-
-```json
-{
-  "mcpServers": {
-    "otpless": {
-      "command": "npx",
-      "args": ["-y", "-p", "otpless-cli", "otpless-cli-mcp"]
-    }
-  }
-}
-```
-
-</details>
-
-<details>
-<summary><strong>Cursor</strong></summary>
-
-Add to `.cursor/mcp.json` in your project root:
-
-```json
-{
-  "mcpServers": {
-    "otpless": {
-      "command": "npx",
-      "args": ["-y", "-p", "otpless-cli", "otpless-cli-mcp"]
-    }
-  }
-}
-```
-
-</details>
-
-<details>
-<summary><strong>Kiro</strong></summary>
-
-Add to `.kiro/settings/mcp.json` in your project root:
-
-```json
-{
-  "mcpServers": {
-    "otpless": {
-      "command": "npx",
-      "args": ["-y", "-p", "otpless-cli", "otpless-cli-mcp"]
-    }
-  }
-}
-```
-
-</details>
-
-<details>
-<summary><strong>Codex (OpenAI)</strong></summary>
-
-Codex uses CLI commands directly. No MCP config needed — just ensure the package is available:
-
-```bash
-npm install -g otpless-cli
-```
-
-Then reference the skill file (see below).
-
-</details>
-
-### Available MCP Tools
-
-| Tool | Description |
-|------|-------------|
-| `detect_stack` | Detect project stack and existing OTPless packages |
-| `get_docs` | Retrieve scoped documentation citations |
-| `scaffold_integration` | Generate implementation steps for a stack/flow |
-| `generate_verification_playbook` | Get verification checklist |
-| `run_optional_checks` | Run machine checks against the codebase |
-| `run_live_test` | Execute live API tests |
-| `lookup_error` | Look up error codes with causes and fixes |
-
-(Note: If running from a local clone, point to the compiled `dist/mcp-server/src/server.js` instead of using npx).
-
-## Agent Skills
-
-Skills tell AI agents how to use the CLI/MCP tools effectively. Copy the appropriate skill file into your project:
-
-### Claude Code
-
-```bash
-mkdir -p .claude
-cp node_modules/otpless-cli/skills/claude/SKILL.md .claude/SKILL.md
-```
-
-Or if using the repo directly:
-
-```bash
-mkdir -p .claude
-cp skills/claude/SKILL.md .claude/SKILL.md
-```
-
-### Codex (OpenAI)
-
-```bash
-mkdir -p .codex
-cp node_modules/otpless-cli/skills/codex/SKILL.md .codex/SKILL.md
-```
-
-Or if using the repo directly:
-
-```bash
-mkdir -p .codex
-cp skills/codex/SKILL.md .codex/SKILL.md
-```
-
-### What the skill does
-
-The skill file instructs the agent to:
-1. Never use web search for OTPless docs (all docs are bundled)
-2. Follow the detect → docs → scaffold → verify → troubleshoot workflow
-3. Handle SNA, Smart Auth fallbacks, webhook HMAC, and token security correctly
-4. Use `--run-checks` for automated verification
-5. Hand off to a separate agent session for independent review
-
+- [MCP Setup Guide](./setup-docs/mcp-setup.md) — per-tool configuration
+- [Skills Setup](./setup-docs/skills-setup.md) — agent skill installation
+- [CLI Reference](./setup-docs/cli-reference.md) — all commands and options
+- [Usage Examples](./setup-docs/usage-examples.md) — example prompts and workflows

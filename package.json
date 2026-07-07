@@ -1,5 +1,5 @@
 {
-  "name": "otpless-cli",
+  "name": "@arjun-vegeta/otpless-cli",
   "version": "1.0.0",
   "description": "OTPless Integration Tool - CLI and MCP Server",
   "files": [
