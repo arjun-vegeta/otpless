@@ -85,26 +85,55 @@
   },
   "android": {
     "5003": {
-      "likely_causes": ["SDK failed to initialize", "Invalid App ID or configuration"],
-      "docs": ["https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/error-codes.md"],
-      "next_checks": ["Verify App ID is correct", "Check that SDK dependency is installed correctly"],
+      "likely_causes": [
+        "SDK failed to initialize",
+        "Invalid App ID or configuration"
+      ],
+      "docs": [
+        "https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/error-codes.md"
+      ],
+      "next_checks": [
+        "Verify App ID is correct",
+        "Check that SDK dependency is installed correctly"
+      ],
       "suggested_fix": "Verify your App ID matches the dashboard. Ensure the SDK dependency version is correct and the app has internet permission."
     },
     "9100": {
-      "likely_causes": ["Socket timeout exception", "Slow or unstable network connection"],
-      "docs": ["https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/error-codes.md"],
-      "next_checks": ["Check network connectivity", "Verify no firewall is blocking OTPless endpoints"],
+      "likely_causes": [
+        "Socket timeout exception",
+        "Slow or unstable network connection"
+      ],
+      "docs": [
+        "https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/error-codes.md"
+      ],
+      "next_checks": [
+        "Check network connectivity",
+        "Verify no firewall is blocking OTPless endpoints"
+      ],
       "suggested_fix": "Check the device's network connection. Retry the request or show a network error indicator to the user."
     },
     "9103": {
-      "likely_causes": ["Unknown host exception", "DNS resolution failed for OTPless endpoints"],
-      "docs": ["https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/error-codes.md"],
-      "next_checks": ["Verify internet permission in AndroidManifest.xml", "Check DNS settings"],
+      "likely_causes": [
+        "Unknown host exception",
+        "DNS resolution failed for OTPless endpoints"
+      ],
+      "docs": [
+        "https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/error-codes.md"
+      ],
+      "next_checks": [
+        "Verify internet permission in AndroidManifest.xml",
+        "Check DNS settings"
+      ],
       "suggested_fix": "Ensure <uses-permission android:name=\"android.permission.INTERNET\" /> is in AndroidManifest.xml and the device has a working internet connection."
     },
     "9104": {
-      "likely_causes": ["IOException during network request", "Connection interrupted"],
-      "docs": ["https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/error-codes.md"],
+      "likely_causes": [
+        "IOException during network request",
+        "Connection interrupted"
+      ],
+      "docs": [
+        "https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/error-codes.md"
+      ],
       "next_checks": ["Check network stability"],
       "suggested_fix": "Retry the request. If persistent, verify network connectivity and proxy/VPN settings."
     }
@@ -221,7 +250,10 @@
         "Carrier verification failed for unspecified reason"
       ],
       "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
-      "next_checks": ["Retry the flow", "Check if SNA is enabled for this carrier on OTPless dashboard"],
+      "next_checks": [
+        "Retry the flow",
+        "Check if SNA is enabled for this carrier on OTPless dashboard"
+      ],
       "suggested_fix": "Trigger fallback authentication channel like WhatsApp/SMS. If persistent, contact OTPless support."
     },
     "SP40004": {
@@ -230,7 +262,9 @@
         "Verification is not available for the user's region yet"
       ],
       "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
-      "next_checks": ["Check user's country code against SNA-supported regions"],
+      "next_checks": [
+        "Check user's country code against SNA-supported regions"
+      ],
       "suggested_fix": "SNA is not available in this country. Fall back to OTP/WhatsApp authentication for this user."
     },
     "SP40011": {
@@ -238,10 +272,10 @@
         "Phone number doesn't match the SIM or network",
         "User entered a different number than the one on their active SIM"
       ],
-      "docs": [
-        "https://otpless.com/docs/sna/api-error-codes.md"
+      "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
+      "next_checks": [
+        "Verify the user is using the correct phone number for their active SIM"
       ],
-      "next_checks": ["Verify the user is using the correct phone number for their active SIM"],
       "suggested_fix": "The phone number doesn't match the SIM. Prompt the user to use the correct number or fall back to OTP."
     },
     "SP40021": {
@@ -262,7 +296,10 @@
         "IP address mismatch with carrier registration"
       ],
       "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
-      "next_checks": ["Check for active VPN or proxy interfaces", "Verify mobile data route to carrier endpoint"],
+      "next_checks": [
+        "Check for active VPN or proxy interfaces",
+        "Verify mobile data route to carrier endpoint"
+      ],
       "suggested_fix": "Ask the user to disable VPN/proxy if active, or fallback to WhatsApp/SMS channel."
     },
     "SP40025": {
@@ -271,7 +308,10 @@
         "Unknown error from carrier or OTPless system"
       ],
       "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
-      "next_checks": ["Check carrier platform status", "Retry the verification"],
+      "next_checks": [
+        "Check carrier platform status",
+        "Retry the verification"
+      ],
       "suggested_fix": "Fallback to WhatsApp or SMS OTP verification. If persistent, contact OTPless support."
     },
     "SP50001": {
@@ -290,8 +330,12 @@
         "Missing clientId or clientSecret headers in the request",
         "Client credentials not provided"
       ],
-      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
-      "next_checks": ["Verify clientId and clientSecret are included in request headers"],
+      "docs": [
+        "https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"
+      ],
+      "next_checks": [
+        "Verify clientId and clientSecret are included in request headers"
+      ],
       "suggested_fix": "Add clientId and clientSecret headers to your Telecom API request. Get these from the OTPless dashboard Dev Settings."
     },
     "70002": {
@@ -299,7 +343,9 @@
         "Invalid clientId or clientSecret",
         "Credentials do not match any active application"
       ],
-      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
+      "docs": [
+        "https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"
+      ],
       "next_checks": ["Verify credentials match the OTPless dashboard"],
       "suggested_fix": "Double-check your clientId and clientSecret against the OTPless dashboard Dev Settings page."
     },
@@ -308,8 +354,12 @@
         "Invalid phone number format",
         "Phone number is missing or malformed"
       ],
-      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
-      "next_checks": ["Verify phone number includes country code and is correctly formatted"],
+      "docs": [
+        "https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"
+      ],
+      "next_checks": [
+        "Verify phone number includes country code and is correctly formatted"
+      ],
       "suggested_fix": "Ensure the phone number is valid and includes the correct country code."
     },
     "P7301": {
@@ -317,15 +367,22 @@
         "Unable to retrieve operator details from the upstream provider",
         "Telecom lookup failed"
       ],
-      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
-      "next_checks": ["Retry the request", "Check if the operator is supported"],
+      "docs": [
+        "https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"
+      ],
+      "next_checks": [
+        "Retry the request",
+        "Check if the operator is supported"
+      ],
       "suggested_fix": "Retry the request. The upstream telecom provider may be temporarily unavailable."
     },
     "P7311": {
       "likely_causes": [
         "SIM swap check is not supported for this phone number's operator"
       ],
-      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
+      "docs": [
+        "https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"
+      ],
       "next_checks": ["Check operator support for SIM swap checks"],
       "suggested_fix": "SIM swap check is not available for this operator. Consider alternative fraud detection methods."
     },
@@ -334,7 +391,9 @@
         "SIM swap check could not be completed",
         "Upstream provider failed to return SIM swap data"
       ],
-      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
+      "docs": [
+        "https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"
+      ],
       "next_checks": ["Retry the request"],
       "suggested_fix": "The SIM swap check failed. Retry or proceed with alternative verification."
     },
@@ -342,7 +401,9 @@
       "likely_causes": [
         "Call forwarding check is not supported for this phone number's operator"
       ],
-      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
+      "docs": [
+        "https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"
+      ],
       "next_checks": ["Check operator support for call forwarding checks"],
       "suggested_fix": "Call forwarding check is not available for this operator."
     },
@@ -351,7 +412,9 @@
         "Call forwarding check could not be completed",
         "Upstream provider failed to return call forwarding status"
       ],
-      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
+      "docs": [
+        "https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"
+      ],
       "next_checks": ["Retry the request"],
       "suggested_fix": "The call forwarding check failed. Retry or proceed without this signal."
     }

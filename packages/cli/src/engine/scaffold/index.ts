@@ -301,6 +301,205 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
         ],
       });
     }
+  } else if (stack === STACKS.ANDROID) {
+    steps.push({
+      target: 'app/build.gradle',
+      action:
+        'Add io.github.otpless-tech:otpless-headless-sdk to your dependencies and configure minSdk to at least 21.',
+      env_vars: [],
+      dashboard_notes: [],
+      docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/headless.md'],
+      expected_evidence: ['otpless-headless-sdk dependency is added.'],
+    });
+    steps.push({
+      target: 'app/src/main/AndroidManifest.xml',
+      action:
+        'Configure launchMode="singleTop", exported="true" on MainActivity, add INTERNET permission, and networkSecurityConfig (if SNA is used).',
+      env_vars: [],
+      dashboard_notes: ['Copy lowercase App ID to use as deep link scheme.'],
+      docs_citations: [
+        'https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/headless.md',
+      ],
+      expected_evidence: [
+        'Internet permission is configured.',
+        'launchMode is singleTop.',
+        'Intent filter with scheme of your App ID is configured for deep-linking callbacks.',
+      ],
+    });
+
+    if (flow === FLOWS.HEADLESS) {
+      steps.push({
+        target: 'app/src/main/java/com/yourpackage/MainActivity.kt',
+        action:
+          'Initialize OtplessSDK in onCreate, handle onNewIntent for callbacks, and start the Headless authentication flow.',
+        env_vars: ['OTPLESS_APP_ID'],
+        dashboard_notes: [],
+        docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/headless.md'],
+        expected_evidence: [
+          'OtplessSDK is initialized.',
+          'onNewIntent handles deep links.',
+        ],
+      });
+    } else if (flow === FLOWS.PREBUILT_UI) {
+      steps.push({
+        target: 'app/src/main/java/com/yourpackage/MainActivity.kt',
+        action:
+          'Initialize OtplessSDK in onCreate, handle onNewIntent, and launch the Prebuilt UI login view.',
+        env_vars: ['OTPLESS_APP_ID'],
+        dashboard_notes: [
+          'Configure prebuilt UI settings in the OTPless dashboard.',
+        ],
+        docs_citations: [
+          'https://otpless.com/docs/frontend-sdks/app-sdks/android/pre-built-ui.md',
+        ],
+        expected_evidence: [
+          'OtplessSDK is initialized.',
+          'showOtplessLoginPage is invoked.',
+        ],
+      });
+    } else if (flow === FLOWS.SNA_ONLY) {
+      steps.push({
+        target: 'app/src/main/java/com/yourpackage/MainActivity.kt',
+        action:
+          'Initialize OtplessSDK in onCreate, handle onNewIntent, and trigger the Silent Network Authentication (SNA) flow specifically.',
+        env_vars: ['OTPLESS_APP_ID'],
+        dashboard_notes: [],
+        docs_citations: ['https://otpless.com/docs/sna/android-sdk.md'],
+        expected_evidence: [
+          'OtplessSDK is initialized.',
+          'startSnaFlow is invoked.',
+        ],
+      });
+    } else if (flow === FLOWS.PHONE_OTP) {
+      steps.push({
+        target: 'app/src/main/java/com/yourpackage/MainActivity.kt',
+        action:
+          'Initialize OtplessSDK in onCreate, handle onNewIntent, and trigger Headless Phone OTP flow.',
+        env_vars: ['OTPLESS_APP_ID'],
+        dashboard_notes: [
+          'Verify Phone OTP is enabled in your OTPless Dashboard.',
+        ],
+        docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/headless.md'],
+        expected_evidence: [
+          'OtplessSDK is initialized.',
+          'startHeadless is invoked with PHONE channel.',
+        ],
+      });
+    } else if (flow === FLOWS.OAUTH) {
+      steps.push({
+        target: 'app/src/main/java/com/yourpackage/MainActivity.kt',
+        action:
+          'Initialize OtplessSDK in onCreate, handle onNewIntent, and trigger Social Login/OAuth flow.',
+        env_vars: ['OTPLESS_APP_ID'],
+        dashboard_notes: [],
+        docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/headless.md'],
+        expected_evidence: [
+          'OtplessSDK is initialized.',
+          'startHeadless is invoked with OAUTH channel.',
+        ],
+      });
+    }
+  } else if (stack === STACKS.IOS) {
+    steps.push({
+      target: 'Podfile',
+      action: "Add pod 'OtplessBM/Core' to your Podfile and run pod install.",
+      env_vars: [],
+      dashboard_notes: [],
+      docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/headless/headless.md'],
+      expected_evidence: ["pod 'OtplessBM/Core' is added to Podfile."],
+    });
+    steps.push({
+      target: 'ios/<YourProjectName>/Info.plist',
+      action:
+        'Configure CFBundleURLTypes schemes and NSAppTransportSecurity exception domains (for SNA).',
+      env_vars: [],
+      dashboard_notes: [
+        'Ensure NSExceptionDomains contains carrier domains if using SNA.',
+      ],
+      docs_citations: ['https://otpless.com/docs/sna/ios-sdk.md'],
+      expected_evidence: ['CFBundleURLSchemes contains lowercase App ID.'],
+    });
+
+    if (flow === FLOWS.HEADLESS) {
+      steps.push({
+        target: 'ios/<YourProjectName>/AppDelegate.swift',
+        action:
+          'Initialize Otpless SDK in didFinishLaunchingWithOptions, handle openURL callback, and trigger the Headless authentication flow.',
+        env_vars: ['OTPLESS_APP_ID'],
+        dashboard_notes: [],
+        docs_citations: [
+          'https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/headless/headless.md',
+        ],
+        expected_evidence: [
+          'Otpless SDK is initialized.',
+          'openURL is handled.',
+        ],
+      });
+    } else if (flow === FLOWS.PREBUILT_UI) {
+      steps.push({
+        target: 'ios/<YourProjectName>/AppDelegate.swift',
+        action:
+          'Initialize Otpless SDK in didFinishLaunchingWithOptions, handle openURL callback, and launch the Prebuilt UI login view.',
+        env_vars: ['OTPLESS_APP_ID'],
+        dashboard_notes: [
+          'Configure prebuilt UI settings in the OTPless dashboard.',
+        ],
+        docs_citations: [
+          'https://otpless.com/docs/frontend-sdks/app-sdks/ios/pre-built-ui.md',
+        ],
+        expected_evidence: [
+          'Otpless SDK is initialized.',
+          'showOtplessLoginPage is invoked.',
+        ],
+      });
+    } else if (flow === FLOWS.SNA_ONLY) {
+      steps.push({
+        target: 'ios/<YourProjectName>/AppDelegate.swift',
+        action:
+          'Initialize Otpless SDK in didFinishLaunchingWithOptions, handle openURL callback, and trigger the Silent Network Authentication (SNA) flow specifically.',
+        env_vars: ['OTPLESS_APP_ID'],
+        dashboard_notes: [
+          'Enable Smart Auth with SNA as primary channel in the OTPless dashboard.',
+        ],
+        docs_citations: ['https://otpless.com/docs/sna/ios-sdk.md'],
+        expected_evidence: [
+          'Otpless SDK is initialized.',
+          'startSnaFlow is invoked.',
+        ],
+      });
+    } else if (flow === FLOWS.PHONE_OTP) {
+      steps.push({
+        target: 'ios/<YourProjectName>/AppDelegate.swift',
+        action:
+          'Initialize Otpless SDK in didFinishLaunchingWithOptions, handle openURL callback, and trigger Headless Phone OTP flow.',
+        env_vars: ['OTPLESS_APP_ID'],
+        dashboard_notes: [
+          'Enable SMS/WhatsApp channels in the OTPless dashboard.',
+        ],
+        docs_citations: [
+          'https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/headless/headless.md',
+        ],
+        expected_evidence: [
+          'Otpless SDK is initialized.',
+          'startHeadless is invoked with PHONE channel.',
+        ],
+      });
+    } else if (flow === FLOWS.OAUTH) {
+      steps.push({
+        target: 'ios/<YourProjectName>/AppDelegate.swift',
+        action:
+          'Initialize Otpless SDK in didFinishLaunchingWithOptions, handle openURL callback, and trigger Social Login/OAuth flow.',
+        env_vars: ['OTPLESS_APP_ID'],
+        dashboard_notes: ['Configure OAuth settings in dashboard.'],
+        docs_citations: [
+          'https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/headless/headless.md',
+        ],
+        expected_evidence: [
+          'Otpless SDK is initialized.',
+          'startHeadless is invoked with OAUTH channel.',
+        ],
+      });
+    }
   } else if (stack === STACKS.NODE_BACKEND) {
     if (flow === FLOWS.TOKEN_VALIDATION) {
       steps.push({

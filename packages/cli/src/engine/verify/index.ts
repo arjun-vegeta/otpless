@@ -13,7 +13,13 @@ import { resolveLatestVersion } from '../registry';
 export function generatePlaybook(stack: Stack, flow: Flow): PlaybookItem[] {
   const items: PlaybookItem[] = [];
 
-  if (stack === STACKS.WEB_REACT || stack === STACKS.REACT_NATIVE) {
+  const isFrontend =
+    stack === STACKS.WEB_REACT ||
+    stack === STACKS.REACT_NATIVE ||
+    stack === STACKS.ANDROID ||
+    stack === STACKS.IOS;
+
+  if (isFrontend) {
     items.push({
       id: 'frontend-callback-handling',
       requirement:
@@ -23,7 +29,11 @@ export function generatePlaybook(stack: Stack, flow: Flow): PlaybookItem[] {
           url:
             stack === STACKS.REACT_NATIVE
               ? 'https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/headless/headless.md'
-              : 'https://otpless.com/docs/frontend-sdks/web-sdks/react/headless.md',
+              : stack === STACKS.ANDROID
+                ? 'https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/headless.md'
+                : stack === STACKS.IOS
+                  ? 'https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/headless/headless.md'
+                  : 'https://otpless.com/docs/frontend-sdks/web-sdks/react/headless.md',
         },
       ],
       agent_steps: [
@@ -48,31 +58,52 @@ export function generatePlaybook(stack: Stack, flow: Flow): PlaybookItem[] {
         'No OTPLESS_CLIENT_SECRET or equivalent found in frontend bundle.',
       ],
       optional_commands: ['grep -rn "OTPLESS_CLIENT_SECRET" src/'],
-      failure_examples: ['Client secret hardcoded in App.tsx.'],
+      failure_examples: [
+        'Client secret hardcoded in App.tsx or MainActivity.kt.',
+      ],
     });
 
-    if (stack === STACKS.REACT_NATIVE) {
+    if (stack === STACKS.REACT_NATIVE || stack === STACKS.ANDROID) {
       items.push({
-        id: 'react-native-config',
+        id: 'android-manifest-config',
         requirement:
-          'Android/iOS manifests and configs must have proper intent filters/URL schemes.',
+          'Android manifest and configs must have proper intent filters/URL schemes.',
         docs: [
           {
-            url: 'https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/headless/headless.md',
+            url:
+              stack === STACKS.ANDROID
+                ? 'https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/headless.md'
+                : 'https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/headless/headless.md',
           },
         ],
         agent_steps: [
           'Inspect AndroidManifest.xml for OTPless intent filters.',
-          'Inspect Info.plist for OTPless URL schemes.',
         ],
         expected_evidence: [
           'Intent filter uses lowercase App ID as scheme.',
-          'CFBundleURLSchemes contains lowercase App ID.',
+          'launchMode is singleTop.',
         ],
+      });
+    }
+
+    if (stack === STACKS.REACT_NATIVE || stack === STACKS.IOS) {
+      items.push({
+        id: 'ios-info-plist-config',
+        requirement: 'iOS Info.plist must have proper URL schemes.',
+        docs: [
+          {
+            url:
+              stack === STACKS.IOS
+                ? 'https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/headless/headless.md'
+                : 'https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/headless/headless.md',
+          },
+        ],
+        agent_steps: ['Inspect Info.plist for OTPless URL schemes.'],
+        expected_evidence: ['CFBundleURLSchemes contains lowercase App ID.'],
       });
 
       items.push({
-        id: 'react-native-ios-exceptions',
+        id: 'ios-sna-exceptions',
         requirement:
           'iOS exception domains for Silent Network Authentication must be present in Info.plist.',
         docs: [{ url: 'https://otpless.com/docs/sna/ios-sdk.md' }],
@@ -83,7 +114,9 @@ export function generatePlaybook(stack: Stack, flow: Flow): PlaybookItem[] {
           'Info.plist contains exception domains: 80.in.safr.sekuramobile.com, api-csp.airtel.in, in-vil.ipification.com, partnerapi.jio.com, v4-api-csp.airtel.in.',
         ],
       });
+    }
 
+    if (stack === STACKS.REACT_NATIVE) {
       items.push({
         id: 'react-native-ios-swift-bridge',
         requirement:
@@ -100,9 +133,7 @@ export function generatePlaybook(stack: Stack, flow: Flow): PlaybookItem[] {
           'Bridging headers expose Otpless SDK components to React Native.',
         ],
       });
-    }
 
-    if (stack === STACKS.REACT_NATIVE) {
       items.push({
         id: 'commit-response-check',
         requirement:
@@ -345,7 +376,6 @@ export async function runOptionalChecks(
               `Found dependency ${pkgName} with version ${deps[pkgName]} in package.json`,
             );
 
-            // Query registry
             try {
               const reg = await resolveLatestVersion(pkgName);
               if (reg.latestVersion !== currentVer) {
@@ -383,6 +413,73 @@ export async function runOptionalChecks(
         evidence: ['package.json not found in project directory'],
       };
     }
+  } else if (stack === STACKS.ANDROID) {
+    const buildGradlePath = fs.existsSync(
+      path.join(projectDir, 'app/build.gradle'),
+    )
+      ? path.join(projectDir, 'app/build.gradle')
+      : fs.existsSync(path.join(projectDir, 'build.gradle'))
+        ? path.join(projectDir, 'build.gradle')
+        : null;
+
+    if (buildGradlePath) {
+      const content = fs.readFileSync(buildGradlePath, 'utf-8');
+      if (content.includes('otpless-android-sdk')) {
+        items['package-presence'] = {
+          state: 'pass',
+          evidence: [
+            `Found otpless-android-sdk dependency in ${path.relative(projectDir, buildGradlePath)}`,
+          ],
+        };
+      } else {
+        items['package-presence'] = {
+          state: 'fail',
+          evidence: [
+            `otpless-android-sdk dependency not found in ${path.relative(projectDir, buildGradlePath)}`,
+          ],
+        };
+      }
+    } else {
+      items['package-presence'] = {
+        state: 'not_detected',
+        evidence: ['No build.gradle found in project directory'],
+      };
+    }
+  } else if (stack === STACKS.IOS) {
+    const podfilePath = path.join(projectDir, 'Podfile');
+    const spmPath = path.join(projectDir, 'Package.swift');
+    if (fs.existsSync(podfilePath)) {
+      const content = fs.readFileSync(podfilePath, 'utf-8');
+      if (content.includes('OtplessSDK')) {
+        items['package-presence'] = {
+          state: 'pass',
+          evidence: ['Found OtplessSDK dependency in Podfile'],
+        };
+      } else {
+        items['package-presence'] = {
+          state: 'fail',
+          evidence: ['OtplessSDK dependency not found in Podfile'],
+        };
+      }
+    } else if (fs.existsSync(spmPath)) {
+      const content = fs.readFileSync(spmPath, 'utf-8');
+      if (content.includes('otpless-ios-sdk')) {
+        items['package-presence'] = {
+          state: 'pass',
+          evidence: ['Found otpless-ios-sdk dependency in Package.swift'],
+        };
+      } else {
+        items['package-presence'] = {
+          state: 'fail',
+          evidence: ['otpless-ios-sdk dependency not found in Package.swift'],
+        };
+      }
+    } else {
+      items['package-presence'] = {
+        state: 'not_detected',
+        evidence: ['No Podfile or Package.swift found in project directory'],
+      };
+    }
   } else {
     items['package-presence'] = {
       state: 'not_applicable',
@@ -405,7 +502,12 @@ export async function runOptionalChecks(
         file.endsWith('.js') ||
         file.endsWith('.tsx') ||
         file.endsWith('.ts') ||
-        file.endsWith('.html')
+        file.endsWith('.html') ||
+        file.endsWith('.kt') ||
+        file.endsWith('.swift') ||
+        file.endsWith('.java') ||
+        file.endsWith('.m') ||
+        file.endsWith('.h')
       ) {
         try {
           const content = fs.readFileSync(fullPath, 'utf-8');
@@ -422,7 +524,12 @@ export async function runOptionalChecks(
     }
   };
 
-  if (stack === STACKS.WEB_REACT || stack === STACKS.REACT_NATIVE) {
+  const isFrontendCheck =
+    stack === STACKS.WEB_REACT ||
+    stack === STACKS.REACT_NATIVE ||
+    stack === STACKS.ANDROID ||
+    stack === STACKS.IOS;
+  if (isFrontendCheck) {
     scanForSecrets(projectDir);
     if (secretsFound.length > 0) {
       items['public-secret-exposure'] = {
@@ -462,7 +569,12 @@ export async function runOptionalChecks(
     try {
       const content = fs.readFileSync(checkEnv, 'utf-8');
       const expectedVars: string[] = [];
-      if (stack === STACKS.WEB_REACT || stack === STACKS.REACT_NATIVE) {
+      if (
+        stack === STACKS.WEB_REACT ||
+        stack === STACKS.REACT_NATIVE ||
+        stack === STACKS.ANDROID ||
+        stack === STACKS.IOS
+      ) {
         expectedVars.push('OTPLESS_APP_ID');
       } else {
         expectedVars.push('OTPLESS_CLIENT_ID', 'OTPLESS_CLIENT_SECRET');
@@ -511,7 +623,7 @@ export async function runOptionalChecks(
   }
 
   // Check 4: Android Manifest setup (for React Native)
-  if (stack === STACKS.REACT_NATIVE) {
+  if (stack === STACKS.REACT_NATIVE || stack === STACKS.ANDROID) {
     let manifestState: EvidenceReport['items'][string]['state'] =
       'not_detected';
     const manifestEvidence: string[] = [];
@@ -585,8 +697,10 @@ export async function runOptionalChecks(
       state: manifestState,
       evidence: manifestEvidence,
     };
+  }
 
-    // Check 5: iOS Plist & Swift bridging
+  // Check 5: iOS Plist & Swift bridging
+  if (stack === STACKS.REACT_NATIVE || stack === STACKS.IOS) {
     let iosState: EvidenceReport['items'][string]['state'] = 'not_detected';
     const iosEvidence: string[] = [];
 

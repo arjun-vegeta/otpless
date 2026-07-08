@@ -3,6 +3,8 @@ import { z } from 'zod';
 export const STACKS = {
   WEB_REACT: 'web-react',
   REACT_NATIVE: 'react-native',
+  ANDROID: 'android',
+  IOS: 'ios',
   NODE_BACKEND: 'node-backend',
   FASTAPI: 'fastapi',
   UNKNOWN: 'unknown',
@@ -30,6 +32,8 @@ export type SdkGeneration = 'new' | 'legacy' | 'unknown';
 export const StackSchema = z.enum([
   'web-react',
   'react-native',
+  'android',
+  'ios',
   'node-backend',
   'fastapi',
   'unknown',

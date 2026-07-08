@@ -38,5 +38,17 @@
       "current_version": "1.0.0",
       "supported_frameworks": ["fastapi"]
     }
+  },
+  "android": {
+    "otpless-android-sdk": {
+      "current_version": "2.1.0",
+      "supported_frameworks": ["android"]
+    }
+  },
+  "ios": {
+    "otpless-ios-sdk": {
+      "current_version": "2.0.0",
+      "supported_frameworks": ["ios"]
+    }
   }
 }
