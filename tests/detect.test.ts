@@ -1,10 +1,14 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as fs from 'fs';
 import { detectStack } from '../packages/cli/src/engine/detect';
 
 vi.mock('fs');
 
 describe('detectStack', () => {
+  beforeEach(() => {
+    vi.spyOn(fs, 'readdirSync').mockReturnValue([] as any);
+  });
+
   it('detects a react-native project', () => {
     vi.spyOn(fs, 'existsSync').mockImplementation((path: fs.PathLike) => {
       if (path.toString().includes('package.json')) return true;

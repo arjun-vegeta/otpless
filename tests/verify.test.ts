@@ -11,7 +11,7 @@ describe('Verify Engine', () => {
     const ids = items.map((i) => i.id);
     expect(ids).toContain('frontend-callback-handling');
     expect(ids).toContain('secret-exposure-checks');
-    expect(ids).toContain('react-native-config'); // specific to RN
+    expect(ids).toContain('android-manifest-config'); // specific to RN / Android
   });
 
   it('generates webhook playbook items', () => {

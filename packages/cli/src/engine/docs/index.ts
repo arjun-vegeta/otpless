@@ -50,7 +50,14 @@ export function getDocs(
         url: 'https://otpless.com/docs',
         content: JSON.stringify(
           {
-            stacks: ['web-react', 'react-native', 'node-backend', 'fastapi'],
+            stacks: [
+              'web-react',
+              'react-native',
+              'android',
+              'ios',
+              'node-backend',
+              'fastapi',
+            ],
             flows: {
               frontend: [
                 'headless',
@@ -116,7 +123,11 @@ export function getDocs(
       'sna-only',
     ];
 
-    const isFrontend = stack === 'web-react' || stack === 'react-native';
+    const isFrontend =
+      stack === 'web-react' ||
+      stack === 'react-native' ||
+      stack === 'android' ||
+      stack === 'ios';
     const flows = isFrontend ? frontendFlows : backendFlows;
 
     const examples = flows.map((f) => ({

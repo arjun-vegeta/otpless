@@ -201,8 +201,16 @@ export function searchIndex(
 
       // Prevent id-token-validate from matching phone-otp/magic-link queries
       // just because it contains "Python (Flask/FastAPI)" in a section title
-      if (query.includes('phone-otp') || query.includes('magic-link') || query.includes('magiclink') || query.includes('otp')) {
-        if (lowerUrl.includes('id-token-validate') || lowerUrl.includes('id_token')) {
+      if (
+        query.includes('phone-otp') ||
+        query.includes('magic-link') ||
+        query.includes('magiclink') ||
+        query.includes('otp')
+      ) {
+        if (
+          lowerUrl.includes('id-token-validate') ||
+          lowerUrl.includes('id_token')
+        ) {
           score -= 30;
         }
       }

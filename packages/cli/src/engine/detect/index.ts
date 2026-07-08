@@ -198,7 +198,11 @@ export function detectStack(
       if (match && match[1]) {
         declaredPythonVersion = match[1];
         hasOtplessPython = true;
-      } else if (/(?:^|\s|"|')(?:otpless-python|otpless)(?:\s|"|'|$|[>=<~!,\]])/m.test(pyproj)) {
+      } else if (
+        /(?:^|\s|"|')(?:otpless-python|otpless)(?:\s|"|'|$|[>=<~!,\]])/m.test(
+          pyproj,
+        )
+      ) {
         hasOtplessPython = true;
       }
     }
@@ -230,6 +234,95 @@ export function detectStack(
           const code = fs.readFileSync(targetPy, 'utf-8');
           if (code.includes('otpless') || code.includes('validate_token')) {
             detected_flows.push('token-validation');
+          }
+        } catch {
+          // ignore
+        }
+      }
+    }
+  }
+
+  const isReactNative = platforms.has('react-native');
+
+  if (!isReactNative) {
+    if (
+      fs.existsSync(path.join(projectDir, 'build.gradle')) ||
+      fs.existsSync(path.join(projectDir, 'app/build.gradle')) ||
+      fs.existsSync(path.join(projectDir, 'build.gradle.kts'))
+    ) {
+      platforms.add('android');
+      frameworks.add('android');
+      package_manager = 'gradle';
+      confidence = 'high';
+
+      const buildGradlePath = fs.existsSync(
+        path.join(projectDir, 'app/build.gradle'),
+      )
+        ? path.join(projectDir, 'app/build.gradle')
+        : path.join(projectDir, 'build.gradle');
+      try {
+        const gradleContent = fs.readFileSync(buildGradlePath, 'utf-8');
+        if (gradleContent.includes('otpless-headless-sdk')) {
+          otpless_packages.push({
+            name: 'otpless-headless-sdk',
+            declared_version: null,
+            resolved_version: null,
+            sdk_family: 'headless',
+            sdk_generation: 'new',
+          });
+        }
+        if (gradleContent.includes('otpless-android-sdk')) {
+          otpless_packages.push({
+            name: 'otpless-android-sdk',
+            declared_version: null,
+            resolved_version: null,
+            sdk_family: 'headless',
+            sdk_generation: 'legacy',
+          });
+        }
+      } catch {
+        // ignore
+      }
+    }
+
+    const hasXcodeProj = fs
+      .readdirSync(projectDir)
+      .some(
+        (f: string) => f.endsWith('.xcodeproj') || f.endsWith('.xcworkspace'),
+      );
+    if (
+      hasXcodeProj ||
+      fs.existsSync(path.join(projectDir, 'Podfile')) ||
+      fs.existsSync(path.join(projectDir, 'Package.swift'))
+    ) {
+      platforms.add('ios');
+      frameworks.add('ios');
+      package_manager = fs.existsSync(path.join(projectDir, 'Podfile'))
+        ? 'cocoapods'
+        : 'spm';
+      confidence = 'high';
+
+      const podfilePath = path.join(projectDir, 'Podfile');
+      if (fs.existsSync(podfilePath)) {
+        try {
+          const podContent = fs.readFileSync(podfilePath, 'utf-8');
+          if (podContent.includes('OtplessBM')) {
+            otpless_packages.push({
+              name: 'OtplessBM',
+              declared_version: null,
+              resolved_version: null,
+              sdk_family: 'headless',
+              sdk_generation: 'new',
+            });
+          }
+          if (podContent.includes('OtplessSDK')) {
+            otpless_packages.push({
+              name: 'OtplessSDK',
+              declared_version: null,
+              resolved_version: null,
+              sdk_family: 'headless',
+              sdk_generation: 'legacy',
+            });
           }
         } catch {
           // ignore
