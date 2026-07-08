@@ -77,6 +77,8 @@ The agent will use the CLI/MCP tools to detect your stack, pull the right docs, 
 | ----------------- | ---------------------------------------------------------------------- |
 | React / Next.js   | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna               |
 | React Native      | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna               |
+| Android Native    | headless, prebuilt-ui, phone-otp, oauth, sna                           |
+| iOS Native        | headless, prebuilt-ui, phone-otp, oauth, sna                           |
 | Node.js / Express | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna |
 | FastAPI           | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna |
 
