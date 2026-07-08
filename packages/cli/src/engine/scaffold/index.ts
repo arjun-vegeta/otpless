@@ -4,6 +4,32 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
   const steps: ScaffoldStep[] = [];
 
   if (stack === STACKS.WEB_REACT) {
+    if (flow === FLOWS.PREBUILT_UI) {
+      steps.push({
+        target: 'public/index.html',
+        action:
+          'Include OTPless Prebuilt SDK script: <script id="otpless-sdk" src="https://otpless.com/v4/auth.js" data-appid="YOUR_APP_ID"></script> in the <head> of your HTML.',
+        env_vars: ['REACT_APP_OTPLESS_APP_ID'],
+        dashboard_notes: [],
+        docs_citations: [
+          'https://otpless.com/docs/frontend-sdks/web-sdks/react/pre-built-ui.md',
+        ],
+        expected_evidence: ['script tag with auth.js is present'],
+      });
+    } else {
+      steps.push({
+        target: 'public/index.html',
+        action:
+          'Include OTPless Headless SDK script: <script id="otpless-sdk" src="https://otpless.com/v4/headless.js" data-appid="YOUR_APP_ID"></script> in the <head> of your HTML.',
+        env_vars: ['REACT_APP_OTPLESS_APP_ID'],
+        dashboard_notes: [],
+        docs_citations: [
+          'https://otpless.com/docs/frontend-sdks/web-sdks/react/headless.md',
+        ],
+        expected_evidence: ['script tag with headless.js is present'],
+      });
+    }
+
     if (flow === FLOWS.HEADLESS) {
       steps.push({
         target: 'src/App.tsx',
@@ -58,7 +84,7 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
       steps.push({
         target: 'src/components/Login.tsx',
         action:
-          'Initiate Social Login/OAuth (Google/WhatsApp) by calling initiate({channelType: "WHATSAPP" | "GOOGLE"}).',
+          'Initiate Social Login/OAuth (Google/WhatsApp) by calling initiate({channel: "OAUTH", channelType: "WHATSAPP" | "GOOGLE"}).',
         env_vars: ['REACT_APP_OTPLESS_APP_ID'],
         dashboard_notes: [
           'Configure OAuth settings/redirect URIs in dashboard.',
@@ -66,7 +92,9 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
         docs_citations: [
           'https://otpless.com/docs/frontend-sdks/web-sdks/react/headless.md',
         ],
-        expected_evidence: ['initiate() called with channelType parameter'],
+        expected_evidence: [
+          'initiate() called with channel: "OAUTH" and channelType parameter',
+        ],
       });
     } else if (flow === FLOWS.MAGIC_LINK) {
       steps.push({
@@ -116,7 +144,7 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
       ],
     });
     steps.push({
-      target: 'ios/Runner/Info.plist',
+      target: 'ios/<YourProjectName>/Info.plist',
       action:
         'Configure CFBundleURLTypes schemes and NSAppTransportSecurity exception domains for SNA.',
       env_vars: [],
@@ -323,7 +351,8 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
         env_vars: ['OTPLESS_CLIENT_ID', 'OTPLESS_CLIENT_SECRET'],
         dashboard_notes: [],
         docs_citations: [
-          'https://otpless.com/docs/api-reference/endpoint/verifytoken/verify-token-with-secure-data.md',
+          'https://otpless.com/docs/api-reference/endpoint/sign-in/otp/send-otp-phone.md',
+          'https://otpless.com/docs/api-reference/endpoint/sign-in/otp/verify.md',
         ],
         expected_evidence: [
           'POST to /auth/v1/initiate/otp is made.',
@@ -370,7 +399,7 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
       steps.push({
         target: 'src/routes/auth.ts',
         action:
-          'Implement SNA backend logic calling POST /auth/v1/initiate/sna and polling GET /auth/v1/status.',
+          'Implement SNA backend logic calling POST /auth/v1/create and polling GET /auth/v2/status.',
         env_vars: ['OTPLESS_CLIENT_ID', 'OTPLESS_CLIENT_SECRET'],
         dashboard_notes: [],
         docs_citations: [
@@ -378,8 +407,8 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
           'https://otpless.com/docs/sna/status-check-api.md',
         ],
         expected_evidence: [
-          'POST to /auth/v1/initiate/sna is present.',
-          'GET to /auth/v1/status is polled.',
+          'POST to /auth/v1/create is present.',
+          'GET to /auth/v2/status is polled.',
         ],
       });
     }
@@ -449,7 +478,8 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
         env_vars: ['OTPLESS_CLIENT_ID', 'OTPLESS_CLIENT_SECRET'],
         dashboard_notes: [],
         docs_citations: [
-          'https://otpless.com/docs/api-reference/endpoint/verifytoken/verify-token-with-secure-data.md',
+          'https://otpless.com/docs/api-reference/endpoint/sign-in/otp/send-otp-phone.md',
+          'https://otpless.com/docs/api-reference/endpoint/sign-in/otp/verify.md',
         ],
         expected_evidence: [
           'POST to /auth/v1/initiate/otp is made.',
@@ -496,7 +526,7 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
       steps.push({
         target: 'app/api/auth.py',
         action:
-          'Implement SNA backend logic calling POST /auth/v1/initiate/sna and polling GET /auth/v1/status.',
+          'Implement SNA backend logic calling POST /auth/v1/create and polling GET /auth/v2/status.',
         env_vars: ['OTPLESS_CLIENT_ID', 'OTPLESS_CLIENT_SECRET'],
         dashboard_notes: [],
         docs_citations: [
@@ -504,8 +534,8 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
           'https://otpless.com/docs/sna/status-check-api.md',
         ],
         expected_evidence: [
-          'POST to /auth/v1/initiate/sna is present.',
-          'GET to /auth/v1/status is polled.',
+          'POST to /auth/v1/create is present.',
+          'GET to /auth/v2/status is polled.',
         ],
       });
     }
