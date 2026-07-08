@@ -162,10 +162,16 @@ export function searchIndex(
       }
 
       if (query.includes('sna-only') || query.includes('sna')) {
-        if (lowerUrl.includes('/sna/')) {
+        if (lowerUrl.includes('/sna/') || lowerUrl.includes('sna-web')) {
           score += 50;
         } else {
           score -= 20;
+        }
+        // Boost sna-web for web-react SNA queries
+        if (query.includes('web-react') || query.includes('sna-web')) {
+          if (lowerUrl.includes('sna-web')) {
+            score += 60;
+          }
         }
       }
 
@@ -183,6 +189,21 @@ export function searchIndex(
           lowerUrl.includes('web-sdks')
         ) {
           score -= 20;
+        }
+        // Boost API reference endpoint docs for backend stacks
+        if (lowerUrl.includes('api-reference/endpoint/sign-in')) {
+          score += 15;
+        }
+        if (lowerUrl.includes('api-reference/endpoint/verifytoken')) {
+          score += 15;
+        }
+      }
+
+      // Prevent id-token-validate from matching phone-otp/magic-link queries
+      // just because it contains "Python (Flask/FastAPI)" in a section title
+      if (query.includes('phone-otp') || query.includes('magic-link') || query.includes('magiclink') || query.includes('otp')) {
+        if (lowerUrl.includes('id-token-validate') || lowerUrl.includes('id_token')) {
+          score -= 30;
         }
       }
 

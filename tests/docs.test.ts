@@ -24,11 +24,11 @@ describe('Docs Engine', () => {
     expect(results[0].title).toBe('Mocked Doc');
   });
 
-  it('returns fallback if no results found', () => {
+  it('returns supported queries list for unknown stack/flow', () => {
     vi.spyOn(ingest, 'ingestDocs').mockImplementation(() => {});
     vi.spyOn(ingest, 'searchIndex').mockReturnValue([]);
 
     const results = getDocs(STACKS.UNKNOWN, FLOWS.UNKNOWN);
-    expect(results[0].title).toContain('Not Found');
+    expect(results[0].title).toContain('Supported Docs Queries');
   });
 });
