@@ -1,6 +1,7 @@
 # OTPless CLI & MCP Server
 
 > **Disclaimer:** This is an **unofficial**, community-built tool and is **not affiliated with, endorsed by, or maintained by OTPless**. For official documentation and support, visit:
+>
 > - [OTPless Website](https://otpless.com)
 > - [Official Documentation](https://otpless.com/docs)
 > - [OTPless Dashboard](https://otpless.com/dashboard)
@@ -28,6 +29,7 @@ npx otpless-cli detect
 ### 2. Add the MCP server to your AI tool
 
 **Claude Code** — add to `.mcp.json`:
+
 ```json
 {
   "mcpServers": {
@@ -71,12 +73,12 @@ The agent will use the CLI/MCP tools to detect your stack, pull the right docs, 
 
 ## What It Supports
 
-| Stack | Flows |
-|-------|-------|
-| React / Next.js | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna |
-| React Native | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna |
+| Stack             | Flows                                                                  |
+| ----------------- | ---------------------------------------------------------------------- |
+| React / Next.js   | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna               |
+| React Native      | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna               |
 | Node.js / Express | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna |
-| FastAPI | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna |
+| FastAPI           | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna |
 
 ## Detailed Docs
 

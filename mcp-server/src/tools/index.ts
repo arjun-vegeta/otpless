@@ -15,31 +15,52 @@ export const OTplessTools: Tool[] = [
   {
     name: 'detect_stack',
     description:
-      'Detects supported stacks and existing OTPless integration state',
+      'Detects the project stack (web-react, react-native, node-backend, fastapi), package manager, existing OTPless SDK packages, and detected auth flows. Run this first before scaffold or docs.',
     inputSchema: { type: 'object', properties: {} },
   },
   {
     name: 'get_docs',
     description:
-      'Returns scoped OTPless docs packets from the local docs index',
+      'Returns scoped OTPless documentation with code snippets from the bundled docs index. Use after scaffold to get implementation details. Call with stack="unknown" and flow="unknown" to get the full list of supported queries. Stacks: web-react, react-native, node-backend, fastapi. Flows: headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only, token-validation, id-token, webhook. Optional topic narrows results (e.g. "whatsapp", "smart-auth", "jwks").',
     inputSchema: {
       type: 'object',
       properties: {
-        stack: { type: 'string' },
-        flow: { type: 'string' },
-        topic: { type: 'string' },
+        stack: {
+          type: 'string',
+          description:
+            'Target stack: web-react, react-native, node-backend, or fastapi',
+        },
+        flow: {
+          type: 'string',
+          description:
+            'Auth flow: headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only, token-validation, id-token, or webhook',
+        },
+        topic: {
+          type: 'string',
+          description:
+            'Optional topic to narrow results (e.g. whatsapp, smart-auth, jwks, session)',
+        },
       },
       required: ['stack', 'flow'],
     },
   },
   {
     name: 'scaffold_integration',
-    description: 'Generates implementation instructions',
+    description:
+      'Generates step-by-step implementation instructions for integrating OTPless. Returns target files, actions, env vars, dashboard notes, docs citations, and expected evidence. Stacks: web-react, react-native, node-backend, fastapi. Flows: headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only, token-validation, id-token, webhook.',
     inputSchema: {
       type: 'object',
       properties: {
-        stack: { type: 'string' },
-        flow: { type: 'string' },
+        stack: {
+          type: 'string',
+          description:
+            'Target stack: web-react, react-native, node-backend, or fastapi',
+        },
+        flow: {
+          type: 'string',
+          description:
+            'Auth flow: headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only, token-validation, id-token, or webhook',
+        },
       },
       required: ['stack', 'flow'],
     },
@@ -47,38 +68,62 @@ export const OTplessTools: Tool[] = [
   {
     name: 'generate_verification_playbook',
     description:
-      'Generates a verification playbook and evidence report template',
+      'Generates a verification checklist to confirm OTPless integration correctness. Checks callback handling, secret exposure, native configs (Android/iOS), commitResponse calls, HMAC webhook verification, and more.',
     inputSchema: {
       type: 'object',
       properties: {
-        stack: { type: 'string' },
-        flow: { type: 'string' },
+        stack: {
+          type: 'string',
+          description:
+            'Target stack: web-react, react-native, node-backend, or fastapi',
+        },
+        flow: {
+          type: 'string',
+          description:
+            'Auth flow: headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only, token-validation, id-token, or webhook',
+        },
       },
       required: ['stack', 'flow'],
     },
   },
   {
     name: 'run_live_test',
-    description: 'Runs docs-backed smoke tests',
+    description:
+      'Runs live validation tests against OTPless APIs. Test types: "token" (validates opaque token), "id-token" (verifies JWT via JWKS), "webhook-signature" (generates HMAC-SHA256). Requires real credentials.',
     inputSchema: {
       type: 'object',
       properties: {
-        testType: { type: 'string' },
-        inputs: { type: 'object', additionalProperties: { type: 'string' } },
+        testType: {
+          type: 'string',
+          description: 'Test type: token, id-token, or webhook-signature',
+        },
+        inputs: {
+          type: 'object',
+          additionalProperties: { type: 'string' },
+          description:
+            'Inputs for the test. token: {token, clientId, clientSecret}. id-token: {idToken, appId}. webhook-signature: {secret, fixture}.',
+        },
       },
       required: ['testType', 'inputs'],
     },
   },
   {
     name: 'lookup_error',
-    description: 'Endpoint-aware error lookup',
+    description:
+      'Looks up OTPless error codes with likely causes, docs links, next checks, and suggested fixes. Surfaces: api, sdk, sna, android, telecom. Example: surface=sna, error_code=SP40003.',
     inputSchema: {
       type: 'object',
       properties: {
-        surface: { type: 'string' },
-        endpoint: { type: 'string' },
-        http_status: { type: 'number' },
-        error_code: { type: 'string' },
+        surface: {
+          type: 'string',
+          description: 'Error surface: api, sdk, sna, android, or telecom',
+        },
+        endpoint: { type: 'string', description: 'Endpoint or flow context' },
+        http_status: { type: 'number', description: 'HTTP status code' },
+        error_code: {
+          type: 'string',
+          description: 'OTPless error code (e.g. 7301, SP40003, 9106)',
+        },
       },
       required: ['surface', 'endpoint', 'http_status', 'error_code'],
     },
@@ -86,12 +131,20 @@ export const OTplessTools: Tool[] = [
   {
     name: 'run_optional_checks',
     description:
-      'Runs low-risk machine checks for stack integration verification',
+      'Runs automated machine checks against the codebase: package presence/version, secret exposure scanning, env var config, Android manifest verification, iOS plist checks, and commitResponse() presence.',
     inputSchema: {
       type: 'object',
       properties: {
-        stack: { type: 'string' },
-        flow: { type: 'string' },
+        stack: {
+          type: 'string',
+          description:
+            'Target stack: web-react, react-native, node-backend, or fastapi',
+        },
+        flow: {
+          type: 'string',
+          description:
+            'Auth flow: headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only, token-validation, id-token, or webhook',
+        },
       },
       required: ['stack', 'flow'],
     },

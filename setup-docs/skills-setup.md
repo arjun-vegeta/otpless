@@ -40,23 +40,23 @@ cp skills/codex/SKILL.md .codex/SKILL.md
 
 ## Supported Stacks
 
-| Stack | Description |
-|-------|-------------|
-| `web-react` | React / Next.js web apps |
+| Stack          | Description                              |
+| -------------- | ---------------------------------------- |
+| `web-react`    | React / Next.js web apps                 |
 | `react-native` | React Native mobile apps (Android + iOS) |
-| `node-backend` | Node.js / Express backend |
-| `fastapi` | Python FastAPI backend |
+| `node-backend` | Node.js / Express backend                |
+| `fastapi`      | Python FastAPI backend                   |
 
 ## Supported Flows
 
-| Flow | Frontend | Backend |
-|------|:---:|:---:|
-| `headless` | yes | — |
-| `prebuilt-ui` | yes | — |
-| `phone-otp` | yes | yes |
-| `oauth` (WhatsApp/Google/Apple) | yes | yes |
-| `magic-link` | yes | yes |
-| `sna-only` | yes | yes |
-| `token-validation` | — | yes |
-| `id-token` | — | yes |
-| `webhook` | — | yes |
+| Flow                            | Frontend | Backend |
+| ------------------------------- | :------: | :-----: |
+| `headless`                      |   yes    |    —    |
+| `prebuilt-ui`                   |   yes    |    —    |
+| `phone-otp`                     |   yes    |   yes   |
+| `oauth` (WhatsApp/Google/Apple) |   yes    |   yes   |
+| `magic-link`                    |   yes    |   yes   |
+| `sna-only`                      |   yes    |   yes   |
+| `token-validation`              |    —     |   yes   |
+| `id-token`                      |    —     |   yes   |
+| `webhook`                       |    —     |   yes   |

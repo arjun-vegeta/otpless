@@ -59,15 +59,15 @@ npm install -g otpless-cli
 
 ## Available MCP Tools
 
-| Tool | Description |
-|------|-------------|
-| `detect_stack` | Detect project stack and existing OTPless packages |
-| `get_docs` | Retrieve scoped documentation citations |
-| `scaffold_integration` | Generate implementation steps for a stack/flow |
-| `generate_verification_playbook` | Get verification checklist |
-| `run_optional_checks` | Run machine checks against the codebase |
-| `run_live_test` | Execute live API tests |
-| `lookup_error` | Look up error codes with causes and fixes |
+| Tool                             | Description                                        |
+| -------------------------------- | -------------------------------------------------- |
+| `detect_stack`                   | Detect project stack and existing OTPless packages |
+| `get_docs`                       | Retrieve scoped documentation citations            |
+| `scaffold_integration`           | Generate implementation steps for a stack/flow     |
+| `generate_verification_playbook` | Get verification checklist                         |
+| `run_optional_checks`            | Run machine checks against the codebase            |
+| `run_live_test`                  | Execute live API tests                             |
+| `lookup_error`                   | Look up error codes with causes and fixes          |
 
 ## Running from a Local Clone
 
