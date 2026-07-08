@@ -127,6 +127,24 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
       });
     }
   } else if (stack === STACKS.REACT_NATIVE) {
+    // Step 0: Install SDK dependency
+    const rnPackage =
+      flow === FLOWS.PREBUILT_UI
+        ? 'otpless-react-native-lp'
+        : 'otpless-headless-rn';
+    steps.push({
+      target: 'package.json',
+      action: `Install the OTPless SDK dependency: npm install ${rnPackage} — then run "cd ios && pod install" for iOS.`,
+      env_vars: [],
+      dashboard_notes: [],
+      docs_citations: [
+        'https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/headless/headless.md',
+      ],
+      expected_evidence: [
+        `${rnPackage} is listed in package.json dependencies.`,
+      ],
+    });
+
     // Return manifest / plist configuration as steps always for RN!
     steps.push({
       target: 'android/app/src/main/AndroidManifest.xml',
