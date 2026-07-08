@@ -44,9 +44,10 @@ describe('E2E CLI Tests', () => {
     const output = runCli('scaffold --stack fastapi --flow id-token');
     const parsed = JSON.parse(output);
     expect(Array.isArray(parsed)).toBe(true);
-    expect(parsed.length).toBeGreaterThan(0);
+    expect(parsed.length).toBeGreaterThan(1);
     expect(parsed[0]).toHaveProperty('target');
-    expect(parsed[0].target).toContain('app/api');
+    expect(parsed[0].target).toBe('_INSTRUCTIONS');
+    expect(parsed[1].target).toContain('app/api');
   });
 
   it('scaffold command generates SNA steps', () => {

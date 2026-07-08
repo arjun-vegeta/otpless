@@ -30,7 +30,7 @@ export function generatePlaybook(stack: Stack, flow: Flow): PlaybookItem[] {
             stack === STACKS.REACT_NATIVE
               ? 'https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/headless/headless.md'
               : stack === STACKS.ANDROID
-                ? 'https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/headless.md'
+                ? 'https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md'
                 : stack === STACKS.IOS
                   ? 'https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/headless/headless.md'
                   : 'https://otpless.com/docs/frontend-sdks/web-sdks/react/headless.md',
@@ -72,7 +72,7 @@ export function generatePlaybook(stack: Stack, flow: Flow): PlaybookItem[] {
           {
             url:
               stack === STACKS.ANDROID
-                ? 'https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/headless.md'
+                ? 'https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md'
                 : 'https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/headless/headless.md',
           },
         ],

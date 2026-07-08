@@ -1,6 +1,6 @@
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 import { detectStack } from '../../../packages/cli/src/engine/detect';
-import { getDocs } from '../../../packages/cli/src/engine/docs';
+import { getDocs, getDocByUrl } from '../../../packages/cli/src/engine/docs';
 import { scaffoldIntegration } from '../../../packages/cli/src/engine/scaffold';
 import {
   generatePlaybook,
@@ -21,14 +21,14 @@ export const OTplessTools: Tool[] = [
   {
     name: 'get_docs',
     description:
-      'Returns scoped OTPless documentation with code snippets from the bundled docs index. Use after scaffold to get implementation details. Call with stack="unknown" and flow="unknown" to get the full list of supported queries. Stacks: web-react, react-native, node-backend, fastapi. Flows: headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only, token-validation, id-token, webhook. Optional topic narrows results (e.g. "whatsapp", "smart-auth", "jwks").',
+      'Returns scoped OTPless documentation with code snippets from the bundled docs index. Use after scaffold to get implementation details. Call with stack="unknown" and flow="unknown" to get the full list of supported queries. You can also pass a "url" parameter to fetch a specific doc directly by its docs_citations URL from scaffold output. Stacks: web-react, react-native, android, ios, node-backend, fastapi. Flows: headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only, token-validation, id-token, webhook. Optional topic narrows results (e.g. "whatsapp", "smart-auth", "jwks").',
     inputSchema: {
       type: 'object',
       properties: {
         stack: {
           type: 'string',
           description:
-            'Target stack: web-react, react-native, node-backend, or fastapi',
+            'Target stack: web-react, react-native, android, ios, node-backend, or fastapi',
         },
         flow: {
           type: 'string',
@@ -40,8 +40,13 @@ export const OTplessTools: Tool[] = [
           description:
             'Optional topic to narrow results (e.g. whatsapp, smart-auth, jwks, session)',
         },
+        url: {
+          type: 'string',
+          description:
+            'Fetch a specific doc by its URL (from scaffold docs_citations). If provided, stack and flow are ignored.',
+        },
       },
-      required: ['stack', 'flow'],
+      required: [],
     },
   },
   {
@@ -161,11 +166,18 @@ export async function handleCallTool(
     case 'get_docs': {
       const parsed = z
         .object({
-          stack: StackSchema,
-          flow: FlowSchema,
+          stack: StackSchema.optional(),
+          flow: FlowSchema.optional(),
           topic: z.string().optional(),
+          url: z.string().optional(),
         })
         .parse(args);
+      if (parsed.url) {
+        return getDocByUrl(parsed.url);
+      }
+      if (!parsed.stack || !parsed.flow) {
+        return getDocs('unknown', 'unknown', parsed.topic);
+      }
       return getDocs(parsed.stack, parsed.flow, parsed.topic);
     }
     case 'scaffold_integration': {

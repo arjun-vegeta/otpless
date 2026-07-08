@@ -5,17 +5,19 @@ import { STACKS, FLOWS } from '../packages/cli/src/types';
 describe('Scaffold Engine', () => {
   it('generates scaffold steps for React Headless', () => {
     const steps = scaffoldIntegration(STACKS.WEB_REACT, FLOWS.HEADLESS);
-    expect(steps.length).toBeGreaterThan(1);
-    expect(steps[0].target).toBe('public/index.html');
-    expect(steps[1].target).toBe('src/App.tsx');
-    expect(steps[1].env_vars).toContain('REACT_APP_OTPLESS_APP_ID');
+    expect(steps.length).toBeGreaterThan(2);
+    expect(steps[0].target).toBe('_INSTRUCTIONS');
+    expect(steps[1].target).toBe('public/index.html');
+    expect(steps[2].target).toBe('src/App.tsx');
+    expect(steps[2].env_vars).toContain('REACT_APP_OTPLESS_APP_ID');
   });
 
   it('generates scaffold steps for FastAPI Token Validation', () => {
     const steps = scaffoldIntegration(STACKS.FASTAPI, FLOWS.TOKEN_VALIDATION);
-    expect(steps.length).toBeGreaterThan(0);
-    expect(steps[0].target).toBe('app/api/auth.py');
-    expect(steps[0].env_vars).toContain('OTPLESS_CLIENT_SECRET');
+    expect(steps.length).toBeGreaterThan(1);
+    expect(steps[0].target).toBe('_INSTRUCTIONS');
+    expect(steps[1].target).toBe('app/api/auth.py');
+    expect(steps[1].env_vars).toContain('OTPLESS_CLIENT_SECRET');
   });
 
   it('throws error for unsupported combos', () => {

@@ -22,6 +22,58 @@ export function getDocsDir(): string {
   return path.resolve(process.cwd(), 'docs');
 }
 
+export function getDocByUrl(url: string): DocCitation[] {
+  const docsDir = getDocsDir();
+
+  // Extract relative path from URL like "https://otpless.com/docs/sna/android-sdk.md"
+  let relativePath = url;
+  if (url.includes('otpless.com/docs/')) {
+    relativePath = url.split('otpless.com/docs/')[1];
+  } else if (url.startsWith('file://')) {
+    // Handle file:// URLs from the index
+    const filePath = url.replace('file://', '').split('#')[0];
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, 'utf-8');
+      const title =
+        content.match(/^#\s+(.+)$/m)?.[1] || path.basename(filePath, '.md');
+      return [{ title, url, content }];
+    }
+    return [
+      {
+        title: 'Doc Not Found',
+        url,
+        content: `File not found: ${filePath}`,
+      },
+    ];
+  }
+
+  // Try to find the file in the docs directory
+  const fullPath = path.join(docsDir, relativePath);
+  if (fs.existsSync(fullPath)) {
+    const content = fs.readFileSync(fullPath, 'utf-8');
+    const title =
+      content.match(/^#\s+(.+)$/m)?.[1] || path.basename(fullPath, '.md');
+    return [{ title, url, content }];
+  }
+
+  // Try without .md extension
+  const withMd = fullPath.endsWith('.md') ? fullPath : fullPath + '.md';
+  if (fs.existsSync(withMd)) {
+    const content = fs.readFileSync(withMd, 'utf-8');
+    const title =
+      content.match(/^#\s+(.+)$/m)?.[1] || path.basename(withMd, '.md');
+    return [{ title, url, content }];
+  }
+
+  return [
+    {
+      title: 'Doc Not Found',
+      url,
+      content: `No doc found for path: ${relativePath}. Use get_docs with stack and flow params instead.`,
+    },
+  ];
+}
+
 function getFlowDescription(stack: string, flow: string): string {
   const descriptions: Record<string, string> = {
     headless: 'Custom UI with SDK callbacks (phone, email, social)',

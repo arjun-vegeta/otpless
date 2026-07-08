@@ -308,7 +308,7 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
         'Add io.github.otpless-tech:otpless-headless-sdk to your dependencies and configure minSdk to at least 21.',
       env_vars: [],
       dashboard_notes: [],
-      docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/headless.md'],
+      docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md'],
       expected_evidence: ['otpless-headless-sdk dependency is added.'],
     });
     steps.push({
@@ -318,7 +318,7 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
       env_vars: [],
       dashboard_notes: ['Copy lowercase App ID to use as deep link scheme.'],
       docs_citations: [
-        'https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/headless.md',
+        'https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md',
       ],
       expected_evidence: [
         'Internet permission is configured.',
@@ -334,7 +334,7 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
           'Initialize OtplessSDK in onCreate, handle onNewIntent for callbacks, and start the Headless authentication flow.',
         env_vars: ['OTPLESS_APP_ID'],
         dashboard_notes: [],
-        docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/headless.md'],
+        docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md'],
         expected_evidence: [
           'OtplessSDK is initialized.',
           'onNewIntent handles deep links.',
@@ -379,7 +379,7 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
         dashboard_notes: [
           'Verify Phone OTP is enabled in your OTPless Dashboard.',
         ],
-        docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/headless.md'],
+        docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md'],
         expected_evidence: [
           'OtplessSDK is initialized.',
           'startHeadless is invoked with PHONE channel.',
@@ -392,7 +392,7 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
           'Initialize OtplessSDK in onCreate, handle onNewIntent, and trigger Social Login/OAuth flow.',
         env_vars: ['OTPLESS_APP_ID'],
         dashboard_notes: [],
-        docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/headless.md'],
+        docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md'],
         expected_evidence: [
           'OtplessSDK is initialized.',
           'startHeadless is invoked with OAUTH channel.',
@@ -764,5 +764,17 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
     );
   }
 
-  return steps;
+  // Prepend instruction header for the AI agent
+  const instructionStep: ScaffoldStep = {
+    target: '_INSTRUCTIONS',
+    action: `Follow the steps below in order to integrate OTPless ${flow} into your ${stack} project. Create a checklist/todo from these steps and implement each one. To get code snippets and detailed implementation examples for any step, call: get_docs(stack="${stack}", flow="${flow}"). You can also narrow results with a topic parameter, e.g. get_docs(stack="${stack}", flow="${flow}", topic="whatsapp"). Do NOT use web search — all documentation is bundled locally.`,
+    env_vars: [],
+    dashboard_notes: [
+      'Ensure you have created an account at https://otpless.com and have your App ID and Client credentials ready from the Dev Settings page.',
+    ],
+    docs_citations: [],
+    expected_evidence: [],
+  };
+
+  return [instructionStep, ...steps];
 }
