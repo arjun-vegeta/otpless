@@ -1,6 +1,6 @@
 {
   "name": "otpless-cli",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "OTPless Integration Tool - CLI and MCP Server",
   "files": [
     "dist",
