@@ -181,11 +181,11 @@ export function detectStack(
     if (fs.existsSync(requirementsTxtPath)) {
       const req = fs.readFileSync(requirementsTxtPath, 'utf-8');
       if (req.includes('fastapi')) isFastAPI = true;
-      const match = req.match(/(?:otpless-python|otpless)==([^\s#]+)/);
+      const match = req.match(/^(?:otpless-python|otpless)==([^\s#]+)/m);
       if (match) {
         declaredPythonVersion = match[1];
         hasOtplessPython = true;
-      } else if (req.includes('otpless-python') || req.includes('otpless')) {
+      } else if (/^(?:otpless-python|otpless)\s*(?:[>=<~!]|$)/m.test(req)) {
         hasOtplessPython = true;
       }
     }
@@ -193,15 +193,12 @@ export function detectStack(
       const pyproj = fs.readFileSync(pyprojectTomlPath, 'utf-8');
       if (pyproj.includes('fastapi')) isFastAPI = true;
       const match = pyproj.match(
-        /(?:otpless-python|otpless)\s*=\s*['"]([^'"]+)['"]/,
+        /(?:^|\s|"|')(?:otpless-python|otpless)\s*(?:[>=<~!]*\s*['"]?([^'"<>=~!\s,\]]+))?/m,
       );
-      if (match) {
+      if (match && match[1]) {
         declaredPythonVersion = match[1];
         hasOtplessPython = true;
-      } else if (
-        pyproj.includes('otpless-python') ||
-        pyproj.includes('otpless')
-      ) {
+      } else if (/(?:^|\s|"|')(?:otpless-python|otpless)(?:\s|"|'|$|[>=<~!,\]])/m.test(pyproj)) {
         hasOtplessPython = true;
       }
     }

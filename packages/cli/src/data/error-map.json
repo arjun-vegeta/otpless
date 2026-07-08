@@ -84,20 +84,29 @@
     }
   },
   "android": {
-    "101": {
-      "likely_causes": ["Missing internet permission", "Network unstable"],
-      "docs": ["https://otpless.com/docs/sna/android-sdk.md"],
-      "next_checks": ["Check AndroidManifest.xml for INTERNET permission"],
-      "suggested_fix": "Add `<uses-permission android:name=\"android.permission.INTERNET\" />` to AndroidManifest.xml"
+    "5003": {
+      "likely_causes": ["SDK failed to initialize", "Invalid App ID or configuration"],
+      "docs": ["https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/error-codes.md"],
+      "next_checks": ["Verify App ID is correct", "Check that SDK dependency is installed correctly"],
+      "suggested_fix": "Verify your App ID matches the dashboard. Ensure the SDK dependency version is correct and the app has internet permission."
     },
-    "SNA_WIFI_DETECTED": {
-      "likely_causes": [
-        "Device is connected to WiFi",
-        "SNA requires cellular data"
-      ],
-      "docs": ["https://otpless.com/docs/knowledge-base/sna/sna-101.md"],
-      "next_checks": ["Check connection manager state"],
-      "suggested_fix": "Silent Network Authentication strictly requires a cellular connection. Fallback to WhatsApp or OTP if WiFi is active."
+    "9100": {
+      "likely_causes": ["Socket timeout exception", "Slow or unstable network connection"],
+      "docs": ["https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/error-codes.md"],
+      "next_checks": ["Check network connectivity", "Verify no firewall is blocking OTPless endpoints"],
+      "suggested_fix": "Check the device's network connection. Retry the request or show a network error indicator to the user."
+    },
+    "9103": {
+      "likely_causes": ["Unknown host exception", "DNS resolution failed for OTPless endpoints"],
+      "docs": ["https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/error-codes.md"],
+      "next_checks": ["Verify internet permission in AndroidManifest.xml", "Check DNS settings"],
+      "suggested_fix": "Ensure <uses-permission android:name=\"android.permission.INTERNET\" /> is in AndroidManifest.xml and the device has a working internet connection."
+    },
+    "9104": {
+      "likely_causes": ["IOException during network request", "Connection interrupted"],
+      "docs": ["https://otpless.com/docs/frontend-sdks/app-sdks/android/new/references/error-codes.md"],
+      "next_checks": ["Check network stability"],
+      "suggested_fix": "Retry the request. If persistent, verify network connectivity and proxy/VPN settings."
     }
   },
   "sdk": {
@@ -208,85 +217,143 @@
   "sna": {
     "SP40003": {
       "likely_causes": [
-        "Unsupported carrier detected",
-        "SNA not enabled for this carrier on OTPless dashboard"
+        "SNA verification could not be completed",
+        "Carrier verification failed for unspecified reason"
       ],
-      "docs": ["https://otpless.com/docs/sna/overview.md"],
-      "next_checks": ["Check operator name or MNC/MCC parameters"],
-      "suggested_fix": "Trigger fallback authentication channel like WhatsApp/SMS since cellular network is unsupported."
+      "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
+      "next_checks": ["Retry the flow", "Check if SNA is enabled for this carrier on OTPless dashboard"],
+      "suggested_fix": "Trigger fallback authentication channel like WhatsApp/SMS. If persistent, contact OTPless support."
     },
     "SP40004": {
       "likely_causes": [
-        "Could not bind connection to cellular interface",
-        "Dual SIM card mismatch"
+        "Country not supported for SNA verification",
+        "Verification is not available for the user's region yet"
       ],
-      "docs": ["https://otpless.com/docs/sna/react-native-sdk.md"],
-      "next_checks": ["Verify connection manager cellular status"],
-      "suggested_fix": "Ensure mobile data connectivity is active and preferred. Fall back to OTP/Social."
+      "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
+      "next_checks": ["Check user's country code against SNA-supported regions"],
+      "suggested_fix": "SNA is not available in this country. Fall back to OTP/WhatsApp authentication for this user."
     },
     "SP40011": {
       "likely_causes": [
-        "SIM card is not present or has been ejected during handshake"
+        "Phone number doesn't match the SIM or network",
+        "User entered a different number than the one on their active SIM"
       ],
       "docs": [
-        "https://otpless.com/docs/frontend-sdks/app-sdks/react-native/legacy/references/sim-ejection-analysis-react-native.md"
+        "https://otpless.com/docs/sna/api-error-codes.md"
       ],
-      "next_checks": ["Check SIM state manager API"],
-      "suggested_fix": "SIM card unavailable. Prompt the user to insert SIM or verify via alternative flow."
+      "next_checks": ["Verify the user is using the correct phone number for their active SIM"],
+      "suggested_fix": "The phone number doesn't match the SIM. Prompt the user to use the correct number or fall back to OTP."
     },
     "SP40021": {
       "likely_causes": [
-        "Handshake gateway timed out",
-        "Slow cellular network connection"
+        "Device could not establish a connection to the operator host URL",
+        "Cellular data connection unstable or unavailable"
       ],
       "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
       "next_checks": [
-        "Measure cellular latency / round-trip-time to telecom endpoint"
+        "Check device data connection and DNS resolution to operator endpoints"
       ],
-      "suggested_fix": "Increase SNA timeout limits, or fallback to OTP authentication."
+      "suggested_fix": "Verify mobile data is active. If persistent, fallback to OTP authentication."
     },
     "SP40023": {
       "likely_causes": [
-        "VPN is active, routing carrier data away",
+        "Unspecified error while contacting the operator host URL",
+        "VPN or proxy interfering with carrier endpoint",
         "IP address mismatch with carrier registration"
       ],
       "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
-      "next_checks": ["Check active network proxies / VPN interfaces"],
-      "suggested_fix": "Ask the user to disable VPN interfaces or fallback to WhatsApp channel."
+      "next_checks": ["Check for active VPN or proxy interfaces", "Verify mobile data route to carrier endpoint"],
+      "suggested_fix": "Ask the user to disable VPN/proxy if active, or fallback to WhatsApp/SMS channel."
     },
     "SP40025": {
-      "likely_causes": ["Telecom operator API transient failure"],
+      "likely_causes": [
+        "Verification failed with an unclassified error",
+        "Unknown error from carrier or OTPless system"
+      ],
       "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
-      "next_checks": ["Check carrier platform outages"],
-      "suggested_fix": "Fallback to WhatsApp or SMS OTP verification immediately."
+      "next_checks": ["Check carrier platform status", "Retry the verification"],
+      "suggested_fix": "Fallback to WhatsApp or SMS OTP verification. If persistent, contact OTPless support."
     },
     "SP50001": {
       "likely_causes": [
-        "OTPless routing node or telecom gateway service is completely offline"
+        "Internal error on OTPless side",
+        "Something went wrong on OTPless servers"
       ],
-      "docs": ["https://otpless.com/docs/sna/overview.md"],
-      "next_checks": ["Monitor OTPless platform status page"],
-      "suggested_fix": "Use local fallback options or check system health indicators."
+      "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
+      "next_checks": ["Retry the request", "Monitor OTPless status page"],
+      "suggested_fix": "Retry the verification. If persistent, fallback to OTP/WhatsApp and contact OTPless support."
     }
   },
   "telecom": {
     "70001": {
       "likely_causes": [
-        "SIM swap check failed",
-        "Recent IMSI modification detected for user number"
+        "Missing clientId or clientSecret headers in the request",
+        "Client credentials not provided"
       ],
-      "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
-      "next_checks": ["Check sim swap logs on telecom side"],
-      "suggested_fix": "Recent SIM swap detected. Block high-value transactions or enforce email MFA validation."
+      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
+      "next_checks": ["Verify clientId and clientSecret are included in request headers"],
+      "suggested_fix": "Add clientId and clientSecret headers to your Telecom API request. Get these from the OTPless dashboard Dev Settings."
+    },
+    "70002": {
+      "likely_causes": [
+        "Invalid clientId or clientSecret",
+        "Credentials do not match any active application"
+      ],
+      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
+      "next_checks": ["Verify credentials match the OTPless dashboard"],
+      "suggested_fix": "Double-check your clientId and clientSecret against the OTPless dashboard Dev Settings page."
+    },
+    "P7102": {
+      "likely_causes": [
+        "Invalid phone number format",
+        "Phone number is missing or malformed"
+      ],
+      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
+      "next_checks": ["Verify phone number includes country code and is correctly formatted"],
+      "suggested_fix": "Ensure the phone number is valid and includes the correct country code."
+    },
+    "P7301": {
+      "likely_causes": [
+        "Unable to retrieve operator details from the upstream provider",
+        "Telecom lookup failed"
+      ],
+      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
+      "next_checks": ["Retry the request", "Check if the operator is supported"],
+      "suggested_fix": "Retry the request. The upstream telecom provider may be temporarily unavailable."
+    },
+    "P7311": {
+      "likely_causes": [
+        "SIM swap check is not supported for this phone number's operator"
+      ],
+      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
+      "next_checks": ["Check operator support for SIM swap checks"],
+      "suggested_fix": "SIM swap check is not available for this operator. Consider alternative fraud detection methods."
+    },
+    "P7314": {
+      "likely_causes": [
+        "SIM swap check could not be completed",
+        "Upstream provider failed to return SIM swap data"
+      ],
+      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
+      "next_checks": ["Retry the request"],
+      "suggested_fix": "The SIM swap check failed. Retry or proceed with alternative verification."
+    },
+    "P7331": {
+      "likely_causes": [
+        "Call forwarding check is not supported for this phone number's operator"
+      ],
+      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
+      "next_checks": ["Check operator support for call forwarding checks"],
+      "suggested_fix": "Call forwarding check is not available for this operator."
     },
     "P7334": {
       "likely_causes": [
-        "Call forwarding check error",
-        "Operator did not return call status details"
+        "Call forwarding check could not be completed",
+        "Upstream provider failed to return call forwarding status"
       ],
-      "docs": ["https://otpless.com/docs/sna/api-error-codes.md"],
-      "next_checks": ["Check active carrier call forwarding flags"],
-      "suggested_fix": "Verify that call forwarding is disabled on user SIM card before proceeding."
+      "docs": ["https://otpless.com/docs/api-reference/endpoint/telecom/errors.md"],
+      "next_checks": ["Retry the request"],
+      "suggested_fix": "The call forwarding check failed. Retry or proceed without this signal."
     }
   }
 }

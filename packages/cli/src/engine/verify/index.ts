@@ -18,7 +18,14 @@ export function generatePlaybook(stack: Stack, flow: Flow): PlaybookItem[] {
       id: 'frontend-callback-handling',
       requirement:
         'Frontend SDK callback must properly handle success and failure states.',
-      docs: [{ url: 'https://otpless.com/docs' }],
+      docs: [
+        {
+          url:
+            stack === STACKS.REACT_NATIVE
+              ? 'https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/headless/headless.md'
+              : 'https://otpless.com/docs/frontend-sdks/web-sdks/react/headless.md',
+        },
+      ],
       agent_steps: [
         'Inspect the frontend component where OTPless is initialized.',
         'Verify the callback handles both valid tokens and error states.',
@@ -95,25 +102,27 @@ export function generatePlaybook(stack: Stack, flow: Flow): PlaybookItem[] {
       });
     }
 
-    items.push({
-      id: 'commit-response-check',
-      requirement:
-        'Every frontend SDK callback must invoke commitResponse(response).',
-      docs: [
-        {
-          url: 'https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/headless/headless.md',
-        },
-      ],
-      agent_steps: [
-        'Check that the callback registered via setResponseCallback calls headlessModule.commitResponse(response).',
-      ],
-      expected_evidence: [
-        'headlessModule.commitResponse(...) is present in response handling.',
-      ],
-      failure_examples: [
-        'Omitted commitResponse calls leading to silent auth failures.',
-      ],
-    });
+    if (stack === STACKS.REACT_NATIVE) {
+      items.push({
+        id: 'commit-response-check',
+        requirement:
+          'Every frontend SDK callback must invoke commitResponse(response).',
+        docs: [
+          {
+            url: 'https://otpless.com/docs/frontend-sdks/app-sdks/react-native/new/headless/headless.md',
+          },
+        ],
+        agent_steps: [
+          'Check that the callback registered via setResponseCallback calls headlessModule.commitResponse(response).',
+        ],
+        expected_evidence: [
+          'headlessModule.commitResponse(...) is present in response handling.',
+        ],
+        failure_examples: [
+          'Omitted commitResponse calls leading to silent auth failures.',
+        ],
+      });
+    }
 
     items.push({
       id: 'smart-auth-fallback-handling',
