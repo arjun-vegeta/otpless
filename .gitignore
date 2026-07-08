@@ -36,3 +36,4 @@ eslint-debug.log*
 .otpless-docs-cache.json
 .eslintcache
 .vitest/
+build-docs/
