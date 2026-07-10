@@ -26,9 +26,23 @@ Once you have the MCP server configured (or the CLI installed), just tell your a
 
 > "SNA is returning SP40003 on my React Native app. What does it mean and how do I fix it?"
 
+### Android Native + SNA
+
+> "Integrate OTPless Silent Network Authentication into my Android (Kotlin) app. Use the otpless-cli to detect my stack, scaffold the integration, and verify it."
+
+> "Add WhatsApp login to my Android app using OTPless headless SDK. Use the otpless-cli to scaffold and verify."
+
+### iOS Native + SNA
+
+> "Integrate OTPless SNA authentication into my iOS (Swift) app. Use the otpless-cli to detect my stack, scaffold the integration, and verify it."
+
+> "Add phone OTP login to my iOS app using OTPless. Use the otpless-cli to scaffold and verify the integration."
+
 ### Full Integration (Frontend + Backend)
 
 > "I need to add OTPless authentication to my project. I have a React Native frontend and FastAPI backend. Use the otpless-cli to detect my stack, scaffold both frontend (sna-only) and backend (token-validation), then verify everything."
+
+> "I have an Android native frontend and a Node.js backend. Scaffold OTPless SNA for Android and token-validation for the backend, then verify both."
 
 ## CLI Workflow Example
 
@@ -55,4 +69,45 @@ otpless-cli errors --surface sna --endpoint /auth --http-status 400 --error-code
 
 # 7. Validate with real credentials
 otpless-cli live-test token --token "..." --client-id "..." --client-secret "..."
+```
+
+## Android Native Workflow Example
+
+```bash
+# 1. Detect your stack
+otpless-cli detect
+
+# 2. Get relevant docs
+otpless-cli docs --stack android --flow sna-only
+
+# 3. Generate scaffold steps
+otpless-cli scaffold --stack android --flow sna-only
+
+# 4. After implementing, generate verification playbook
+otpless-cli verify --stack android --flow sna-only
+
+# 5. Run automated checks
+otpless-cli verify --stack android --flow sna-only --run-checks
+
+# 6. Look up Android-specific errors
+otpless-cli errors --surface android --endpoint /init --http-status 400 --error-code 7001
+```
+
+## iOS Native Workflow Example
+
+```bash
+# 1. Detect your stack
+otpless-cli detect
+
+# 2. Get relevant docs
+otpless-cli docs --stack ios --flow sna-only
+
+# 3. Generate scaffold steps
+otpless-cli scaffold --stack ios --flow sna-only
+
+# 4. After implementing, generate verification playbook
+otpless-cli verify --stack ios --flow sna-only
+
+# 5. Run automated checks
+otpless-cli verify --stack ios --flow sna-only --run-checks
 ```

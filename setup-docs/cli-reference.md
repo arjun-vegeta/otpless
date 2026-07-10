@@ -119,5 +119,7 @@ otpless-cli live-test webhook-signature --secret "YOUR_SECRET" --fixture ./paylo
 | -------------- | --------------------------------------------------------------------------- |
 | `web-react`    | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only               |
 | `react-native` | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only               |
+| `android`      | headless, prebuilt-ui, phone-otp, oauth, sna-only                           |
+| `ios`          | headless, prebuilt-ui, phone-otp, oauth, sna-only                           |
 | `node-backend` | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna-only |
 | `fastapi`      | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna-only |

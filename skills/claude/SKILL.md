@@ -31,6 +31,8 @@ Use whichever interface is available in your environment. Examples below use CLI
 | -------------- | ---------------------------------------- |
 | `web-react`    | React / Next.js web apps                 |
 | `react-native` | React Native mobile apps (Android + iOS) |
+| `android`      | Android Native (Kotlin / Java)           |
+| `ios`          | iOS Native (Swift / Objective-C)         |
 | `node-backend` | Node.js / Express backend                |
 | `fastapi`      | Python FastAPI backend                   |
 
@@ -98,6 +100,23 @@ Use whichever interface is available in your environment. Examples below use CLI
 - iOS: requires NSAppTransportSecurity exception domains (api-csp.airtel.in, v4-api-csp.airtel.in, in-vil.ipification.com, partnerapi.jio.com, 80.in.safr.sekuramobile.com)
 - Backend must implement Create API (POST) and poll Status Check API (GET) for final auth result
 - Handle AUTH_TERMINATED callback gracefully with fallback UI
+
+### Android Native SNA
+
+- Add `networkSecurityConfig` to `AndroidManifest.xml` pointing to a network security XML that allows cleartext for SNA carrier domains
+- Initialize OTPless SDK in `Application.onCreate()` with your App ID
+- Use `OtplessView` or the headless SDK callback to receive the auth result
+- Backend must poll the Status Check API (GET) for final SNA result — the SDK callback alone is not authoritative
+- Handle `AUTH_TERMINATED` with a fallback to OTP or another channel
+
+### iOS Native SNA
+
+- Add NSAppTransportSecurity exception domains in `Info.plist` for SNA carrier endpoints
+- Initialize the OTPless SDK in `AppDelegate` with your App ID
+- Use the headless delegate/callback to receive auth results
+- Backend must poll the Status Check API (GET) for final SNA result
+- For Swift Package Manager: add the OTPless iOS SDK package via Xcode or `Package.swift`
+- For CocoaPods: add `pod 'OtplessSDK'` to your `Podfile`
 
 ### Webhook Verification
 
