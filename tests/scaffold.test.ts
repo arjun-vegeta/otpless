@@ -20,6 +20,25 @@ describe('Scaffold Engine', () => {
     expect(steps[1].env_vars).toContain('OTPLESS_CLIENT_SECRET');
   });
 
+  it('generates scaffold steps for Angular Headless', () => {
+    const steps = scaffoldIntegration(STACKS.ANGULAR, FLOWS.HEADLESS);
+    expect(steps.length).toBeGreaterThan(2);
+    expect(steps[0].target).toBe('_INSTRUCTIONS');
+    expect(steps[1].target).toBe('src/index.html');
+  });
+
+  it('generates scaffold steps for Flutter Headless', () => {
+    const steps = scaffoldIntegration(STACKS.FLUTTER, FLOWS.HEADLESS);
+    expect(steps.length).toBeGreaterThan(3);
+    expect(steps[1].target).toBe('pubspec.yaml');
+  });
+
+  it('generates scaffold steps for Django Token Validation', () => {
+    const steps = scaffoldIntegration(STACKS.DJANGO, FLOWS.TOKEN_VALIDATION);
+    expect(steps.length).toBeGreaterThan(1);
+    expect(steps[1].env_vars).toContain('OTPLESS_CLIENT_SECRET');
+  });
+
   it('throws error for unsupported combos', () => {
     expect(() =>
       scaffoldIntegration(

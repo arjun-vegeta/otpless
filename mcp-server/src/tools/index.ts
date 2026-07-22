@@ -15,20 +15,20 @@ export const OTplessTools: Tool[] = [
   {
     name: 'detect_stack',
     description:
-      'Detects the project stack (web-react, react-native, node-backend, fastapi), package manager, existing OTPless SDK packages, and detected auth flows. Run this first before scaffold or docs.',
+      'Detects the project stack (web-react, react-native, android, ios, angular, vue, javascript, flutter, ionic, django, flask, laravel, spring, go, rails, etc.), package manager, existing OTPless SDK packages, and detected auth flows. Run this first before scaffold or docs.',
     inputSchema: { type: 'object', properties: {} },
   },
   {
     name: 'get_docs',
     description:
-      'Returns scoped OTPless documentation with code snippets from the bundled docs index. Use after scaffold to get implementation details. Call with stack="unknown" and flow="unknown" to get the full list of supported queries. You can also pass a "url" parameter to fetch a specific doc directly by its docs_citations URL from scaffold output. Stacks: web-react, react-native, android, ios, node-backend, fastapi. Flows: headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only, token-validation, id-token, webhook. Optional topic narrows results (e.g. "whatsapp", "smart-auth", "jwks").',
+      'Returns scoped OTPless documentation with code snippets from the bundled docs index. Call with stack="unknown" and flow="unknown" to get the full list of supported queries. You can also pass a "url" parameter to fetch a specific doc directly by its docs_citations URL from scaffold output. Supported stacks: web-react, react-native, android, ios, node-backend, fastapi, angular, vue, javascript, flutter, ionic, django, flask, laravel, spring, go, rails, etc.',
     inputSchema: {
       type: 'object',
       properties: {
         stack: {
           type: 'string',
           description:
-            'Target stack: web-react, react-native, android, ios, node-backend, or fastapi',
+            'Target stack e.g. web-react, react-native, android, ios, flutter, node-backend, fastapi, django, flask, laravel, spring, go, rails',
         },
         flow: {
           type: 'string',
@@ -52,14 +52,14 @@ export const OTplessTools: Tool[] = [
   {
     name: 'scaffold_integration',
     description:
-      'Generates step-by-step implementation instructions for integrating OTPless. Returns target files, actions, env vars, dashboard notes, docs citations, and expected evidence. Stacks: web-react, react-native, node-backend, fastapi. Flows: headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only, token-validation, id-token, webhook.',
+      'Generates step-by-step implementation instructions for integrating OTPless. Returns target files, actions, env vars, dashboard notes, docs citations, and expected evidence. Supports all 22 frameworks including web-react, react-native, android, ios, flutter, angular, vue, javascript, ionic, node-backend, fastapi, django, flask, laravel, spring, go, rails.',
     inputSchema: {
       type: 'object',
       properties: {
         stack: {
           type: 'string',
           description:
-            'Target stack: web-react, react-native, node-backend, or fastapi',
+            'Target stack e.g. web-react, react-native, android, ios, flutter, node-backend, fastapi, django, flask, laravel, spring, go, rails',
         },
         flow: {
           type: 'string',
@@ -73,14 +73,14 @@ export const OTplessTools: Tool[] = [
   {
     name: 'generate_verification_playbook',
     description:
-      'Generates a verification checklist to confirm OTPless integration correctness. Checks callback handling, secret exposure, native configs (Android/iOS), commitResponse calls, HMAC webhook verification, and more.',
+      'Generates a verification checklist to confirm OTPless integration correctness. Checks callback handling, secret exposure, native configs (Android/iOS), commitResponse calls, HMAC webhook verification, and more across all 22 tech stacks.',
     inputSchema: {
       type: 'object',
       properties: {
         stack: {
           type: 'string',
           description:
-            'Target stack: web-react, react-native, node-backend, or fastapi',
+            'Target stack e.g. web-react, react-native, android, ios, flutter, angular, vue, javascript, ionic, node-backend, fastapi, django, flask, laravel, spring, go, rails',
         },
         flow: {
           type: 'string',
@@ -136,14 +136,14 @@ export const OTplessTools: Tool[] = [
   {
     name: 'run_optional_checks',
     description:
-      'Runs automated machine checks against the codebase: package presence/version, secret exposure scanning, env var config, Android manifest verification, iOS plist checks, and commitResponse() presence.',
+      'Runs automated machine checks against the codebase: package presence/version, secret exposure scanning, env var config, Android manifest verification, iOS plist checks, and commitResponse() presence across all 22 tech stacks.',
     inputSchema: {
       type: 'object',
       properties: {
         stack: {
           type: 'string',
           description:
-            'Target stack: web-react, react-native, node-backend, or fastapi',
+            'Target stack e.g. web-react, react-native, android, ios, flutter, angular, vue, javascript, ionic, node-backend, fastapi, django, flask, laravel, spring, go, rails',
         },
         flow: {
           type: 'string',

@@ -86,4 +86,50 @@ describe('detectStack', () => {
     expect(result.otpless_packages[0].name).toBe('otpless-react');
     expect(result.otpless_packages[0].resolved_version).toBe('2.1.3');
   });
+
+  it('detects an Angular project', () => {
+    vi.spyOn(fs, 'existsSync').mockImplementation((path: fs.PathLike) => {
+      if (path.toString().includes('package.json')) return true;
+      return false;
+    });
+
+    vi.spyOn(fs, 'readFileSync').mockImplementation(() => {
+      return JSON.stringify({
+        dependencies: {
+          '@angular/core': '^16.0.0',
+        },
+      });
+    });
+
+    const result = detectStack('/mock/dir');
+    expect(result.platforms).toContain('angular');
+    expect(result.frameworks).toContain('angular');
+  });
+
+  it('detects a Flutter project', () => {
+    vi.spyOn(fs, 'existsSync').mockImplementation((path: fs.PathLike) => {
+      if (path.toString().includes('pubspec.yaml')) return true;
+      return false;
+    });
+
+    vi.spyOn(fs, 'readFileSync').mockImplementation(() => {
+      return 'name: my_app\ndependencies:\n  flutter:\n    sdk: flutter\n  otpless_headless_flutter: ^2.0.0';
+    });
+
+    const result = detectStack('/mock/dir');
+    expect(result.platforms).toContain('flutter');
+    expect(result.package_manager).toBe('pub');
+    expect(result.otpless_packages).toHaveLength(1);
+  });
+
+  it('detects a Go project', () => {
+    vi.spyOn(fs, 'existsSync').mockImplementation((path: fs.PathLike) => {
+      if (path.toString().includes('go.mod')) return true;
+      return false;
+    });
+
+    const result = detectStack('/mock/dir');
+    expect(result.platforms).toContain('go');
+    expect(result.package_manager).toBe('go');
+  });
 });
