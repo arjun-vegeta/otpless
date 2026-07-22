@@ -109,6 +109,22 @@ export function getDocs(
               'ios',
               'node-backend',
               'fastapi',
+              'angular',
+              'vue',
+              'javascript',
+              'flutter-web',
+              'flutter',
+              'ionic',
+              'cmp',
+              'django',
+              'flask',
+              'laravel',
+              'spring',
+              'go',
+              'rails',
+              'wordpress',
+              'shopify',
+              'magento',
             ],
             flows: {
               frontend: [
@@ -179,7 +195,14 @@ export function getDocs(
       stack === 'web-react' ||
       stack === 'react-native' ||
       stack === 'android' ||
-      stack === 'ios';
+      stack === 'ios' ||
+      stack === 'angular' ||
+      stack === 'vue' ||
+      stack === 'javascript' ||
+      stack === 'flutter-web' ||
+      stack === 'flutter' ||
+      stack === 'ionic' ||
+      stack === 'cmp';
     const flows = isFrontend ? frontendFlows : backendFlows;
 
     const examples = flows.map((f) => ({
@@ -220,8 +243,17 @@ export function getDocs(
 
   let query = `${stack} ${flow} ${_topic || ''}`.trim();
 
-  // Augment queries for backend stacks to help the search engine find API reference docs
-  if (stack === 'node-backend' || stack === 'fastapi') {
+  const isBackendStack =
+    stack === 'node-backend' ||
+    stack === 'fastapi' ||
+    stack === 'django' ||
+    stack === 'flask' ||
+    stack === 'laravel' ||
+    stack === 'spring' ||
+    stack === 'go' ||
+    stack === 'rails';
+
+  if (isBackendStack) {
     if (flow === 'token-validation') {
       query += ' verifytoken verify-token-with-secure-data api-reference';
     } else if (flow === 'phone-otp') {
@@ -235,8 +267,15 @@ export function getDocs(
     }
   }
 
-  // Augment web-react sna-only to prioritize the web SNA guide
-  if (stack === 'web-react' && flow === 'sna-only') {
+  const isWebStack =
+    stack === 'web-react' ||
+    stack === 'angular' ||
+    stack === 'vue' ||
+    stack === 'javascript' ||
+    stack === 'flutter-web';
+
+  // Augment web sna-only to prioritize the web SNA guide
+  if (isWebStack && flow === 'sna-only') {
     query += ' sna-web smart-auth';
   }
 

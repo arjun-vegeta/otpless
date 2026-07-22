@@ -4,14 +4,8 @@ import { Stack, Flow, StackSchema, FlowSchema } from '../types';
 
 export const docsCommand = new Command('docs')
   .description('Returns scoped OTPless docs packets from the local docs index.')
-  .option(
-    '--stack <stack>',
-    'The tech stack (e.g., web-react, node-backend)',
-  )
-  .option(
-    '--flow <flow>',
-    'The flow (e.g., headless, token-validation)',
-  )
+  .option('--stack <stack>', 'The tech stack (e.g., web-react, node-backend)')
+  .option('--flow <flow>', 'The flow (e.g., headless, token-validation)')
   .option('--topic <topic>', 'Specific topic to search for')
   .option('--url <url>', 'Fetch a specific doc by its URL or path')
   .action((options) => {

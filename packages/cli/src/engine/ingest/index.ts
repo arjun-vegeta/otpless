@@ -179,7 +179,13 @@ export function searchIndex(
       if (
         query.includes('fastapi') ||
         query.includes('node') ||
-        query.includes('backend')
+        query.includes('backend') ||
+        query.includes('django') ||
+        query.includes('flask') ||
+        query.includes('laravel') ||
+        query.includes('spring') ||
+        query.includes('go') ||
+        query.includes('rails')
       ) {
         if (
           lowerUrl.includes('android') ||
@@ -229,6 +235,118 @@ export function searchIndex(
         }
         if (lowerUrl.includes('web-sdks/react')) {
           score += 10;
+        }
+      }
+
+      if (query.includes('angular')) {
+        if (lowerUrl.includes('web-sdks/angular')) {
+          score += 25;
+        }
+        if (lowerUrl.includes('app-sdks/') || lowerUrl.includes('api-reference')) {
+          score -= 20;
+        }
+      }
+
+      if (query.includes('vue')) {
+        if (lowerUrl.includes('web-sdks/vue')) {
+          score += 25;
+        }
+        if (lowerUrl.includes('app-sdks/') || lowerUrl.includes('api-reference')) {
+          score -= 20;
+        }
+      }
+
+      if (query.includes('javascript')) {
+        if (lowerUrl.includes('web-sdks/javascript')) {
+          score += 25;
+        }
+        if (lowerUrl.includes('app-sdks/') || lowerUrl.includes('api-reference')) {
+          score -= 20;
+        }
+      }
+
+      if (query.includes('flutter-web')) {
+        if (lowerUrl.includes('web-sdks/flutter-web')) {
+          score += 25;
+        }
+        if (lowerUrl.includes('app-sdks/')) {
+          score -= 20;
+        }
+      }
+
+      if (query.includes('flutter') && !query.includes('flutter-web')) {
+        if (
+          lowerUrl.includes('android') ||
+          lowerUrl.includes('ios') ||
+          lowerUrl.includes('react-native') ||
+          lowerUrl.includes('web-sdks')
+        ) {
+          score -= 20;
+        }
+        if (lowerUrl.includes('app-sdks/flutter')) {
+          score += 15;
+          if (lowerUrl.includes('/new/')) score += 20;
+          if (lowerUrl.includes('/legacy/')) score -= 15;
+          if (lowerUrl.includes('changelog')) score -= 15;
+        }
+      }
+
+      if (query.includes('android')) {
+        if (
+          lowerUrl.includes('ios') ||
+          lowerUrl.includes('flutter') ||
+          lowerUrl.includes('react-native') ||
+          lowerUrl.includes('web-sdks')
+        ) {
+          score -= 20;
+        }
+        if (lowerUrl.includes('app-sdks/android')) {
+          score += 15;
+          if (lowerUrl.includes('/new/')) score += 20;
+          if (lowerUrl.includes('/legacy/')) score -= 15;
+          if (lowerUrl.includes('changelog')) score -= 15;
+        }
+      }
+
+      if (query.includes('ios')) {
+        if (
+          lowerUrl.includes('android') ||
+          lowerUrl.includes('flutter') ||
+          lowerUrl.includes('react-native') ||
+          lowerUrl.includes('web-sdks')
+        ) {
+          score -= 20;
+        }
+        if (lowerUrl.includes('app-sdks/ios')) {
+          score += 15;
+          if (lowerUrl.includes('/new/')) score += 20;
+          if (lowerUrl.includes('/legacy/')) score -= 15;
+          if (lowerUrl.includes('changelog')) score -= 15;
+        }
+      }
+
+      if (query.includes('ionic')) {
+        if (lowerUrl.includes('app-sdks/ionic')) {
+          score += 25;
+          if (lowerUrl.includes('/headless/intro') || lowerUrl.includes('/intro')) {
+            score += 15;
+          }
+        }
+      }
+
+      if (query.includes('cmp')) {
+        if (lowerUrl.includes('app-sdks/cmp')) {
+          score += 25;
+        }
+      }
+
+      if (
+        query.includes('wordpress') ||
+        query.includes('shopify') ||
+        query.includes('magento')
+      ) {
+        if (lowerUrl.includes('introduction') || lowerUrl.includes('quick-start')) {
+          score += 20;
         }
       }
 
