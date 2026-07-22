@@ -73,14 +73,12 @@ The agent will use the CLI/MCP tools to detect your stack, pull the right docs, 
 
 ## What It Supports
 
-| Stack             | Flows                                                                  |
-| ----------------- | ---------------------------------------------------------------------- |
-| React / Next.js   | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna               |
-| React Native      | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna               |
-| Android Native    | headless, prebuilt-ui, phone-otp, oauth, sna                           |
-| iOS Native        | headless, prebuilt-ui, phone-otp, oauth, sna                           |
-| Node.js / Express | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna |
-| FastAPI           | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna |
+| Category | Tech Stacks | Supported Flows |
+| --- | --- | --- |
+| **Web Apps** | React / Next.js, Angular, Vue.js, Vanilla JavaScript, Flutter Web | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna |
+| **Mobile Apps** | React Native, Android Native, iOS Native, Flutter, Ionic, Compose Multiplatform (CMP) | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna |
+| **Backend APIs** | Node.js / Express, FastAPI, Django, Flask, Laravel, Spring Boot, Go, Ruby on Rails | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna |
+| **CMS Platforms** | WordPress, Shopify, Magento | script/plugin template, token-validation, webhook |
 
 ## Detailed Docs
 
