@@ -1,12 +1,13 @@
 {
   "name": "otpless-cli",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "OTPless Integration Tool - CLI and MCP Server",
   "files": [
     "dist",
     "docs",
     "skills",
-    "setup-docs"
+    "setup-docs",
+    "LICENSE"
   ],
   "main": "dist/packages/cli/src/index.js",
   "bin": {
