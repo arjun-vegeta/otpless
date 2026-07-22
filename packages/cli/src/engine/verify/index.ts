@@ -17,7 +17,14 @@ export function generatePlaybook(stack: Stack, flow: Flow): PlaybookItem[] {
     stack === STACKS.WEB_REACT ||
     stack === STACKS.REACT_NATIVE ||
     stack === STACKS.ANDROID ||
-    stack === STACKS.IOS;
+    stack === STACKS.IOS ||
+    stack === STACKS.ANGULAR ||
+    stack === STACKS.VUE ||
+    stack === STACKS.JAVASCRIPT ||
+    stack === STACKS.FLUTTER_WEB ||
+    stack === STACKS.FLUTTER ||
+    stack === STACKS.IONIC ||
+    stack === STACKS.CMP;
 
   if (isFrontend) {
     items.push({
@@ -507,7 +514,12 @@ export async function runOptionalChecks(
         file.endsWith('.swift') ||
         file.endsWith('.java') ||
         file.endsWith('.m') ||
-        file.endsWith('.h')
+        file.endsWith('.h') ||
+        file.endsWith('.dart') ||
+        file.endsWith('.py') ||
+        file.endsWith('.php') ||
+        file.endsWith('.go') ||
+        file.endsWith('.rb')
       ) {
         try {
           const content = fs.readFileSync(fullPath, 'utf-8');
@@ -528,7 +540,14 @@ export async function runOptionalChecks(
     stack === STACKS.WEB_REACT ||
     stack === STACKS.REACT_NATIVE ||
     stack === STACKS.ANDROID ||
-    stack === STACKS.IOS;
+    stack === STACKS.IOS ||
+    stack === STACKS.ANGULAR ||
+    stack === STACKS.VUE ||
+    stack === STACKS.JAVASCRIPT ||
+    stack === STACKS.FLUTTER_WEB ||
+    stack === STACKS.FLUTTER ||
+    stack === STACKS.IONIC ||
+    stack === STACKS.CMP;
   if (isFrontendCheck) {
     scanForSecrets(projectDir);
     if (secretsFound.length > 0) {

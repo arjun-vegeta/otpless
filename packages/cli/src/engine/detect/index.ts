@@ -42,6 +42,22 @@ export function detectStack(
           frameworks.add('nextjs');
         }
         confidence = 'high';
+      } else if (deps['@angular/core']) {
+        platforms.add('angular');
+        frameworks.add('angular');
+        confidence = 'high';
+      } else if (deps['vue']) {
+        platforms.add('vue');
+        frameworks.add('vue');
+        confidence = 'high';
+      } else if (
+        deps['@ionic/angular'] ||
+        deps['@ionic/react'] ||
+        deps['@ionic/vue']
+      ) {
+        platforms.add('ionic');
+        frameworks.add('ionic');
+        confidence = 'high';
       }
 
       if (deps['express']) {
@@ -51,7 +67,9 @@ export function detectStack(
       } else if (
         (deps['typescript'] || deps['node']) &&
         !deps['react'] &&
-        !deps['react-native']
+        !deps['react-native'] &&
+        !deps['@angular/core'] &&
+        !deps['vue']
       ) {
         platforms.add('node-backend');
         frameworks.add('node');
@@ -329,6 +347,159 @@ export function detectStack(
         }
       }
     }
+  }
+
+  // Flutter detection
+  const pubspecPath = path.join(projectDir, 'pubspec.yaml');
+  if (fs.existsSync(pubspecPath)) {
+    package_manager = 'pub';
+    confidence = 'high';
+    try {
+      const pubContent = fs.readFileSync(pubspecPath, 'utf-8');
+      const isWeb = fs.existsSync(path.join(projectDir, 'web/index.html'));
+      if (isWeb) {
+        platforms.add('flutter-web');
+        frameworks.add('flutter-web');
+      } else {
+        platforms.add('flutter');
+        frameworks.add('flutter');
+      }
+
+      if (
+        pubContent.includes('otpless_headless_flutter') ||
+        pubContent.includes('otpless_flutter')
+      ) {
+        otpless_packages.push({
+          name: 'otpless_headless_flutter',
+          declared_version: null,
+          resolved_version: null,
+          sdk_family: 'headless',
+          sdk_generation: 'new',
+        });
+        detected_flows.push('headless');
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  // Django & Flask detection
+  if (fs.existsSync(requirementsTxtPath) || fs.existsSync(pyprojectTomlPath)) {
+    try {
+      const reqContent =
+        (fs.existsSync(requirementsTxtPath)
+          ? fs.readFileSync(requirementsTxtPath, 'utf-8')
+          : '') +
+        (fs.existsSync(pyprojectTomlPath)
+          ? fs.readFileSync(pyprojectTomlPath, 'utf-8')
+          : '');
+      if (
+        reqContent.includes('django') ||
+        fs.existsSync(path.join(projectDir, 'manage.py'))
+      ) {
+        platforms.add('django');
+        frameworks.add('django');
+        package_manager = 'pip';
+        confidence = 'high';
+      }
+      if (reqContent.includes('flask')) {
+        platforms.add('flask');
+        frameworks.add('flask');
+        package_manager = 'pip';
+        confidence = 'high';
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  // Laravel detection
+  if (
+    fs.existsSync(path.join(projectDir, 'artisan')) ||
+    fs.existsSync(path.join(projectDir, 'composer.json'))
+  ) {
+    package_manager = 'composer';
+    if (fs.existsSync(path.join(projectDir, 'artisan'))) {
+      platforms.add('laravel');
+      frameworks.add('laravel');
+      confidence = 'high';
+    }
+  }
+
+  // Spring Boot detection
+  if (fs.existsSync(path.join(projectDir, 'pom.xml'))) {
+    try {
+      const pomContent = fs.readFileSync(
+        path.join(projectDir, 'pom.xml'),
+        'utf-8',
+      );
+      if (pomContent.includes('spring-boot')) {
+        platforms.add('spring');
+        frameworks.add('spring');
+        package_manager = 'maven';
+        confidence = 'high';
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  // Go detection
+  if (fs.existsSync(path.join(projectDir, 'go.mod'))) {
+    platforms.add('go');
+    frameworks.add('go');
+    package_manager = 'go';
+    confidence = 'high';
+  }
+
+  // Rails detection
+  if (fs.existsSync(path.join(projectDir, 'Gemfile'))) {
+    try {
+      const gemContent = fs.readFileSync(
+        path.join(projectDir, 'Gemfile'),
+        'utf-8',
+      );
+      if (gemContent.includes('rails')) {
+        platforms.add('rails');
+        frameworks.add('rails');
+        package_manager = 'rubygems';
+        confidence = 'high';
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  // CMS Platform detection (WordPress, Shopify, Magento)
+  if (fs.existsSync(path.join(projectDir, 'wp-config.php'))) {
+    platforms.add('wordpress');
+    frameworks.add('wordpress');
+    confidence = 'high';
+  }
+  if (fs.existsSync(path.join(projectDir, 'shopify.theme.toml'))) {
+    platforms.add('shopify');
+    frameworks.add('shopify');
+    confidence = 'high';
+  }
+  if (
+    fs.existsSync(path.join(projectDir, 'app/etc/config.php')) &&
+    fs.existsSync(path.join(projectDir, 'registration.php'))
+  ) {
+    platforms.add('magento');
+    frameworks.add('magento');
+    confidence = 'high';
+  }
+
+  // Compose Multiplatform / KMP detection
+  if (
+    fs.existsSync(path.join(projectDir, 'composeApp')) ||
+    fs.existsSync(path.join(projectDir, 'shared/src/commonMain')) ||
+    fs.existsSync(path.join(projectDir, 'src/commonMain'))
+  ) {
+    platforms.add('cmp');
+    frameworks.add('cmp');
+    package_manager = 'gradle';
+    confidence = 'high';
   }
 
   if (platforms.has('node-backend') && frameworks.size === 0) {

@@ -308,7 +308,9 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
         'Add io.github.otpless-tech:otpless-headless-sdk to your dependencies and configure minSdk to at least 21.',
       env_vars: [],
       dashboard_notes: [],
-      docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md'],
+      docs_citations: [
+        'https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md',
+      ],
       expected_evidence: ['otpless-headless-sdk dependency is added.'],
     });
     steps.push({
@@ -334,7 +336,9 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
           'Initialize OtplessSDK in onCreate, handle onNewIntent for callbacks, and start the Headless authentication flow.',
         env_vars: ['OTPLESS_APP_ID'],
         dashboard_notes: [],
-        docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md'],
+        docs_citations: [
+          'https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md',
+        ],
         expected_evidence: [
           'OtplessSDK is initialized.',
           'onNewIntent handles deep links.',
@@ -379,7 +383,9 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
         dashboard_notes: [
           'Verify Phone OTP is enabled in your OTPless Dashboard.',
         ],
-        docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md'],
+        docs_citations: [
+          'https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md',
+        ],
         expected_evidence: [
           'OtplessSDK is initialized.',
           'startHeadless is invoked with PHONE channel.',
@@ -392,7 +398,9 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
           'Initialize OtplessSDK in onCreate, handle onNewIntent, and trigger Social Login/OAuth flow.',
         env_vars: ['OTPLESS_APP_ID'],
         dashboard_notes: [],
-        docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md'],
+        docs_citations: [
+          'https://otpless.com/docs/frontend-sdks/app-sdks/android/new/headless/intro.md',
+        ],
         expected_evidence: [
           'OtplessSDK is initialized.',
           'startHeadless is invoked with OAUTH channel.',
@@ -405,7 +413,9 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
       action: "Add pod 'OtplessBM/Core' to your Podfile and run pod install.",
       env_vars: [],
       dashboard_notes: [],
-      docs_citations: ['https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/headless/headless.md'],
+      docs_citations: [
+        'https://otpless.com/docs/frontend-sdks/app-sdks/ios/new/headless/headless.md',
+      ],
       expected_evidence: ["pod 'OtplessBM/Core' is added to Podfile."],
     });
     steps.push({
@@ -756,11 +766,179 @@ export function scaffoldIntegration(stack: Stack, flow: Flow): ScaffoldStep[] {
         ],
       });
     }
+  } else if (
+    stack === STACKS.ANGULAR ||
+    stack === STACKS.VUE ||
+    stack === STACKS.JAVASCRIPT ||
+    stack === STACKS.FLUTTER_WEB
+  ) {
+    const htmlTarget =
+      stack === STACKS.ANGULAR ? 'src/index.html' : 'index.html';
+    steps.push({
+      target: htmlTarget,
+      action:
+        'Insert the OTPless v4 script tag inside the <head> section: <script id="otpless-sdk" src="https://otpless.com/v4/headless.js" data-appid="YOUR_APP_ID"></script>.',
+      env_vars: ['OTPLESS_APP_ID'],
+      dashboard_notes: [
+        'Replace YOUR_APP_ID with your actual App ID from the OTPless dashboard.',
+      ],
+      docs_citations: [
+        `https://otpless.com/docs/frontend-sdks/web-sdks/${stack}/headless.md`,
+      ],
+      expected_evidence: [
+        '<script id="otpless-sdk" src="https://otpless.com/v4/headless.js" data-appid="..."> is present.',
+      ],
+    });
+    steps.push({
+      target: 'src/app/login/login.component.ts',
+      action:
+        'Initialize OTPless SDK with callback defining handlers for ONETAP, OTP_AUTO_READ, FAILED, and FALLBACK_TRIGGERED. Call OTPlessSignin.initiate({ channel, ... }) and OTPlessSignin.verify({ channel, otp, ... }).',
+      env_vars: ['OTPLESS_APP_ID'],
+      dashboard_notes: [],
+      docs_citations: [
+        `https://otpless.com/docs/frontend-sdks/web-sdks/${stack}/headless.md`,
+      ],
+      expected_evidence: [
+        'OTPlessSignin.initiate is invoked.',
+        'OTPlessSignin.verify is invoked for OTP.',
+      ],
+    });
+  } else if (stack === STACKS.FLUTTER) {
+    steps.push({
+      target: 'pubspec.yaml',
+      action:
+        'Add otpless_headless_flutter: ^<latest_version> under dependencies and run flutter pub get.',
+      env_vars: [],
+      dashboard_notes: [],
+      docs_citations: [
+        'https://otpless.com/docs/frontend-sdks/app-sdks/flutter/new/headless.md',
+      ],
+      expected_evidence: ['otpless_headless_flutter is in pubspec.yaml.'],
+    });
+    steps.push({
+      target: 'android/app/src/main/AndroidManifest.xml',
+      action:
+        'Configure intent-filter for scheme otpless.YOUR_APP_ID_LOWERCASE, singleTop, exported=true, networkSecurityConfig for SNA, and extend FlutterFragmentActivity in MainActivity.kt.',
+      env_vars: ['OTPLESS_APP_ID'],
+      dashboard_notes: [],
+      docs_citations: [
+        'https://otpless.com/docs/frontend-sdks/app-sdks/flutter/new/headless.md',
+      ],
+      expected_evidence: [
+        'Intent filter configured.',
+        'FlutterFragmentActivity extended.',
+      ],
+    });
+    steps.push({
+      target: 'ios/Runner/Info.plist',
+      action:
+        'Add CFBundleURLSchemes (otpless.YOUR_APP_ID_LOWERCASE), LSApplicationQueriesSchemes, and NSAppTransportSecurity exception domains for SNA.',
+      env_vars: ['OTPLESS_APP_ID'],
+      dashboard_notes: [],
+      docs_citations: [
+        'https://otpless.com/docs/frontend-sdks/app-sdks/flutter/new/headless.md',
+      ],
+      expected_evidence: ['Info.plist schemes and SNA domains configured.'],
+    });
+    steps.push({
+      target: 'lib/main.dart',
+      action:
+        'Initialize plugin: _otplessHeadlessPlugin.initialize("YOUR_APP_ID"), set callback _otplessHeadlessPlugin.setResponseCallback(onOtplessResponse), call _otplessHeadlessPlugin.commitResponse(result), and start authentication.',
+      env_vars: ['OTPLESS_APP_ID'],
+      dashboard_notes: [],
+      docs_citations: [
+        'https://otpless.com/docs/frontend-sdks/app-sdks/flutter/new/headless.md',
+      ],
+      expected_evidence: [
+        '_otplessHeadlessPlugin.initialize is invoked.',
+        '_otplessHeadlessPlugin.commitResponse is invoked.',
+      ],
+    });
+  } else if (stack === STACKS.IONIC || stack === STACKS.CMP) {
+    steps.push({
+      target: 'package.json',
+      action: 'Add @otpless/ionic-sdk to package dependencies.',
+      env_vars: [],
+      dashboard_notes: [],
+      docs_citations: [
+        'https://otpless.com/docs/frontend-sdks/app-sdks/ionic/headless/intro.md',
+      ],
+      expected_evidence: ['Ionic SDK dependency added.'],
+    });
+  } else if (
+    stack === STACKS.DJANGO ||
+    stack === STACKS.FLASK ||
+    stack === STACKS.LARAVEL ||
+    stack === STACKS.SPRING ||
+    stack === STACKS.GO ||
+    stack === STACKS.RAILS
+  ) {
+    if (
+      flow === FLOWS.TOKEN_VALIDATION ||
+      flow === FLOWS.HEADLESS ||
+      flow === FLOWS.UNKNOWN
+    ) {
+      steps.push({
+        target: 'server/auth_controller',
+        action: `Implement server-to-server POST to https://auth.otpless.app/auth/v1/validate/token exchanging token for user details using client_id and client_secret in ${stack}.`,
+        env_vars: ['OTPLESS_CLIENT_ID', 'OTPLESS_CLIENT_SECRET'],
+        dashboard_notes: [],
+        docs_citations: [
+          'https://otpless.com/docs/api-reference/endpoint/verifytoken/verify-token-with-secure-data.md',
+        ],
+        expected_evidence: ['Server-to-server token validation call present.'],
+      });
+    }
+    if (flow === FLOWS.ID_TOKEN) {
+      steps.push({
+        target: 'server/jwks_verifier',
+        action: `Fetch JWKS from https://otpless.com/.well-known/jwks and verify ID token JWT using RS256 algorithm, checking issuer (https://otpless.com), audience (OTPLESS_APP_ID), and expiration in ${stack}.`,
+        env_vars: ['OTPLESS_APP_ID'],
+        dashboard_notes: [],
+        docs_citations: [
+          'https://otpless.com/docs/api-reference/endpoint/verifytoken/id-token-validate.md',
+        ],
+        expected_evidence: [
+          'JWKS fetching and RS256 JWT signature verification present.',
+        ],
+      });
+    }
+    if (flow === FLOWS.WEBHOOK) {
+      steps.push({
+        target: 'server/webhook_handler',
+        action: `Verify X-Signature header by computing HMAC-SHA256 over raw request body using endpoint secret, Base64 encoding the result, and performing constant-time string comparison in ${stack}.`,
+        env_vars: ['OTPLESS_WEBHOOK_SECRET'],
+        dashboard_notes: [
+          'Configure webhook URL and endpoint secret in OTPless dashboard.',
+        ],
+        docs_citations: [
+          'https://otpless.com/docs/knowledge-base/webhook-v2.md',
+        ],
+        expected_evidence: [
+          'HMAC-SHA256 signature verification over raw body is present.',
+        ],
+      });
+    }
+  } else if (
+    stack === STACKS.WORDPRESS ||
+    stack === STACKS.SHOPIFY ||
+    stack === STACKS.MAGENTO
+  ) {
+    steps.push({
+      target: 'cms/theme_or_plugin',
+      action: `Integrate OTPless ${stack} plugin/script template into your theme or plugin configuration.`,
+      env_vars: ['OTPLESS_APP_ID'],
+      dashboard_notes: [
+        `Configure your ${stack} redirect URLs in the OTPless dashboard.`,
+      ],
+      docs_citations: ['https://otpless.com/docs/introduction.md'],
+      expected_evidence: ['OTPless integration script/plugin installed.'],
+    });
   }
 
-  if (steps.length === 0) {
+  if (stack === STACKS.UNKNOWN || steps.length === 0) {
     throw new Error(
-      `Scaffold templates for ${stack} with flow ${flow} are not supported in V1. Please wait for V2 or use V1-supported combinations (e.g. web-react + headless).`,
+      `Scaffold templates for stack ${stack} with flow ${flow} are not supported in V1. Please check supported stacks.`,
     );
   }
 
