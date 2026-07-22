@@ -40,15 +40,119 @@
     }
   },
   "android": {
-    "otpless-android-sdk": {
+    "otpless-headless-sdk": {
       "current_version": "2.1.0",
+      "supported_frameworks": ["android"]
+    },
+    "otpless-android-sdk": {
+      "current_version": "1.0.0",
       "supported_frameworks": ["android"]
     }
   },
   "ios": {
-    "otpless-ios-sdk": {
+    "OtplessBM": {
       "current_version": "2.0.0",
       "supported_frameworks": ["ios"]
+    },
+    "OtplessSDK": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["ios"]
+    }
+  },
+  "angular": {
+    "otpless-angular": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["angular"]
+    }
+  },
+  "vue": {
+    "otpless-vue": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["vue"]
+    }
+  },
+  "javascript": {
+    "otpless-js": {
+      "current_version": "5.0.0",
+      "supported_frameworks": ["javascript"]
+    }
+  },
+  "flutter-web": {
+    "otpless_headless_flutter": {
+      "current_version": "2.0.0",
+      "supported_frameworks": ["flutter-web"]
+    }
+  },
+  "flutter": {
+    "otpless_headless_flutter": {
+      "current_version": "2.0.0",
+      "supported_frameworks": ["flutter"]
+    }
+  },
+  "ionic": {
+    "@otpless/ionic-sdk": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["ionic"]
+    }
+  },
+  "cmp": {
+    "otpless-cmp-sdk": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["cmp"]
+    }
+  },
+  "django": {
+    "otpless-python": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["django"]
+    }
+  },
+  "flask": {
+    "otpless-python": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["flask"]
+    }
+  },
+  "laravel": {
+    "otpless-php": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["laravel"]
+    }
+  },
+  "spring": {
+    "otpless-java": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["spring"]
+    }
+  },
+  "go": {
+    "otpless-go": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["go"]
+    }
+  },
+  "rails": {
+    "otpless-ruby": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["rails"]
+    }
+  },
+  "wordpress": {
+    "otpless-wordpress": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["wordpress"]
+    }
+  },
+  "shopify": {
+    "otpless-shopify": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["shopify"]
+    }
+  },
+  "magento": {
+    "otpless-magento": {
+      "current_version": "1.0.0",
+      "supported_frameworks": ["magento"]
     }
   }
 }

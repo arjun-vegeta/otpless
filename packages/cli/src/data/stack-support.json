@@ -5,7 +5,23 @@
     "android",
     "ios",
     "node-backend",
-    "fastapi"
+    "fastapi",
+    "angular",
+    "vue",
+    "javascript",
+    "flutter-web",
+    "flutter",
+    "ionic",
+    "cmp",
+    "django",
+    "flask",
+    "laravel",
+    "spring",
+    "go",
+    "rails",
+    "wordpress",
+    "shopify",
+    "magento"
   ],
-  "unsupported_message": "This stack is unsupported in V1. Please check official OTPless documentation or wait for V2."
+  "unsupported_message": "This stack is unsupported. Please check official OTPless documentation."
 }

@@ -7,6 +7,22 @@ export const STACKS = {
   IOS: 'ios',
   NODE_BACKEND: 'node-backend',
   FASTAPI: 'fastapi',
+  ANGULAR: 'angular',
+  VUE: 'vue',
+  JAVASCRIPT: 'javascript',
+  FLUTTER_WEB: 'flutter-web',
+  FLUTTER: 'flutter',
+  IONIC: 'ionic',
+  CMP: 'cmp',
+  DJANGO: 'django',
+  FLASK: 'flask',
+  LARAVEL: 'laravel',
+  SPRING: 'spring',
+  GO: 'go',
+  RAILS: 'rails',
+  WORDPRESS: 'wordpress',
+  SHOPIFY: 'shopify',
+  MAGENTO: 'magento',
   UNKNOWN: 'unknown',
 } as const;
 
@@ -36,6 +52,22 @@ export const StackSchema = z.enum([
   'ios',
   'node-backend',
   'fastapi',
+  'angular',
+  'vue',
+  'javascript',
+  'flutter-web',
+  'flutter',
+  'ionic',
+  'cmp',
+  'django',
+  'flask',
+  'laravel',
+  'spring',
+  'go',
+  'rails',
+  'wordpress',
+  'shopify',
+  'magento',
   'unknown',
 ]);
 export const FlowSchema = z.enum([
@@ -70,6 +102,11 @@ export interface CompatibilityTuple {
     | 'cocoapods'
     | 'spm'
     | 'pub'
+    | 'pip'
+    | 'composer'
+    | 'maven'
+    | 'rubygems'
+    | 'go'
     | 'unknown';
   otpless_packages: OtplessPackage[];
   detected_flows: Flow[];
