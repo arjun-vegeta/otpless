@@ -27,14 +27,30 @@ Use whichever interface is available in your environment. Examples below use CLI
 
 ## Supported Stacks
 
-| Stack          | Description                              |
-| -------------- | ---------------------------------------- |
-| `web-react`    | React / Next.js web apps                 |
+| Stack | Description |
+| --- | --- |
+| `web-react` | React / Next.js web apps |
+| `angular` | Angular web apps |
+| `vue` | Vue.js web apps |
+| `javascript` | Vanilla JavaScript / HTML5 apps |
+| `flutter-web` | Flutter Web apps |
 | `react-native` | React Native mobile apps (Android + iOS) |
-| `android`      | Android Native (Kotlin / Java)           |
-| `ios`          | iOS Native (Swift / Objective-C)         |
-| `node-backend` | Node.js / Express backend                |
-| `fastapi`      | Python FastAPI backend                   |
+| `android` | Android Native (Kotlin / Java) |
+| `ios` | iOS Native (Swift / Objective-C) |
+| `flutter` | Flutter mobile apps (Android + iOS) |
+| `ionic` | Ionic Framework apps |
+| `cmp` | Compose Multiplatform / KMP apps |
+| `node-backend` | Node.js / Express backend |
+| `fastapi` | Python FastAPI backend |
+| `django` | Python Django backend |
+| `flask` | Python Flask backend |
+| `laravel` | PHP Laravel backend |
+| `spring` | Java Spring Boot backend |
+| `go` | Go HTTP backend |
+| `rails` | Ruby on Rails backend |
+| `wordpress` | WordPress site / theme / plugin |
+| `shopify` | Shopify theme / app |
+| `magento` | Magento / Adobe Commerce store |
 
 ## Supported Flows
 

@@ -40,14 +40,12 @@ cp skills/codex/SKILL.md .codex/SKILL.md
 
 ## Supported Stacks
 
-| Stack          | Description                              |
-| -------------- | ---------------------------------------- |
-| `web-react`    | React / Next.js web apps                 |
-| `react-native` | React Native mobile apps (Android + iOS) |
-| `android`      | Android Native (Kotlin / Java)           |
-| `ios`          | iOS Native (Swift / Objective-C)         |
-| `node-backend` | Node.js / Express backend                |
-| `fastapi`      | Python FastAPI backend                   |
+| Category | Tech Stacks |
+| --- | --- |
+| **Web Apps** | `web-react`, `angular`, `vue`, `javascript`, `flutter-web` |
+| **Mobile Apps** | `react-native`, `android`, `ios`, `flutter`, `ionic`, `cmp` |
+| **Backend APIs** | `node-backend`, `fastapi`, `django`, `flask`, `laravel`, `spring`, `go`, `rails` |
+| **CMS Platforms** | `wordpress`, `shopify`, `magento` |
 
 ## Supported Flows
 

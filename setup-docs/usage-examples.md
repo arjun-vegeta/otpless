@@ -38,9 +38,21 @@ Once you have the MCP server configured (or the CLI installed), just tell your a
 
 > "Add phone OTP login to my iOS app using OTPless. Use the otpless-cli to scaffold and verify the integration."
 
+### Flutter + Headless Auth
+
+> "Integrate OTPless Headless authentication into my Flutter app. Use otpless-cli to detect my stack, scaffold the pubspec and native configuration steps, and verify."
+
+### Angular / Vue + Headless Web SDK
+
+> "Add OTPless Headless login script and component to my Angular (or Vue) app using otpless-cli."
+
+### Django / Flask / Laravel / Spring / Go + Token Validation
+
+> "Implement OTPless server-to-server token validation and JWKS ID token verification in my Django (or Go / Spring Boot) backend. Use otpless-cli to scaffold and verify."
+
 ### Full Integration (Frontend + Backend)
 
-> "I need to add OTPless authentication to my project. I have a React Native frontend and FastAPI backend. Use the otpless-cli to detect my stack, scaffold both frontend (sna-only) and backend (token-validation), then verify everything."
+> "I need to add OTPless authentication to my project. I have a Flutter frontend and Go backend. Use the otpless-cli to detect my stack, scaffold both frontend (headless) and backend (token-validation), then verify everything."
 
 > "I have an Android native frontend and a Node.js backend. Scaffold OTPless SNA for Android and token-validation for the backend, then verify both."
 

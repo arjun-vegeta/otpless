@@ -115,11 +115,9 @@ otpless-cli live-test webhook-signature --secret "YOUR_SECRET" --fixture ./paylo
 
 ## Supported Stacks & Flows
 
-| Stack          | Flows                                                                       |
-| -------------- | --------------------------------------------------------------------------- |
-| `web-react`    | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only               |
-| `react-native` | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only               |
-| `android`      | headless, prebuilt-ui, phone-otp, oauth, sna-only                           |
-| `ios`          | headless, prebuilt-ui, phone-otp, oauth, sna-only                           |
-| `node-backend` | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna-only |
-| `fastapi`      | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna-only |
+| Category | Tech Stacks | Supported Flows |
+| --- | --- | --- |
+| **Web Apps** | `web-react`, `angular`, `vue`, `javascript`, `flutter-web` | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only |
+| **Mobile Apps** | `react-native`, `android`, `ios`, `flutter`, `ionic`, `cmp` | headless, prebuilt-ui, phone-otp, oauth, magic-link, sna-only |
+| **Backend APIs** | `node-backend`, `fastapi`, `django`, `flask`, `laravel`, `spring`, `go`, `rails` | token-validation, id-token, webhook, phone-otp, oauth, magic-link, sna-only |
+| **CMS Platforms** | `wordpress`, `shopify`, `magento` | script/plugin template, token-validation, webhook |
